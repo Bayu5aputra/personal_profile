@@ -10,33 +10,59 @@ const Works = () => {
 		<div className="works">
 			<Card
 				icon={faBriefcase}
-				title="Work"
+				title="Work Experience"
 				body={
 					<div className="works-body">
 						<div className="work">
 							<img
-								src="./facebook.png"
-								alt="facebook"
+								src="./sinarmas.png"
+								alt="Sinar Mas Land"
 								className="work-image"
 							/>
-							<div className="work-title">Facebook</div>
+							<div className="work-title">Sinar Mas Land</div>
 							<div className="work-subtitle">
-								Software Engineer
+								IT Infrastructure
 							</div>
-							<div className="work-duration">2019 - Present</div>
+							<div className="work-duration">Sep 2025 - Present</div>
 						</div>
 
 						<div className="work">
 							<img
-								src="./twitter.png"
-								alt="twitter"
+								src="./damai-putra.png"
+								alt="Damai Putra Group"
 								className="work-image"
 							/>
-							<div className="work-title">Twitter</div>
+							<div className="work-title">Damai Putra Group</div>
 							<div className="work-subtitle">
-								Software Engineer
+								IT Support Intern
 							</div>
-							<div className="work-duration">2019 - Present</div>
+							<div className="work-duration">Dec 2024 - Jun 2025</div>
+						</div>
+
+						<div className="work">
+							<img
+								src="./baznas.png"
+								alt="BAZNAS"
+								className="work-image"
+							/>
+							<div className="work-title">BAZNAS Kota Bekasi</div>
+							<div className="work-subtitle">
+								Web Development Intern
+							</div>
+							<div className="work-duration">Nov 2024 - Dec 2024</div>
+						</div>
+
+						<div className="work">
+							<img
+								src="./kominfo.png"
+								alt="Kominfo"
+								className="work-image"
+							/>
+							<div className="work-title">Kominfo Bekasi</div>
+							<div className="work-subtitle">
+								Network Technician Intern
+							</div>
+							<div className="work-duration">Oct 2024 - Nov 2024</div>
 						</div>
 					</div>
 				}

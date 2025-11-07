@@ -2,36 +2,36 @@ const SEO = [
 	{
 		page: "home",
 		description:
-			"I am a backend developer with expertise in Node.js. I have experience in building scalable, secure and reliable web applications using various frameworks and technologies.",
-		keywords: ["Tharindu", "Tharindu N", "Tharindu Nayanajith"],
+			"Bayu Saputra - IT Infrastructure Specialist and Network Administrator with expertise in ATCS systems, IoT devices, network security, and system monitoring. Currently working at Sinar Mas Land.",
+		keywords: ["Bayu Saputra", "IT Infrastructure", "Network Administrator", "IoT", "ATCS", "Grafana", "Docker", "Mikrotik", "Cisco CCNA", "Bekasi"],
 	},
 
 	{
 		page: "about",
 		description:
-			"I am a backend developer with expertise in Node.js. I have experience in building scalable, secure and reliable web applications using various frameworks and technologies.",
-		keywords: ["Tharindu", "Tharindu N", "Tharindu Nayanajith"],
+			"Learn more about Bayu Saputra - Computer Science graduate from Bani Saleh University with 3.77 GPA. Certified in Mikrotik MTCNA, Cisco CCNA, and BNSP Junior Network Administrator.",
+		keywords: ["Bayu Saputra", "Computer Science", "Bani Saleh University", "IT Professional", "Network Certification", "CCNA", "MTCNA"],
 	},
 
 	{
 		page: "articles",
 		description:
-			"Chronological collection of my long-form thoughts on programming, leadership, product design, and more.",
-		keywords: ["Tharindu", "Tharindu N", "Tharindu Nayanajith"],
+			"Technical articles and insights on IT infrastructure, network administration, IoT implementations, and emerging technologies by Bayu Saputra.",
+		keywords: ["IT Infrastructure", "Network Administration", "IoT", "Technology Blog", "Bayu Saputra"],
 	},
 
 	{
 		page: "projects",
 		description:
-			"I've worked on a variety of projects over the years and I'm proud of the progress I've made. Many of these projects are open-source and available for others to explore and contribute to.",
-		keywords: ["Tharindu", "Tharindu N", "Tharindu Nayanajith"],
+			"Portfolio of IT projects including IoT-based emergency systems, ATCS monitoring, network implementations, and web applications developed by Bayu Saputra.",
+		keywords: ["IT Projects", "IoT Projects", "Network Projects", "Web Development", "Bayu Saputra", "ESP32", "Laravel"],
 	},
 
 	{
 		page: "contact",
 		description:
-			"If you're interested in collaborating on a project, feel free to reach out to me. I'm always open to new ideas and opportunities.",
-		keywords: ["Tharindu", "Tharindu N", "Tharindu Nayanajith"],
+			"Get in touch with Bayu Saputra for IT infrastructure consulting, network administration projects, or collaboration opportunities.",
+		keywords: ["Contact", "Bayu Saputra", "IT Consulting", "Network Administrator", "Collaboration"],
 	},
 ];
 
