@@ -1,39 +1,47 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
+import React, { useEffect, useRef } from "react";
 import "./styles/footer.css";
 
 const Footer = () => {
-	return (
-		<React.Fragment>
-			<div className="footer">
-				<div className="footer-links">
-					<ul className="footer-nav-link-list">
-						<li className="footer-nav-link-item">
-							<Link to="/">Home</Link>
-						</li>
-						<li className="footer-nav-link-item">
-							<Link to="/about">About</Link>
-						</li>
-						<li className="footer-nav-link-item">
-							<Link to="/projects">Projects</Link>
-						</li>
-						<li className="footer-nav-link-item">
-							<Link to="/articles">Articles</Link>
-						</li>
-						<li className="footer-nav-link-item">
-							<Link to="/contact">Contact</Link>
-						</li>
-					</ul>
-				</div>
+	const footerRef = useRef(null);
 
-				<div className="footer-credits">
-					<div className="footer-credits-text">
-						© 2025 Bayu Saputra. All Rights Reserved.
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('footer-visible');
+					}
+				});
+			},
+			{ threshold: 0.1 }
+		);
+
+		if (footerRef.current) {
+			observer.observe(footerRef.current);
+		}
+
+		return () => {
+			if (footerRef.current) {
+				observer.unobserve(footerRef.current);
+			}
+		};
+	}, []);
+
+	return (
+		<div className="footer" ref={footerRef}>
+			<div className="footer-3d-card">
+				<div className="footer-3d-inner">
+					<div className="footer-content">
+						<div className="footer-main-text">
+							© 2025 Bayu Saputra
+						</div>
+						<div className="footer-sub-text">
+							All Rights Reserved
+						</div>
 					</div>
 				</div>
 			</div>
-		</React.Fragment>
+		</div>
 	);
 };
 

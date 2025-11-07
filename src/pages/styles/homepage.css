@@ -93,6 +93,120 @@
 	padding-top: 30px;
 }
 
+/* Tombol View More - Style Baru */
+.homepage-view-more-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 30px;
+	padding: 20px 0;
+	perspective: 800px;
+}
+
+.homepage-view-more-button {
+	display: inline-block;
+	padding: 10px 25px;
+	background: white;
+	color: #333;
+	text-decoration: none;
+	border-radius: 8px;
+	font-weight: 600;
+	font-size: 13px;
+	letter-spacing: 0.3px;
+	transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	box-shadow: 
+		0 2px 10px rgba(0, 0, 0, 0.08),
+		0 1px 0 rgba(0, 0, 0, 0.05),
+		inset 0 1px 0 rgba(255, 255, 255, 0.8);
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+	text-align: center;
+	position: relative;
+	overflow: hidden;
+	transform-style: preserve-3d;
+	transform: translateZ(0);
+}
+
+/* Efek shine background */
+.homepage-view-more-button::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(90deg, 
+		transparent, 
+		rgba(255, 255, 255, 0.6), 
+		transparent);
+	transition: left 0.7s ease;
+	z-index: 1;
+}
+
+/* Gradient background yang muncul saat hover */
+.homepage-view-more-button::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(135deg, var(--link-color), var(--primary-color));
+	opacity: 0;
+	transition: all 0.4s ease;
+	z-index: -1;
+	border-radius: 7px;
+}
+
+/* Hover Effects */
+.homepage-view-more-button:hover {
+	transform: translateY(-3px) translateZ(8px) rotateX(3deg);
+	box-shadow: 
+		0 8px 20px rgba(0, 0, 0, 0.12),
+		0 3px 0 rgba(0, 0, 0, 0.08),
+		inset 0 1px 0 rgba(255, 255, 255, 0.9);
+	color: white;
+	letter-spacing: 0.5px;
+}
+
+.homepage-view-more-button:hover::before {
+	left: 100%;
+}
+
+.homepage-view-more-button:hover::after {
+	opacity: 1;
+}
+
+/* Active State */
+.homepage-view-more-button:active {
+	transform: translateY(-1px) translateZ(4px) rotateX(1deg);
+	box-shadow: 
+		0 4px 12px rgba(0, 0, 0, 0.1),
+		0 1px 0 rgba(0, 0, 0, 0.06),
+		inset 0 1px 0 rgba(255, 255, 255, 0.8);
+	transition: all 0.1s ease;
+}
+
+/* Animasi pulse subtle */
+@keyframes subtlePulse {
+	0%, 100% {
+		box-shadow: 
+			0 2px 10px rgba(0, 0, 0, 0.08),
+			0 1px 0 rgba(0, 0, 0, 0.05),
+			inset 0 1px 0 rgba(255, 255, 255, 0.8);
+	}
+	50% {
+		box-shadow: 
+			0 2px 12px rgba(0, 0, 0, 0.12),
+			0 1px 0 rgba(0, 0, 0, 0.05),
+			inset 0 1px 0 rgba(255, 255, 255, 0.8);
+	}
+}
+
+.homepage-view-more-button {
+	animation: subtlePulse 4s ease-in-out infinite;
+}
+
+/* Responsive Design untuk Tombol */
 @media (max-width: 1024px) {
 	.homepage-first-area {
 		flex-direction: column;
@@ -100,7 +214,7 @@
 
 	.homepage-first-area-left-side {
 		display: flex;
-		flex-direction: column; /* Changed: set direction to column */
+		flex-direction: column;
 		align-items: flex-start;
 		width: 100%;
 		order: 2;
@@ -146,5 +260,28 @@
 		flex-basis: auto;
 		margin-left: -25px;
 		margin-right: -25px;
+	}
+}
+
+@media (max-width: 768px) {
+	.homepage-view-more-button {
+		padding: 9px 22px;
+		font-size: 12px;
+	}
+	
+	.homepage-view-more-container {
+		margin-top: 25px;
+		padding: 15px 0;
+	}
+}
+
+@media (max-width: 480px) {
+	.homepage-view-more-button {
+		padding: 8px 20px;
+		font-size: 11px;
+	}
+	
+	.homepage-view-more-button:hover {
+		transform: translateY(-2px) translateZ(5px) rotateX(2deg);
 	}
 }

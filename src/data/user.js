@@ -7,12 +7,9 @@ const INFO = {
 	},
 
 	socials: {
-		twitter: "https://twitter.com/",
-		github: "https://github.com/bayusaputraa",
+		github: "https://github.com/bayu5aputra",
 		linkedin: "https://linkedin.com/in/bayusaputra05",
-		instagram: "https://instagram.com/",
-		stackoverflow: "https://stackoverflow.com/",
-		facebook: "https://facebook.com/",
+		instagram: "https://instagram.com/filesystem_",
 	},
 
 	homepage: {
@@ -40,7 +37,7 @@ const INFO = {
 				"Developed an end-to-end IoT emergency button system using ESP32, Laravel API, and real-time dashboard. Enables instant WiFi-based emergency alerts with faster response times.",
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/javascript/javascript.png",
 			linkText: "View Project",
-			link: "https://github.com/bayusaputraa",
+			link: "https://github.com/bayu5aputra",
 		},
 
 		{
@@ -49,7 +46,7 @@ const INFO = {
 				"Implemented a comprehensive device monitoring system for Area Traffic Control System network using Grafana and Docker to ensure optimal performance and uptime.",
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/python/python.png",
 			linkText: "View Project",
-			link: "https://github.com/bayusaputraa",
+			link: "https://github.com/bayu5aputra",
 		},
 
 		{
@@ -67,7 +64,7 @@ const INFO = {
 				"Web application for managing railway schedules, routes, types and capacity. Built with PHP Native and SQL database for efficient data management.",
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/php/php.png",
 			linkText: "View Project",
-			link: "https://github.com/bayusaputraa",
+			link: "https://github.com/bayu5aputra",
 		},
 
 		{
@@ -76,7 +73,7 @@ const INFO = {
 				"Configured Ubuntu Server as a network gateway router with IP Tables and firewall implementation for enterprise network security.",
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/python/python.png",
 			linkText: "View Project",
-			link: "https://github.com/bayusaputraa",
+			link: "https://github.com/bayu5aputra",
 		},
 
 		{
@@ -85,7 +82,7 @@ const INFO = {
 				"Desktop application built with Java Swing and MySQL for managing doctor information. Features include CRUD operations and advanced search functionality.",
 			logo: "https://cdn.jsdelivr.net/npm/programming-languages-logos/src/java/java.png",
 			linkText: "View Project",
-			link: "https://github.com/bayusaputraa",
+			link: "https://github.com/bayu5aputra",
 		},
 	],
 };

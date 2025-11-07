@@ -15,7 +15,7 @@ const Works = () => {
 					<div className="works-body">
 						<div className="work">
 							<img
-								src="./sinarmas.png"
+								src="./sinarmasland.png"
 								alt="Sinar Mas Land"
 								className="work-image"
 							/>
@@ -28,7 +28,7 @@ const Works = () => {
 
 						<div className="work">
 							<img
-								src="./damai-putra.png"
+								src="./damaiputra.png"
 								alt="Damai Putra Group"
 								className="work-image"
 							/>
@@ -42,7 +42,7 @@ const Works = () => {
 						<div className="work">
 							<img
 								src="./baznas.png"
-								alt="BAZNAS"
+								alt="BAZNAS Kota Bekasi"
 								className="work-image"
 							/>
 							<div className="work-title">BAZNAS Kota Bekasi</div>
@@ -54,8 +54,8 @@ const Works = () => {
 
 						<div className="work">
 							<img
-								src="./kominfo.png"
-								alt="Kominfo"
+								src="./komdigi.png"
+								alt="Kominfo Bekasi"
 								className="work-image"
 							/>
 							<div className="work-title">Kominfo Bekasi</div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 
 import { faMailBulk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -67,6 +68,9 @@ const Homepage = () => {
 		borderRadius: stayLogo ? "50%" : "none",
 		boxShadow: stayLogo ? "0px 4px 10px rgba(0, 0, 0, 0.25)" : "none",
 	};
+
+	// Hanya ambil 2 artikel terbaru
+	const latestArticles = myArticles.slice(0, 2);
 
 	return (
 		<React.Fragment>
@@ -172,7 +176,7 @@ const Homepage = () => {
 
 						<div className="homepage-after-title">
 							<div className="homepage-articles">
-								{myArticles.map((article, index) => (
+								{latestArticles.map((article, index) => (
 									<div
 										className="homepage-article"
 										key={(index + 1).toString()}
@@ -186,6 +190,15 @@ const Homepage = () => {
 										/>
 									</div>
 								))}
+								
+								{/* Tombol View More */}
+								{myArticles.length > 2 && (
+									<div className="homepage-view-more-container">
+										<Link to="/articles" className="homepage-view-more-button">
+											View More Articles
+										</Link>
+									</div>
+								)}
 							</div>
 
 							<div className="homepage-works">
