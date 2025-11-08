@@ -13,6 +13,7 @@
     border-radius: 50%;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
     top: 4vh;
+    z-index: 999;
 }
 
 .contact-container {
@@ -35,27 +36,444 @@
 .contact-subtitle a {
     color: var(--link-color);
     text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
 .contact-subtitle a:hover {
     color: var(--primary-color);
 }
 
-.socials-container {
+/* ===== SOCIAL MEDIA CARDS - HORIZONTAL ===== */
+.contact-socials-container {
+    margin-top: 60px;
+    perspective: 1000px;
+}
+
+.contact-socials-horizontal {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 30px;
+    max-width: 600px;
+    margin-bottom: 40px;
+}
+
+.contact-social-card {
+    perspective: 1000px;
+    opacity: 0;
+    animation: slideInUp 0.6s ease-out forwards;
+    position: relative;
+}
+
+.contact-social-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.contact-social-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.contact-social-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.contact-social-card a {
+    text-decoration: none;
+    display: block;
+}
+
+.contact-social-card-inner {
+    position: relative;
+    padding: 30px 20px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.08),
+        0 1px 0 rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    margin-top: 60px;
-    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    min-height: 140px;
 }
 
-.contact-socials {
+/* Glow effect background */
+.contact-social-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, var(--link-color) 0%, transparent 70%);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+    transition: all 0.5s ease;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.contact-social-card-inner:hover .contact-social-glow {
+    opacity: 0.15;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.contact-social-icon {
+    font-size: 36px;
+    color: var(--secondary-color);
+    transition: all 0.4s ease;
+    position: relative;
+    z-index: 1;
+    transform: translateZ(20px);
+}
+
+.contact-social-text {
+    color: var(--secondary-color);
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.4s ease;
+    position: relative;
+    z-index: 1;
+    transform: translateZ(10px);
+    text-align: center;
+}
+
+/* Hover Effects untuk setiap card */
+.contact-social-card-inner:hover {
+    transform: translateY(-10px) translateZ(20px) rotateX(5deg);
+    box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.15),
+        0 5px 0 rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.contact-social-card-inner:hover .contact-social-icon {
+    color: var(--link-color);
+    transform: translateZ(30px) scale(1.15) rotateY(5deg);
+}
+
+.contact-social-card-inner:hover .contact-social-text {
+    color: var(--primary-color);
+    transform: translateZ(20px) scale(1.05);
+}
+
+/* Active/Click Effect */
+.contact-social-card-inner:active {
+    transform: translateY(-3px) translateZ(10px) rotateX(2deg);
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.12),
+        0 2px 0 rgba(0, 0, 0, 0.06);
+    transition: all 0.1s ease;
+}
+
+/* ===== EMAIL CARD - SPECIAL DESIGN ===== */
+.contact-email-special {
+    margin-top: 20px;
+    perspective: 1500px;
+    opacity: 0;
+    animation: slideInUp 0.6s ease-out 0.4s forwards;
+    max-width: 650px;
+}
+
+.contact-email-card a {
+    text-decoration: none;
+    display: block;
+}
+
+.contact-email-card-inner {
+    position: relative;
+    padding: 28px 35px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    box-shadow: 
+        0 8px 30px rgba(0, 0, 0, 0.1),
+        0 2px 0 rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    overflow: hidden;
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 100%;
-    max-width: 300px;
+    align-items: center;
+    gap: 25px;
 }
 
+/* Animated background gradient */
+.contact-email-card-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(20, 184, 166, 0.1), 
+        transparent);
+    transition: left 0.7s ease;
+    z-index: 0;
+}
+
+.contact-email-card-inner:hover::before {
+    left: 100%;
+}
+
+/* Pulse animation untuk icon */
+.contact-email-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 65px;
+    height: 65px;
+    background: var(--link-color);
+    border-radius: 50%;
+    transition: all 0.4s ease;
+    z-index: 1;
+    transform: translateZ(20px);
+    flex-shrink: 0;
+}
+
+.contact-email-icon {
+    font-size: 26px;
+    color: white;
+    z-index: 2;
+    position: relative;
+}
+
+.contact-email-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: var(--link-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: emailPulse 2s ease-out infinite;
+    z-index: 0;
+}
+
+@keyframes emailPulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+.contact-email-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 1;
+    position: relative;
+    min-width: 0;
+}
+
+.contact-email-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--tertiary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    transition: all 0.3s ease;
+}
+
+.contact-email-address {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+    word-break: break-word;
+}
+
+.contact-email-arrow {
+    font-size: 28px;
+    color: var(--link-color);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1;
+    position: relative;
+    transform: translateZ(15px);
+    flex-shrink: 0;
+}
+
+/* Email Card Hover Effects */
+.contact-email-card-inner:hover {
+    transform: translateY(-8px) translateZ(25px) rotateX(3deg);
+    box-shadow: 
+        0 18px 50px rgba(0, 0, 0, 0.18),
+        0 5px 0 rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.contact-email-card-inner:hover .contact-email-icon-wrapper {
+    transform: translateZ(35px) scale(1.12) rotate(8deg);
+    box-shadow: 0 10px 25px rgba(20, 184, 166, 0.5);
+}
+
+.contact-email-card-inner:hover .contact-email-label {
+    color: var(--link-color);
+    letter-spacing: 1px;
+}
+
+.contact-email-card-inner:hover .contact-email-address {
+    color: var(--link-color);
+}
+
+.contact-email-card-inner:hover .contact-email-arrow {
+    transform: translateZ(30px) translateX(10px) scale(1.1);
+    color: var(--primary-color);
+}
+
+/* Active/Click Effect */
+.contact-email-card-inner:active {
+    transform: translateY(-3px) translateZ(12px) rotateX(1deg);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.15),
+        0 2px 0 rgba(0, 0, 0, 0.06);
+    transition: all 0.1s ease;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes slideInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Float animation untuk cards */
+@keyframes floatCard {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.contact-social-card:hover .contact-social-card-inner {
+    animation: floatCard 3s ease-in-out infinite;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
 .page-footer {
     margin-top: 80px;
+}
+
+@media (max-width: 768px) {
+    .contact-container {
+        margin-top: 100px;
+    }
+    
+    .contact-socials-horizontal {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 20px;
+        max-width: 100%;
+    }
+    
+    .contact-social-card-inner {
+        padding: 25px 15px;
+        min-height: 120px;
+    }
+    
+    .contact-social-icon {
+        font-size: 32px;
+    }
+    
+    .contact-social-text {
+        font-size: 13px;
+    }
+    
+    .contact-email-card-inner {
+        padding: 22px 25px;
+        gap: 18px;
+    }
+    
+    .contact-email-icon-wrapper {
+        width: 55px;
+        height: 55px;
+    }
+    
+    .contact-email-icon {
+        font-size: 22px;
+    }
+    
+    .contact-email-address {
+        font-size: 15px;
+    }
+    
+    .contact-email-arrow {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 600px) {
+    .contact-container {
+        margin-top: 80px;
+    }
+    
+    .contact-title {
+        font-size: 28px;
+    }
+    
+    .contact-subtitle {
+        font-size: 14px;
+    }
+    
+    .contact-socials-horizontal {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .contact-social-card-inner {
+        padding: 25px 20px;
+    }
+    
+    .contact-email-card-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+        padding: 25px 20px;
+    }
+    
+    .contact-email-content {
+        align-items: center;
+    }
+    
+    .contact-email-arrow {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-socials-container {
+        margin-top: 40px;
+    }
+    
+    .contact-email-special {
+        margin-top: 15px;
+    }
+    
+    .contact-email-address {
+        font-size: 14px;
+    }
+    
+    .contact-email-label {
+        font-size: 11px;
+    }
 }

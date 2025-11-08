@@ -1,10 +1,16 @@
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import {
+    faGithub,
+    faLinkedin,
+    faInstagram,
+} from "@fortawesome/free-brands-svg-icons";
 
 import NavBar from "../components/common/navBar";
 import Footer from "../components/common/footer";
 import Logo from "../components/common/logo";
-import Socials from "../components/about/socials";
 
 import INFO from "../data/user";
 import SEO from "../data/seo";
@@ -56,9 +62,61 @@ const Contact = () => {
                         </div>
                     </div>
 
-                    <div className="socials-container">
-                        <div className="contact-socials">
-                            <Socials />
+                    <div className="contact-socials-container">
+                        <div className="contact-socials-horizontal">
+                            <div className="contact-social-card" data-social="github">
+                                <a href={INFO.socials.github} target="_blank" rel="noreferrer">
+                                    <div className="contact-social-card-inner">
+                                        <div className="contact-social-icon">
+                                            <FontAwesomeIcon icon={faGithub} />
+                                        </div>
+                                        <div className="contact-social-text">GitHub</div>
+                                        <div className="contact-social-glow"></div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div className="contact-social-card" data-social="linkedin">
+                                <a href={INFO.socials.linkedin} target="_blank" rel="noreferrer">
+                                    <div className="contact-social-card-inner">
+                                        <div className="contact-social-icon">
+                                            <FontAwesomeIcon icon={faLinkedin} />
+                                        </div>
+                                        <div className="contact-social-text">LinkedIn</div>
+                                        <div className="contact-social-glow"></div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div className="contact-social-card" data-social="instagram">
+                                <a href={INFO.socials.instagram} target="_blank" rel="noreferrer">
+                                    <div className="contact-social-card-inner">
+                                        <div className="contact-social-icon">
+                                            <FontAwesomeIcon icon={faInstagram} />
+                                        </div>
+                                        <div className="contact-social-text">Instagram</div>
+                                        <div className="contact-social-glow"></div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div className="contact-email-special">
+                            <div className="contact-email-card">
+                                <a href={`mailto:${INFO.main.email}`} target="_blank" rel="noreferrer">
+                                    <div className="contact-email-card-inner">
+                                        <div className="contact-email-icon-wrapper">
+                                            <FontAwesomeIcon icon={faEnvelope} className="contact-email-icon" />
+                                            <div className="contact-email-pulse"></div>
+                                        </div>
+                                        <div className="contact-email-content">
+                                            <div className="contact-email-label">Send me an email</div>
+                                            <div className="contact-email-address">{INFO.main.email}</div>
+                                        </div>
+                                        <div className="contact-email-arrow">→</div>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
