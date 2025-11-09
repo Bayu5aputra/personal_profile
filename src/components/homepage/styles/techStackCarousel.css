@@ -1,0 +1,205 @@
+.tech-stack-carousel {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 370px;
+  max-height: 370px;
+  margin: 0 auto;
+}
+
+/* Main Logo Styles */
+.logo-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+}
+
+.logo-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.logo-card.animating {
+  animation: gentleFade 0.5s ease-in-out;
+}
+
+.main-logo {
+  width: 140px;
+  height: 140px;
+  border-radius: 20px;
+  padding: 25px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.1),
+    0 5px 15px rgba(0, 0, 0, 0.05);
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+.logo-name {
+  margin-top: 20px;
+  font-size: 1.3em;
+  font-weight: 600;
+  color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color), var(--link-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Progress Dots */
+.progress-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 20;
+}
+
+.progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.progress-dot.active {
+  background: var(--primary-color);
+  transform: scale(1.3);
+  box-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.5);
+}
+
+/* Simple Animations */
+@keyframes gentleFade {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover Effects */
+.main-logo:hover {
+  transform: scale(1.05);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .carousel-container {
+    max-width: 320px;
+    max-height: 320px;
+  }
+  
+  .main-logo {
+    width: 120px;
+    height: 120px;
+    padding: 20px;
+  }
+  
+  .logo-content {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-container {
+    max-width: 280px;
+    max-height: 280px;
+  }
+  
+  .main-logo {
+    width: 110px;
+    height: 110px;
+    padding: 18px;
+  }
+  
+  .logo-content {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .logo-name {
+    font-size: 1.1em;
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-container {
+    max-width: 250px;
+    max-height: 250px;
+  }
+  
+  .main-logo {
+    width: 100px;
+    height: 100px;
+    padding: 15px;
+  }
+  
+  .logo-content {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .logo-name {
+    font-size: 1em;
+    margin-top: 12px;
+  }
+  
+  .progress-dots {
+    bottom: 15px;
+  }
+  
+  .progress-dot {
+    width: 6px;
+    height: 6px;
+  }
+}
