@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { faMailBulk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faTwitter,
   faGithub,
   faStackOverflow,
   faInstagram,
@@ -18,7 +17,7 @@ import NavBar from "../components/common/navBar";
 import Article from "../components/homepage/article";
 import Works from "../components/homepage/works";
 import AllProjects from "../components/projects/allProjects";
-import TechStackCarousel from "../components/homepage/TechStackCarousel"; // Import komponen baru
+import TechStackCarousel from "../components/homepage/TechStackCarousel";
 
 import INFO from "../data/user";
 import SEO from "../data/seo";
@@ -108,25 +107,14 @@ const Homepage = () => {
               <div className="homepage-first-area-right-side">
                 <div className="homepage-image-container">
                   <div className="homepage-image-wrapper">
-                    {/* Ganti gambar dengan TechStackCarousel */}
                     <TechStackCarousel />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* ... sisa kode tetap sama ... */}
             <div className="homepage-socials">
-              <a
-                href={INFO.socials.twitter}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <FontAwesomeIcon
-                  icon={faTwitter}
-                  className="homepage-social-icon"
-                />
-              </a>
+              {/* Hapus bagian Twitter dan sesuaikan social media yang ada */}
               <a
                 href={INFO.socials.github}
                 target="_blank"
@@ -137,7 +125,43 @@ const Homepage = () => {
                   className="homepage-social-icon"
                 />
               </a>
-              {/* ... social media lainnya ... */}
+              
+              {INFO.socials.stackoverflow && (
+                <a
+                  href={INFO.socials.stackoverflow}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <FontAwesomeIcon
+                    icon={faStackOverflow}
+                    className="homepage-social-icon"
+                  />
+                </a>
+              )}
+              
+              {INFO.socials.instagram && (
+                <a
+                  href={INFO.socials.instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <FontAwesomeIcon
+                    icon={faInstagram}
+                    className="homepage-social-icon"
+                  />
+                </a>
+              )}
+              
+              <a
+                href={`mailto:${INFO.main.email}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FontAwesomeIcon
+                  icon={faMailBulk}
+                  className="homepage-social-icon"
+                />
+              </a>
             </div>
 
             <div className="homepage-projects">

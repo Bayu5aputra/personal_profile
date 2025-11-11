@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import ReactGA from "react-ga4";
 
@@ -9,28 +9,57 @@ import Articles from "./pages/articles";
 import ReadArticle from "./pages/readArticle";
 import Contact from "./pages/contact";
 import Notfound from "./pages/404";
+import LoadingScreen from "./components/homepage/LoadingScreen"; // Import loading screen
 
 import { TRACKING_ID } from "./data/tracking";
 import "./app.css";
 
 function App() {
+	const [isLoading, setIsLoading] = useState(true);
+
 	useEffect(() => {
 		if (TRACKING_ID !== "") {
 			ReactGA.initialize(TRACKING_ID);
 		}
 	}, []);
 
+	const handleLoadingComplete = () => {
+		setIsLoading(false);
+		// Remove loading class from body
+		document.body.classList.remove('loading');
+		document.body.classList.add('loaded');
+		
+		// Optional: Remove loading screen from DOM after animation
+		setTimeout(() => {
+			const loadingElement = document.querySelector('.loading-screen');
+			if (loadingElement) {
+				loadingElement.remove();
+			}
+		}, 1500);
+	};
+
+	// Add loading class to body on initial load
+	useEffect(() => {
+		document.body.classList.add('loading');
+	}, []);
+
 	return (
 		<div className="App">
-			<Routes>
-				<Route path="/" element={<Homepage />} />
-				<Route path="/about" element={<About />} />
-				<Route path="/projects" element={<Projects />} />
-				<Route path="/articles" element={<Articles />} />
-				<Route path="/article/:slug" element={<ReadArticle />} />
-				<Route path="/contact" element={<Contact />} />
-				<Route path="*" element={<Notfound />} />
-			</Routes>
+			{isLoading && (
+				<LoadingScreen onLoadingComplete={handleLoadingComplete} />
+			)}
+			
+			<div className={`main-content ${isLoading ? 'content-hidden' : 'content-visible'}`}>
+				<Routes>
+					<Route path="/" element={<Homepage />} />
+					<Route path="/about" element={<About />} />
+					<Route path="/projects" element={<Projects />} />
+					<Route path="/articles" element={<Articles />} />
+					<Route path="/article/:slug" element={<ReadArticle />} />
+					<Route path="/contact" element={<Contact />} />
+					<Route path="*" element={<Notfound />} />
+				</Routes>
+			</div>
 		</div>
 	);
 }
