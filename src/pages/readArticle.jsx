@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import { Helmet } from "react-helmet";
 import { Helmet } from "react-helmet-async";
-import styled from "styled-components";
 
 import NavBar from "../components/common/navBar";
 import Footer from "../components/common/footer";
@@ -13,28 +11,31 @@ import myArticles from "../data/articles";
 
 import "./styles/readArticle.css";
 
-let ArticleStyle = styled.div``;
-
 const ReadArticle = () => {
 	const navigate = useNavigate();
-	let { slug } = useParams();
+	const { slug } = useParams();
 
-	const article = myArticles[slug - 1];
+	// Get article data with useMemo
+	const articleData = useMemo(() => {
+		const article = myArticles[slug - 1];
+		return article ? article() : null;
+	}, [slug]);
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
-	}, [article]);
+	}, []);
 
-	ArticleStyle = styled.div`
-		${article().style}
-	`;
+	// If article not found, show error
+	if (!articleData) {
+		return <div>Article not found</div>;
+	}
 
 	return (
 		<React.Fragment>
 			<Helmet>
-				<title>{`${article().title} | ${INFO.main.title}`}</title>
-				<meta name="description" content={article().description} />
-				<meta name="keywords" content={article().keywords.join(", ")} />
+				<title>{`${articleData.title} | ${INFO.main.title}`}</title>
+				<meta name="description" content={articleData.description} />
+				<meta name="keywords" content={articleData.keywords.join(", ")} />
 			</Helmet>
 
 			<div className="page-content">
@@ -60,16 +61,19 @@ const ReadArticle = () => {
 						<div className="read-article-wrapper">
 							<div className="read-article-date-container">
 								<div className="read-article-date">
-									{article().date}
+									{articleData.date}
 								</div>
 							</div>
 
 							<div className="title read-article-title">
-								{article().title}
+								{articleData.title}
 							</div>
 
 							<div className="read-article-body">
-								<ArticleStyle>{article().body}</ArticleStyle>
+								<style>{articleData.style}</style>
+								<div className="article-content">
+									{articleData.body}
+								</div>
 							</div>
 						</div>
 					</div>
