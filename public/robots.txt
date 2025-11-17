@@ -1,3 +1,23 @@
 # https://www.robotstxt.org/robotstxt.html
+# Bayu Saputra Portfolio - next-it.my.id
+
+# Allow all search engines
 User-agent: *
-Disallow:
+Allow: /
+
+# Disallow admin or sensitive paths (if any in future)
+Disallow: /admin/
+Disallow: /private/
+
+# Crawl-delay for specific bots
+User-agent: Googlebot
+Crawl-delay: 0
+
+User-agent: Bingbot
+Crawl-delay: 0
+
+# Sitemap location
+Sitemap: https://next-it.my.id/sitemap.xml
+
+# Additional info
+Host: next-it.my.id
