@@ -1,9 +1,9 @@
 {
-	"name": "profile-website",
+	"name": "bayu5aputra-portfolio",
 	"version": "1.0.0",
-	"description": "Personal portfolio template built using Reactjs",
+	"description": "Modern & Interactive Personal Portfolio - Showcasing IT Infrastructure Expertise, Network Administration, and Full-Stack Development Projects with React",
 	"author": {
-		"name": "Bayu Saputra",
+		"name": "Bayu5aputra",
 		"email": "bayusaputra.005.003@gmail.com",
 		"url": "https://next-it.my.id"
 	},
