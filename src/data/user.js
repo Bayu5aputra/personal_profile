@@ -3,7 +3,7 @@ const INFO = {
 		title: "Bayu Saputra - IT Infrastructure & Network Specialist",
 		name: "Bayu Saputra",
 		email: "bayusaputra.005.003@gmail.com",
-		logo: "./logo.png", // Changed from ../logo.png to use public folder
+		logo: "./logo.png",
 	},
 
 	socials: {
