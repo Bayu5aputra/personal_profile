@@ -70,12 +70,50 @@ const KeyData = () => {
 		setShowDeleteConfirm(false);
 	};
 
+	// 🔥 FIX: Fallback copy method untuk environment non-HTTPS
 	const handleCopyKey = (key) => {
-		navigator.clipboard.writeText(key);
-		setCopiedKey(key);
-		setTimeout(() => {
-			setCopiedKey(null);
-		}, 2000);
+		// Method 1: Try modern clipboard API (HTTPS only)
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+			navigator.clipboard.writeText(key)
+				.then(() => {
+					setCopiedKey(key);
+					setTimeout(() => setCopiedKey(null), 2000);
+				})
+				.catch(err => {
+					console.error('Clipboard API failed, using fallback:', err);
+					copyTextFallback(key);
+				});
+		} else {
+			// Method 2: Fallback for non-HTTPS or unsupported browsers
+			copyTextFallback(key);
+		}
+	};
+
+	// Fallback copy method (works everywhere)
+	const copyTextFallback = (text) => {
+		const textArea = document.createElement('textarea');
+		textArea.value = text;
+		textArea.style.position = 'fixed';
+		textArea.style.top = '-9999px';
+		textArea.style.left = '-9999px';
+		document.body.appendChild(textArea);
+		textArea.focus();
+		textArea.select();
+		
+		try {
+			const successful = document.execCommand('copy');
+			if (successful) {
+				setCopiedKey(text);
+				setTimeout(() => setCopiedKey(null), 2000);
+			} else {
+				alert('Failed to copy key. Please copy manually: ' + text);
+			}
+		} catch (err) {
+			console.error('Fallback copy failed:', err);
+			alert('Failed to copy key. Please copy manually: ' + text);
+		}
+		
+		document.body.removeChild(textArea);
 	};
 
 	const formatDate = (dateString) => {
