@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faMapMarkerAlt, faBriefcase, faCalendar, faCheckCircle, faMicrochip } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faMapMarkerAlt, faBriefcase, faCalendar, faCheckCircle, faMicrochip, faBuilding, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import "./styles/workDetailModal.css";
 
 const WorkDetailModal = ({ work, onClose }) => {
@@ -56,6 +56,34 @@ const WorkDetailModal = ({ work, onClose }) => {
 
 					{/* Content Sections */}
 					<div className="modal-body">
+						{/* TAMBAHAN: Company Background Section */}
+						<div className="modal-section">
+							<h3 className="modal-section-title">
+								<span className="section-icon">🏢</span>
+								Company Background
+							</h3>
+							<div className="modal-company-background">
+								<div className="company-main-info">
+									<div className="company-info-header">
+										<FontAwesomeIcon icon={faBuilding} className="company-info-icon" />
+										<h4>{work.company}</h4>
+									</div>
+									<p>{work.companyBackground.mainCompany}</p>
+								</div>
+
+								{/* Sub Company Information (if exists) */}
+								{work.companyBackground.subCompany && (
+									<div className="company-sub-info">
+										<div className="company-sub-header">
+											<FontAwesomeIcon icon={faInfoCircle} className="company-sub-icon" />
+											<h4>Working Unit: {work.companyBackground.subCompany}</h4>
+										</div>
+										<p>{work.companyBackground.subCompanyDescription}</p>
+									</div>
+								)}
+							</div>
+						</div>
+
 						{/* Responsibilities */}
 						<div className="modal-section">
 							<h3 className="modal-section-title">

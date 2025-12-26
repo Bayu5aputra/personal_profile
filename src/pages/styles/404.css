@@ -5,6 +5,15 @@
 	overflow: hidden;
 	position: relative;
 	background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+	display: flex; /* PERBAIKAN: Tambahkan flex */
+	flex-direction: column; /* PERBAIKAN */
+}
+
+/* PERBAIKAN: Wrapper untuk layout sticky footer */
+.not-found .content-wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
 }
 
 .notfound-logo-container {
@@ -30,7 +39,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	min-height: calc(100vh - 100px);
+	flex: 1; /* PERBAIKAN: Memastikan konten mengisi space */
 	padding: 120px 20px 50px;
 	position: relative;
 }
@@ -405,6 +414,12 @@
 		transform: translateY(-100vh) scale(1);
 		opacity: 0;
 	}
+}
+
+/* PERBAIKAN: Footer positioning */
+.not-found .page-footer {
+	margin-top: auto; /* Push footer ke bawah */
+	position: relative;
 }
 
 /* Responsive Design */

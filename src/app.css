@@ -21,6 +21,13 @@ body.loaded {
 	opacity: 1;
 }
 
+/* ===== PERBAIKAN: Sticky Footer Layout ===== */
+.App {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
 /* Existing Styles */
 ::-webkit-scrollbar {
 	width: 10px;
@@ -42,6 +49,9 @@ body.loaded {
 .page-content {
 	background-color: white;
 	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh; /* PERBAIKAN: Tambahkan min-height */
 }
 
 .page-content:before,
@@ -68,6 +78,10 @@ body.loaded {
 .content-wrapper {
 	max-width: 1000px;
 	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh; /* PERBAIKAN: Tambahkan min-height */
+	flex: 1; /* PERBAIKAN: Tambahkan flex */
 }
 
 .title {
@@ -88,7 +102,8 @@ body.loaded {
 }
 
 .page-footer {
-	position: block;
+	position: relative; /* PERBAIKAN: Ubah dari block */
+	margin-top: auto; /* PERBAIKAN: Push footer ke bawah */
 }
 
 .page-footer::before {

@@ -9,7 +9,8 @@ import Articles from "./pages/articles";
 import ReadArticle from "./pages/readArticle";
 import Contact from "./pages/contact";
 import Notfound from "./pages/404";
-import LoadingScreen from "./components/homepage/LoadingScreen"; // Import loading screen
+import ProductDetail from "./pages/productDetail"; // TAMBAHAN
+import LoadingScreen from "./components/homepage/LoadingScreen";
 
 import { TRACKING_ID } from "./data/tracking";
 import "./app.css";
@@ -25,11 +26,9 @@ function App() {
 
 	const handleLoadingComplete = () => {
 		setIsLoading(false);
-		// Remove loading class from body
 		document.body.classList.remove('loading');
 		document.body.classList.add('loaded');
 		
-		// Optional: Remove loading screen from DOM after animation
 		setTimeout(() => {
 			const loadingElement = document.querySelector('.loading-screen');
 			if (loadingElement) {
@@ -38,7 +37,6 @@ function App() {
 		}, 1500);
 	};
 
-	// Add loading class to body on initial load
 	useEffect(() => {
 		document.body.classList.add('loading');
 	}, []);
@@ -57,6 +55,7 @@ function App() {
 					<Route path="/articles" element={<Articles />} />
 					<Route path="/article/:slug" element={<ReadArticle />} />
 					<Route path="/contact" element={<Contact />} />
+					<Route path="/product/:id" element={<ProductDetail />} /> {/* TAMBAHAN */}
 					<Route path="*" element={<Notfound />} />
 				</Routes>
 			</div>

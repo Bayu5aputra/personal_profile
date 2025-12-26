@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-// import { Helmet } from "react-helmet";
 import { Helmet } from "react-helmet-async";
 
 import NavBar from "../components/common/navBar";
 import Footer from "../components/common/footer";
 import Logo from "../components/common/logo";
 import AllProjects from "../components/projects/allProjects";
+import AllSellProducts from "../components/projects/allSellProducts"; // TAMBAHAN
 
 import INFO from "../data/user";
 import SEO from "../data/seo";
@@ -40,7 +40,7 @@ const Projects = () => {
 					</div>
 					<div className="projects-container">
 						<div className="title projects-title">
-							Things I’ve made trying to put my dent in the
+							Things I've made trying to put my dent in the
 							universe.
 						</div>
 
@@ -60,6 +60,9 @@ const Projects = () => {
 						<div className="projects-list">
 							<AllProjects />
 						</div>
+
+						{/* TAMBAHAN: Sell Products Section */}
+						<AllSellProducts />
 					</div>
 					<div className="page-footer">
 						<Footer />

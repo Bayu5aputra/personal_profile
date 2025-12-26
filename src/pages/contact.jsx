@@ -35,93 +35,99 @@ const Contact = () => {
             <div className="page-content">
                 <NavBar active="contact" />
                 <div className="content-wrapper">
-                    <div className="contact-logo-container">
-                        <div className="contact-logo">
-                            <Logo width={46} />
-                        </div>
-                    </div>
-
-                    <div className="contact-container">
-                        <div className="title contact-title">
-                            Let's Get in Touch: Ways to Connect with Me
-                        </div>
-
-                        <div className="subtitle contact-subtitle">
-                            Thank you for your interest in getting in touch with
-                            me. I welcome your feedback, questions, and
-                            suggestions. If you have a specific question or
-                            comment, please feel free to email me directly at
-                            &nbsp;{" "}
-                            <a href={`mailto:${INFO.main.email}`}>
-                                {INFO.main.email}
-                            </a>
-                            . I make an effort to respond to all messages within
-                            24 hours, although it may take me longer during busy
-                            periods. Alternatively, you can connect with me on
-                            social media through the platforms below.
-                        </div>
-                    </div>
-
-                    <div className="contact-socials-container">
-                        <div className="contact-socials-horizontal">
-                            <div className="contact-social-card" data-social="github">
-                                <a href={INFO.socials.github} target="_blank" rel="noreferrer">
-                                    <div className="contact-social-card-inner">
-                                        <div className="contact-social-icon">
-                                            <FontAwesomeIcon icon={faGithub} />
-                                        </div>
-                                        <div className="contact-social-text">GitHub</div>
-                                        <div className="contact-social-glow"></div>
-                                    </div>
-                                </a>
+                    {/* PERBAIKAN: Tambahkan wrapper untuk layout */}
+                    <div className="contact-page-wrapper">
+                        <div className="contact-main-content">
+                            <div className="contact-logo-container">
+                                <div className="contact-logo">
+                                    <Logo width={46} />
+                                </div>
                             </div>
 
-                            <div className="contact-social-card" data-social="linkedin">
-                                <a href={INFO.socials.linkedin} target="_blank" rel="noreferrer">
-                                    <div className="contact-social-card-inner">
-                                        <div className="contact-social-icon">
-                                            <FontAwesomeIcon icon={faLinkedin} />
-                                        </div>
-                                        <div className="contact-social-text">LinkedIn</div>
-                                        <div className="contact-social-glow"></div>
-                                    </div>
-                                </a>
+                            <div className="contact-container">
+                                <div className="title contact-title">
+                                    Let's Get in Touch: Ways to Connect with Me
+                                </div>
+
+                                <div className="subtitle contact-subtitle">
+                                    Thank you for your interest in getting in touch with
+                                    me. I welcome your feedback, questions, and
+                                    suggestions. If you have a specific question or
+                                    comment, please feel free to email me directly at
+                                    &nbsp;{" "}
+                                    <a href={`mailto:${INFO.main.email}`}>
+                                        {INFO.main.email}
+                                    </a>
+                                    . I make an effort to respond to all messages within
+                                    24 hours, although it may take me longer during busy
+                                    periods. Alternatively, you can connect with me on
+                                    social media through the platforms below.
+                                </div>
                             </div>
 
-                            <div className="contact-social-card" data-social="instagram">
-                                <a href={INFO.socials.instagram} target="_blank" rel="noreferrer">
-                                    <div className="contact-social-card-inner">
-                                        <div className="contact-social-icon">
-                                            <FontAwesomeIcon icon={faInstagram} />
-                                        </div>
-                                        <div className="contact-social-text">Instagram</div>
-                                        <div className="contact-social-glow"></div>
+                            <div className="contact-socials-container">
+                                <div className="contact-socials-horizontal">
+                                    <div className="contact-social-card" data-social="github">
+                                        <a href={INFO.socials.github} target="_blank" rel="noreferrer">
+                                            <div className="contact-social-card-inner">
+                                                <div className="contact-social-icon">
+                                                    <FontAwesomeIcon icon={faGithub} />
+                                                </div>
+                                                <div className="contact-social-text">GitHub</div>
+                                                <div className="contact-social-glow"></div>
+                                            </div>
+                                        </a>
                                     </div>
-                                </a>
+
+                                    <div className="contact-social-card" data-social="linkedin">
+                                        <a href={INFO.socials.linkedin} target="_blank" rel="noreferrer">
+                                            <div className="contact-social-card-inner">
+                                                <div className="contact-social-icon">
+                                                    <FontAwesomeIcon icon={faLinkedin} />
+                                                </div>
+                                                <div className="contact-social-text">LinkedIn</div>
+                                                <div className="contact-social-glow"></div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <div className="contact-social-card" data-social="instagram">
+                                        <a href={INFO.socials.instagram} target="_blank" rel="noreferrer">
+                                            <div className="contact-social-card-inner">
+                                                <div className="contact-social-icon">
+                                                    <FontAwesomeIcon icon={faInstagram} />
+                                                </div>
+                                                <div className="contact-social-text">Instagram</div>
+                                                <div className="contact-social-glow"></div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div className="contact-email-special">
+                                    <div className="contact-email-card">
+                                        <a href={`mailto:${INFO.main.email}`} target="_blank" rel="noreferrer">
+                                            <div className="contact-email-card-inner">
+                                                <div className="contact-email-icon-wrapper">
+                                                    <FontAwesomeIcon icon={faEnvelope} className="contact-email-icon" />
+                                                    <div className="contact-email-pulse"></div>
+                                                </div>
+                                                <div className="contact-email-content">
+                                                    <div className="contact-email-label">Send me an email</div>
+                                                    <div className="contact-email-address">{INFO.main.email}</div>
+                                                </div>
+                                                <div className="contact-email-arrow">→</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="contact-email-special">
-                            <div className="contact-email-card">
-                                <a href={`mailto:${INFO.main.email}`} target="_blank" rel="noreferrer">
-                                    <div className="contact-email-card-inner">
-                                        <div className="contact-email-icon-wrapper">
-                                            <FontAwesomeIcon icon={faEnvelope} className="contact-email-icon" />
-                                            <div className="contact-email-pulse"></div>
-                                        </div>
-                                        <div className="contact-email-content">
-                                            <div className="contact-email-label">Send me an email</div>
-                                            <div className="contact-email-address">{INFO.main.email}</div>
-                                        </div>
-                                        <div className="contact-email-arrow">→</div>
-                                    </div>
-                                </a>
-                            </div>
+                        {/* PERBAIKAN: Footer sekarang di dalam wrapper */}
+                        <div className="page-footer">
+                            <Footer />
                         </div>
-                    </div>
-
-                    <div className="page-footer">
-                        <Footer />
                     </div>
                 </div>
             </div>
