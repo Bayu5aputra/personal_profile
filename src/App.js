@@ -9,7 +9,8 @@ import Articles from "./pages/articles";
 import ReadArticle from "./pages/readArticle";
 import Contact from "./pages/contact";
 import Notfound from "./pages/404";
-import ProductDetail from "./pages/productDetail"; // TAMBAHAN
+import ProductDetail from "./pages/productDetail";
+import KeyData from "./pages/keyData"; // TAMBAHAN
 import LoadingScreen from "./components/homepage/LoadingScreen";
 
 import { TRACKING_ID } from "./data/tracking";
@@ -55,7 +56,8 @@ function App() {
 					<Route path="/articles" element={<Articles />} />
 					<Route path="/article/:slug" element={<ReadArticle />} />
 					<Route path="/contact" element={<Contact />} />
-					<Route path="/product/:id" element={<ProductDetail />} /> {/* TAMBAHAN */}
+					<Route path="/product/:id" element={<ProductDetail />} />
+					<Route path="/keydata" element={<KeyData />} /> {/* TAMBAHAN */}
 					<Route path="*" element={<Notfound />} />
 				</Routes>
 			</div>

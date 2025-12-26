@@ -8,9 +8,8 @@ const SELL_PRODUCTS = [
 		originalPrice: 20000000,
 		image: "/products/iot-dashboard.png",
 		category: "IoT Solutions",
-		rating: 5,
-		sold: 12, // TAMBAHAN: Jumlah terjual (edit manual di sini)
 		featured: true,
+		// rating: 5, // HAPUS INI (tidak diperlukan lagi)
 		features: [
 			"Real-time device monitoring",
 			"Customizable dashboards",
@@ -38,8 +37,6 @@ const SELL_PRODUCTS = [
 		originalPrice: 18000000,
 		image: "/products/network-management.png",
 		category: "Network Solutions",
-		rating: 5,
-		sold: 8, // TAMBAHAN
 		featured: true,
 		features: [
 			"Network device monitoring",
@@ -68,8 +65,6 @@ const SELL_PRODUCTS = [
 		originalPrice: 15000000,
 		image: "/products/ecommerce.png",
 		category: "Web Application",
-		rating: 5,
-		sold: 15, // TAMBAHAN
 		featured: false,
 		features: [
 			"Product catalog management",
@@ -98,8 +93,6 @@ const SELL_PRODUCTS = [
 		originalPrice: 7500000,
 		image: "/products/company-profile.png",
 		category: "Web Design",
-		rating: 4,
-		sold: 25, // TAMBAHAN
 		featured: false,
 		features: [
 			"Modern responsive design",
@@ -128,8 +121,6 @@ const SELL_PRODUCTS = [
 		originalPrice: 25000000,
 		image: "/products/school-management.png",
 		category: "Education Software",
-		rating: 5,
-		sold: 6, // TAMBAHAN
 		featured: true,
 		features: [
 			"Student information management",
@@ -159,8 +150,6 @@ const SELL_PRODUCTS = [
 		originalPrice: 35000000,
 		image: "/products/hospital-management.png",
 		category: "Healthcare Software",
-		rating: 5,
-		sold: 4, // TAMBAHAN
 		featured: false,
 		features: [
 			"Patient registration and records",

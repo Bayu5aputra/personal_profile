@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faUser, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faUser, faCheckCircle, faKey } from "@fortawesome/free-solid-svg-icons";
 import {
 	getProductReviews,
 	addReview,
@@ -8,9 +8,10 @@ import {
 	getRatingDistribution,
 	hasUserReviewed
 } from "../../utils/reviewSystem";
+import { validateKey, useKey } from "../../utils/keyDataSystem";
 import "./styles/reviewSection.css";
 
-const ReviewSection = ({ productId }) => {
+const ReviewSection = ({ productId, onReviewAdded }) => {
 	const [reviews, setReviews] = useState([]);
 	const [averageRating, setAverageRating] = useState({ average: 0, count: 0 });
 	const [distribution, setDistribution] = useState({});
@@ -20,7 +21,8 @@ const ReviewSection = ({ productId }) => {
 	const [formData, setFormData] = useState({
 		name: "",
 		rating: 5,
-		comment: ""
+		comment: "",
+		keyData: "" // TAMBAHAN: Key data input
 	});
 	const [formError, setFormError] = useState("");
 	const [formSuccess, setFormSuccess] = useState("");
@@ -59,6 +61,18 @@ const ReviewSection = ({ productId }) => {
 			return;
 		}
 		
+		if (!formData.keyData.trim()) {
+			setFormError("Please enter your key data");
+			return;
+		}
+		
+		// Validate key data
+		const keyValidation = validateKey(formData.keyData);
+		if (!keyValidation.valid) {
+			setFormError(keyValidation.message);
+			return;
+		}
+		
 		if (!formData.comment.trim()) {
 			setFormError("Please write a review");
 			return;
@@ -75,14 +89,26 @@ const ReviewSection = ({ productId }) => {
 			return;
 		}
 		
+		// Mark key as used
+		const keyUsed = useKey(formData.keyData, formData.name, productId);
+		if (!keyUsed) {
+			setFormError("Failed to use key. Please try again.");
+			return;
+		}
+		
 		// Add review
-		addReview(productId, formData);
+		addReview(productId, {
+			name: formData.name,
+			rating: formData.rating,
+			comment: formData.comment
+		});
 		
 		// Reset form
 		setFormData({
 			name: "",
 			rating: 5,
-			comment: ""
+			comment: "",
+			keyData: ""
 		});
 		
 		setFormSuccess("Thank you for your review! It has been submitted successfully.");
@@ -90,6 +116,11 @@ const ReviewSection = ({ productId }) => {
 		
 		// Reload reviews
 		loadReviews();
+		
+		// Callback to parent untuk update rating di header
+		if (onReviewAdded) {
+			onReviewAdded();
+		}
 		
 		// Clear success message after 3 seconds
 		setTimeout(() => {
@@ -196,6 +227,28 @@ const ReviewSection = ({ productId }) => {
 							/>
 						</div>
 
+						{/* TAMBAHAN: Key Data Input */}
+						<div className="form-group">
+							<label>
+								Key Data *
+								<span className="key-info-icon" title="You need a valid key to submit a review. Keys are single-use only.">
+									<FontAwesomeIcon icon={faKey} />
+								</span>
+							</label>
+							<input
+								type="text"
+								name="keyData"
+								value={formData.keyData}
+								onChange={handleInputChange}
+								placeholder="Enter your key (e.g., XXXX-XXXX-XXXX)"
+								className="form-input key-input"
+								maxLength="14"
+							/>
+							<small className="key-help">
+								Enter the key provided to you. Each key can only be used once.
+							</small>
+						</div>
+
 						<div className="form-group">
 							<label>Your Rating *</label>
 							<div className="rating-input">
@@ -234,7 +287,7 @@ const ReviewSection = ({ productId }) => {
 								onClick={() => {
 									setShowForm(false);
 									setFormError("");
-									setFormData({ name: "", rating: 5, comment: "" });
+									setFormData({ name: "", rating: 5, comment: "", keyData: "" });
 								}}
 							>
 								Cancel

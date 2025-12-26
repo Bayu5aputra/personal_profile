@@ -1,6 +1,9 @@
 @import "../../data/styles.css";
 
-/* ================= LOGO ================= */
+/* ============================================
+   LOGO & CONTAINER
+   ============================================ */
+
 .product-detail-logo-container {
 	display: flex;
 	justify-content: left;
@@ -17,13 +20,15 @@
 	z-index: 999;
 }
 
-/* ================= CONTAINER ================= */
 .product-detail-container {
 	padding-top: 120px;
 	padding-bottom: 60px;
 }
 
-/* ================= BACK BUTTON ================= */
+/* ============================================
+   BACK BUTTON
+   ============================================ */
+
 .product-back-button {
 	display: inline-flex;
 	align-items: center;
@@ -47,25 +52,39 @@
 	transform: translateX(-5px);
 }
 
-/* ================= HEADER ================= */
+/* ============================================
+   HEADER SECTION
+   ============================================ */
+
 .product-detail-header {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 50px;
-	margin-bottom: 60px;
+	margin-bottom: 40px;
 	background: white;
 	padding: 40px;
 	border-radius: 20px;
 	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
-/* ================= IMAGE ================= */
+/* ============================================
+   IMAGE SECTION
+   ============================================ */
+
+.product-detail-left {
+	position: relative;
+}
+
 .product-image-section {
 	position: relative;
+	border-radius: 16px;
+	overflow: hidden;
 }
 
 .product-detail-image {
 	width: 100%;
+	height: auto;
+	display: block;
 	border-radius: 16px;
 	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
@@ -84,11 +103,21 @@
 	align-items: center;
 	gap: 8px;
 	box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+	z-index: 10;
 }
 
-/* ================= INFO ================= */
+/* ============================================
+   INFO SECTION
+   ============================================ */
+
+.product-detail-right {
+	display: flex;
+	flex-direction: column;
+}
+
 .product-category-badge {
 	display: inline-block;
+	width: fit-content;
 	padding: 8px 16px;
 	background: rgba(20, 184, 166, 0.1);
 	color: var(--link-color);
@@ -104,11 +133,14 @@
 	font-size: 36px;
 	font-weight: 800;
 	color: var(--primary-color);
-	margin-bottom: 20px;
+	margin: 0 0 20px 0;
 	line-height: 1.3;
 }
 
-/* ================= RATING & SOLD ================= */
+/* ============================================
+   STATS (Rating + Sold Badge)
+   ============================================ */
+
 .product-detail-stats {
 	display: flex;
 	align-items: center;
@@ -140,7 +172,7 @@
 	font-weight: 600;
 }
 
-/* SOLD BADGE */
+/* Sold Badge - Large Version */
 .sold-badge-large {
 	display: inline-flex;
 	align-items: center;
@@ -152,6 +184,7 @@
 	font-size: 14px;
 	font-weight: 800;
 	box-shadow: 0 6px 18px rgba(255, 71, 87, 0.45);
+	white-space: nowrap;
 	animation: pulse 2s ease-in-out infinite;
 }
 
@@ -160,7 +193,21 @@
 	animation: fire 1.5s ease-in-out infinite;
 }
 
-/* ================= DESCRIPTION ================= */
+@keyframes pulse {
+	0%, 100% { transform: scale(1); }
+	50% { transform: scale(1.05); }
+}
+
+@keyframes fire {
+	0%, 100% { transform: rotate(0deg); }
+	25% { transform: rotate(-10deg); }
+	75% { transform: rotate(10deg); }
+}
+
+/* ============================================
+   DESCRIPTION
+   ============================================ */
+
 .product-detail-description {
 	font-size: 16px;
 	line-height: 1.8;
@@ -168,7 +215,10 @@
 	margin-bottom: 30px;
 }
 
-/* ================= PRICE ================= */
+/* ============================================
+   PRICE SECTION
+   ============================================ */
+
 .product-price-section {
 	background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
 	padding: 25px;
@@ -200,6 +250,7 @@
 	font-size: 42px;
 	font-weight: 900;
 	color: var(--link-color);
+	line-height: 1;
 }
 
 .price-save {
@@ -212,7 +263,10 @@
 	display: inline-block;
 }
 
-/* ================= CTA ================= */
+/* ============================================
+   CTA BUTTONS
+   ============================================ */
+
 .product-cta-buttons {
 	display: flex;
 	gap: 15px;
@@ -231,6 +285,7 @@
 	font-weight: 700;
 	cursor: pointer;
 	transition: all 0.3s ease;
+	border: none;
 }
 
 .cta-button.primary {
@@ -238,19 +293,82 @@
 	color: white;
 }
 
+.cta-button.primary:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+}
+
 .cta-button.secondary {
 	background: white;
+	color: var(--primary-color);
 	border: 2px solid var(--quaternary-color);
 }
 
-/* ================= QUICK INFO ================= */
+.cta-button.secondary:hover {
+	background: var(--quaternary-color);
+	border-color: var(--tertiary-color);
+	transform: translateY(-3px);
+}
+
+/* ============================================
+   QUICK INFO
+   ============================================ */
+
 .product-quick-info {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 15px;
 }
 
-/* ================= DETAIL SECTION ================= */
+.quick-info-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 15px;
+	background: rgba(240, 240, 240, 0.5);
+	border-radius: 12px;
+	transition: all 0.3s ease;
+}
+
+.quick-info-item:hover {
+	background: rgba(20, 184, 166, 0.1);
+	transform: translateY(-2px);
+}
+
+.quick-info-item svg {
+	font-size: 20px;
+	color: var(--link-color);
+}
+
+.quick-info-item div {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.quick-info-item strong {
+	font-size: 12px;
+	color: var(--tertiary-color);
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.quick-info-item span {
+	font-size: 14px;
+	color: var(--primary-color);
+	font-weight: 600;
+}
+
+/* ============================================
+   DETAIL TABS
+   ============================================ */
+
+.product-detail-tabs {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
 .detail-section {
 	background: white;
 	padding: 40px;
@@ -261,6 +379,7 @@
 .section-title {
 	font-size: 24px;
 	font-weight: 700;
+	color: var(--primary-color);
 	display: flex;
 	align-items: center;
 	gap: 12px;
@@ -269,91 +388,183 @@
 	margin-bottom: 30px;
 }
 
-/* ================= ANIMATIONS ================= */
-@keyframes pulse {
-	0%, 100% { transform: scale(1); }
-	50% { transform: scale(1.05); }
+.section-title svg {
+	color: var(--link-color);
 }
 
-@keyframes fire {
-	0%, 100% { transform: rotate(0); }
-	25% { transform: rotate(-10deg); }
-	75% { transform: rotate(10deg); }
+/* ============================================
+   FEATURES GRID
+   ============================================ */
+
+.features-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 20px;
 }
 
-/* ================= RESPONSIVE ================= */
+.feature-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	padding: 15px;
+	background: rgba(240, 240, 240, 0.3);
+	border-radius: 12px;
+	transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+	background: rgba(20, 184, 166, 0.1);
+	transform: translateX(5px);
+}
+
+.feature-icon {
+	color: var(--link-color);
+	font-size: 18px;
+	flex-shrink: 0;
+	margin-top: 2px;
+}
+
+.feature-item span {
+	font-size: 15px;
+	line-height: 1.6;
+	color: var(--secondary-color);
+}
+
+/* ============================================
+   TECHNOLOGIES
+   ============================================ */
+
+.technologies-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.tech-tag {
+	padding: 10px 18px;
+	background: rgba(20, 184, 166, 0.1);
+	color: var(--link-color);
+	border-radius: 20px;
+	font-size: 14px;
+	font-weight: 700;
+	transition: all 0.3s ease;
+	border: 2px solid transparent;
+}
+
+.tech-tag:hover {
+	background: var(--link-color);
+	color: white;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+}
+
+/* ============================================
+   CONTACT SECTION
+   ============================================ */
+
+.contact-section {
+	background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+}
+
+.contact-methods {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.contact-method {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	padding: 18px 25px;
+	background: white;
+	border-radius: 12px;
+	text-decoration: none;
+	color: var(--secondary-color);
+	font-weight: 600;
+	transition: all 0.3s ease;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.contact-method:hover {
+	background: var(--link-color);
+	color: white;
+	transform: translateX(10px);
+	box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+}
+
+.contact-method svg {
+	font-size: 20px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
 @media (max-width: 1024px) {
 	.product-detail-header {
+		grid-template-columns: 1fr;
+		gap: 30px;
+	}
+	
+	.features-grid {
+		grid-template-columns: 1fr;
+	}
+	
+	.product-quick-info {
 		grid-template-columns: 1fr;
 	}
 }
 
 @media (max-width: 768px) {
+	.product-detail-container {
+		padding-top: 100px;
+	}
+	
+	.product-detail-header {
+		padding: 30px;
+	}
+	
 	.product-detail-title {
 		font-size: 28px;
 	}
+	
 	.price-current {
 		font-size: 32px;
+	}
+	
+	.product-cta-buttons {
+		flex-direction: column;
+	}
+	
+	.detail-section {
+		padding: 30px;
 	}
 }
 
 @media (max-width: 480px) {
+	.product-detail-header {
+		padding: 20px;
+	}
+	
 	.product-detail-title {
 		font-size: 24px;
 	}
+	
 	.price-current {
 		font-size: 28px;
 	}
-}
-/* ================= TAMBAHAN: Rating + Sold ================= */
-
-.product-detail-stats {
-	display: flex;
-	align-items: center;
-	gap: 20px;
-	flex-wrap: wrap;
-	margin-bottom: 20px;
-}
-
-/* SOLD BADGE */
-.sold-badge-large {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	padding: 8px 18px;
-	background: linear-gradient(135deg, #FF6B6B, #FF4757);
-	color: white;
-	border-radius: 30px;
-	font-size: 14px;
-	font-weight: 800;
-	box-shadow: 0 6px 18px rgba(255, 71, 87, 0.45);
-	white-space: nowrap;
-	animation: pulse 2s ease-in-out infinite;
-}
-
-.sold-icon {
-	font-size: 16px;
-	animation: fire 1.5s ease-in-out infinite;
-}
-
-/* Animations */
-@keyframes pulse {
-	0%, 100% {
-		transform: scale(1);
+	
+	.product-detail-stats {
+		flex-direction: column;
+		align-items: flex-start;
 	}
-	50% {
-		transform: scale(1.05);
+	
+	.detail-section {
+		padding: 20px;
 	}
-}
-
-@keyframes fire {
-	0%, 100% {
-		transform: rotate(0deg);
-	}
-	25% {
-		transform: rotate(-10deg);
-	}
-	75% {
-		transform: rotate(10deg);
+	
+	.section-title {
+		font-size: 20px;
 	}
 }

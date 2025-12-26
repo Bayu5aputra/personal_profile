@@ -8,10 +8,9 @@ import {
 	faCheckCircle,
 	faClock,
 	faHeadset,
-	faFileAlt,
-	faPalette,
 	faCertificate,
-	faEnvelope
+	faEnvelope,
+	faPalette
 } from "@fortawesome/free-solid-svg-icons";
 import {
 	faGithub,
@@ -22,9 +21,11 @@ import {
 import NavBar from "../components/common/navBar";
 import Footer from "../components/common/footer";
 import Logo from "../components/common/logo";
+import ReviewSection from "../components/products/ReviewSection";
 
 import INFO from "../data/user";
 import SELL_PRODUCTS from "../data/sellProducts";
+import { calculateAverageRating } from "../utils/reviewSystem";
 
 import "./styles/productDetail.css";
 
@@ -32,13 +33,28 @@ const ProductDetail = () => {
 	const navigate = useNavigate();
 	const { id } = useParams();
 	const [product, setProduct] = useState(null);
+	const [averageRating, setAverageRating] = useState({ average: 0, count: 0 });
+
+	// Function to reload rating (dipanggil setelah review baru)
+	const reloadRating = () => {
+		if (product) {
+			const rating = calculateAverageRating(product.id);
+			setAverageRating(rating);
+		}
+	};
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
 		const found = SELL_PRODUCTS.find(
 			(p) => p.id === parseInt(id)
 		);
-		setProduct(found);
+		
+		if (found) {
+			setProduct(found);
+			// Load average rating from localStorage
+			const rating = calculateAverageRating(found.id);
+			setAverageRating(rating);
+		}
 	}, [id]);
 
 	if (!product) {
@@ -81,6 +97,14 @@ const ProductDetail = () => {
 		window.location.href = `mailto:${INFO.main.email}?subject=${subject}&body=${body}`;
 	};
 
+	// Display rating - prioritize localStorage, fallback to product rating
+	const displayRating = averageRating.count > 0 
+	? averageRating.average 
+	: 0;
+
+	// SOLD = JUMLAH REVIEW
+	const soldCount = averageRating.count;
+
 	return (
 		<>
 			<Helmet>
@@ -111,7 +135,7 @@ const ProductDetail = () => {
 						{/* ================= HEADER ================= */}
 						<div className="product-detail-header">
 
-							{/* LEFT */}
+							{/* LEFT - IMAGE */}
 							<div className="product-detail-left">
 								<div className="product-image-section">
 									<img
@@ -129,7 +153,7 @@ const ProductDetail = () => {
 								</div>
 							</div>
 
-							{/* RIGHT */}
+							{/* RIGHT - INFO */}
 							<div className="product-detail-right">
 								<div className="product-category-badge">
 									{product.category}
@@ -147,21 +171,23 @@ const ProductDetail = () => {
 												key={i}
 												icon={faStar}
 												className={
-													i < product.rating
+													i < Math.round(displayRating)
 														? "star-filled"
 														: "star-empty"
 												}
 											/>
 										))}
 										<span className="rating-text">
-											({product.rating}.0 / 5.0)
+											({displayRating.toFixed(1)} / 5.0)
+											{averageRating.count > 0 && ` • ${averageRating.count} reviews`}
 										</span>
 									</div>
 
-									{product.sold > 0 && (
+									{/* SOLD = JUMLAH REVIEW */}
+									{soldCount > 0 && (
 										<div className="sold-badge-large">
 											<span className="sold-icon">🔥</span>
-											<span>{product.sold} sold</span>
+											<span>{soldCount} sold</span>
 										</div>
 									)}
 								</div>
@@ -317,6 +343,12 @@ const ProductDetail = () => {
 							</div>
 
 						</div>
+
+						{/* ================= REVIEW SECTION ================= */}
+						<ReviewSection 
+							productId={product.id}
+							onReviewAdded={reloadRating}
+						/>
 					</div>
 
 					<div className="page-footer">

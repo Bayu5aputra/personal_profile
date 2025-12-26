@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,6 +7,7 @@ import {
 	faEye,
 	faFire,
 } from "@fortawesome/free-solid-svg-icons";
+import { calculateAverageRating } from "../../utils/reviewSystem";
 
 import "./styles/sellProduct.css";
 
@@ -17,12 +18,27 @@ const SellProduct = ({
 	price,
 	originalPrice,
 	image,
-	rating,
 	category,
 	featured,
-	sold,
 }) => {
 	const navigate = useNavigate();
+	const [displayRating, setDisplayRating] = useState(0); // Default 0
+	const [reviewCount, setReviewCount] = useState(0);
+
+	useEffect(() => {
+		// Load rating from localStorage
+		const ratingData = calculateAverageRating(id);
+		
+		if (ratingData.count > 0) {
+			// Jika ada review, gunakan average rating dari review
+			setDisplayRating(ratingData.average);
+			setReviewCount(ratingData.count);
+		} else {
+			// Jika belum ada review, bintang kosong (0)
+			setDisplayRating(0);
+			setReviewCount(0);
+		}
+	}, [id]);
 
 	const handleClick = () => {
 		navigate(`/product/${id}`);
@@ -78,19 +94,20 @@ const SellProduct = ({
 									key={i}
 									icon={faStar}
 									className={
-										i < rating ? "star-filled" : "star-empty"
+										i < Math.round(displayRating) ? "star-filled" : "star-empty"
 									}
 								/>
 							))}
 							<span className="rating-text">
-								({rating}.0)
+								({displayRating.toFixed(1)})
 							</span>
 						</div>
 
-						{sold > 0 && (
+						{/* SOLD = JUMLAH REVIEW (hanya tampil jika ada review) */}
+						{reviewCount > 0 && (
 							<div className="sold-badge">
 								<FontAwesomeIcon icon={faFire} />
-								<span>{sold} sold</span>
+								<span>{reviewCount} sold</span>
 							</div>
 						)}
 					</div>

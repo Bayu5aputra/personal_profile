@@ -1,0 +1,490 @@
+@import "../../data/styles.css";
+
+/* Container */
+.keydata-logo-container {
+	display: flex;
+	justify-content: left;
+	padding-top: 25px;
+}
+
+.keydata-logo {
+	display: flex;
+	position: fixed;
+	border: 1px solid white;
+	border-radius: 50%;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+	top: 4vh;
+	z-index: 999;
+}
+
+.keydata-container {
+	padding-top: 120px;
+	padding-bottom: 60px;
+}
+
+/* Header */
+.keydata-header {
+	text-align: center;
+	margin-bottom: 50px;
+}
+
+.keydata-title {
+	font-size: 42px;
+	font-weight: 800;
+	color: var(--primary-color);
+	margin: 0 0 15px 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 15px;
+}
+
+.keydata-title svg {
+	color: var(--link-color);
+}
+
+.keydata-subtitle {
+	font-size: 16px;
+	color: var(--secondary-color);
+	max-width: 700px;
+	margin: 0 auto;
+	line-height: 1.6;
+}
+
+/* Statistics Cards */
+.keydata-stats {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 25px;
+	margin-bottom: 40px;
+}
+
+.stat-card {
+	background: white;
+	padding: 25px;
+	border-radius: 16px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.stat-icon {
+	width: 60px;
+	height: 60px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24px;
+	color: white;
+}
+
+.stat-total .stat-icon {
+	background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.stat-available .stat-icon {
+	background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+.stat-used .stat-icon {
+	background: linear-gradient(135deg, #f44336, #e91e63);
+}
+
+.stat-rate .stat-icon {
+	background: linear-gradient(135deg, #FF9800, #FF5722);
+}
+
+.stat-content {
+	flex: 1;
+}
+
+.stat-label {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--tertiary-color);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.stat-value {
+	font-size: 32px;
+	font-weight: 900;
+	color: var(--primary-color);
+	line-height: 1;
+	margin-top: 5px;
+}
+
+/* Actions */
+.keydata-actions {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 40px;
+	gap: 20px;
+	flex-wrap: wrap;
+}
+
+.action-group {
+	display: flex;
+	gap: 15px;
+	align-items: center;
+}
+
+.generate-input {
+	padding: 12px 20px;
+	border: 2px solid var(--quaternary-color);
+	border-radius: 10px;
+	font-size: 15px;
+	font-weight: 600;
+	width: 150px;
+	transition: all 0.3s ease;
+}
+
+.generate-input:focus {
+	outline: none;
+	border-color: var(--link-color);
+	box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+}
+
+.action-button {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 24px;
+	border: none;
+	border-radius: 10px;
+	font-size: 15px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.generate-button {
+	background: linear-gradient(135deg, var(--link-color), var(--primary-color));
+	color: white;
+}
+
+.generate-button:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 8px 20px rgba(20, 184, 166, 0.4);
+}
+
+.delete-all-button {
+	background: white;
+	color: #f44336;
+	border: 2px solid #f44336;
+}
+
+.delete-all-button:hover {
+	background: #f44336;
+	color: white;
+	transform: translateY(-3px);
+	box-shadow: 0 8px 20px rgba(244, 67, 54, 0.4);
+}
+
+/* Delete Confirmation Modal */
+.delete-confirm-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.7);
+	backdrop-filter: blur(10px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 10000;
+	padding: 20px;
+}
+
+.delete-confirm-content {
+	background: white;
+	padding: 40px;
+	border-radius: 20px;
+	max-width: 500px;
+	text-align: center;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.delete-confirm-icon {
+	font-size: 60px;
+	color: #FF9800;
+	margin-bottom: 20px;
+}
+
+.delete-confirm-content h3 {
+	font-size: 24px;
+	font-weight: 800;
+	color: var(--primary-color);
+	margin: 0 0 15px 0;
+}
+
+.delete-confirm-content p {
+	font-size: 15px;
+	color: var(--secondary-color);
+	line-height: 1.6;
+	margin-bottom: 30px;
+}
+
+.delete-confirm-actions {
+	display: flex;
+	gap: 15px;
+	justify-content: center;
+}
+
+.confirm-delete-button,
+.cancel-delete-button {
+	padding: 12px 28px;
+	border: none;
+	border-radius: 10px;
+	font-size: 15px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.confirm-delete-button {
+	background: #f44336;
+	color: white;
+}
+
+.confirm-delete-button:hover {
+	background: #d32f2f;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
+}
+
+.cancel-delete-button {
+	background: var(--quaternary-color);
+	color: var(--primary-color);
+}
+
+.cancel-delete-button:hover {
+	background: var(--tertiary-color);
+}
+
+/* Table */
+.keydata-table-container {
+	background: white;
+	border-radius: 16px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	overflow: hidden;
+}
+
+.keydata-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.keydata-table thead {
+	background: linear-gradient(135deg, var(--link-color), var(--primary-color));
+	color: white;
+}
+
+.keydata-table th {
+	padding: 18px 20px;
+	text-align: left;
+	font-size: 13px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.keydata-table tbody tr {
+	border-bottom: 1px solid var(--quaternary-color);
+	transition: all 0.3s ease;
+}
+
+.keydata-table tbody tr:hover {
+	background: rgba(20, 184, 166, 0.05);
+}
+
+.keydata-table tbody tr.key-used {
+	opacity: 0.6;
+}
+
+.keydata-table td {
+	padding: 18px 20px;
+	font-size: 14px;
+	color: var(--secondary-color);
+}
+
+.no-keys {
+	text-align: center;
+	padding: 60px 20px !important;
+	color: var(--tertiary-color);
+	font-style: italic;
+}
+
+/* Key Cell */
+.key-cell {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.key-code {
+	font-family: 'Courier New', monospace;
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--link-color);
+	background: rgba(20, 184, 166, 0.1);
+	padding: 6px 12px;
+	border-radius: 6px;
+}
+
+.copy-key-button {
+	background: transparent;
+	border: none;
+	color: var(--tertiary-color);
+	cursor: pointer;
+	font-size: 14px;
+	padding: 6px 10px;
+	border-radius: 6px;
+	transition: all 0.3s ease;
+	position: relative;
+}
+
+.copy-key-button:hover {
+	background: var(--quaternary-color);
+	color: var(--link-color);
+}
+
+.copied-tooltip {
+	position: absolute;
+	top: -30px;
+	left: 50%;
+	transform: translateX(-50%);
+	background: var(--link-color);
+	color: white;
+	padding: 4px 10px;
+	border-radius: 6px;
+	font-size: 11px;
+	font-weight: 600;
+	white-space: nowrap;
+	animation: fadeInOut 2s ease;
+}
+
+@keyframes fadeInOut {
+	0%, 100% { opacity: 0; }
+	10%, 90% { opacity: 1; }
+}
+
+/* Status Badge */
+.status-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 14px;
+	border-radius: 20px;
+	font-size: 12px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.status-available {
+	background: rgba(76, 175, 80, 0.1);
+	color: #4CAF50;
+}
+
+.status-used {
+	background: rgba(244, 67, 54, 0.1);
+	color: #f44336;
+}
+
+/* Date Cell */
+.date-cell {
+	font-size: 13px;
+	color: var(--tertiary-color);
+}
+
+/* Delete Button */
+.delete-key-button {
+	background: transparent;
+	border: none;
+	color: #f44336;
+	cursor: pointer;
+	font-size: 16px;
+	padding: 8px 12px;
+	border-radius: 6px;
+	transition: all 0.3s ease;
+}
+
+.delete-key-button:hover {
+	background: rgba(244, 67, 54, 0.1);
+	transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+	.keydata-stats {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 768px) {
+	.keydata-container {
+		padding-top: 100px;
+	}
+
+	.keydata-title {
+		font-size: 32px;
+	}
+
+	.keydata-stats {
+		grid-template-columns: 1fr;
+	}
+
+	.keydata-actions {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.action-group {
+		flex-direction: column;
+	}
+
+	.generate-input {
+		width: 100%;
+	}
+
+	.keydata-table-container {
+		overflow-x: auto;
+	}
+
+	.keydata-table {
+		min-width: 800px;
+	}
+}
+
+@media (max-width: 480px) {
+	.keydata-title {
+		font-size: 26px;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.stat-card {
+		padding: 20px;
+	}
+
+	.stat-icon {
+		width: 50px;
+		height: 50px;
+		font-size: 20px;
+	}
+
+	.stat-value {
+		font-size: 28px;
+	}
+}
