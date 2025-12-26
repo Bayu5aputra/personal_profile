@@ -6,9 +6,10 @@ const SELL_PRODUCTS = [
 		shortDescription: "Real-time IoT monitoring and analytics platform",
 		price: 15000000,
 		originalPrice: 20000000,
-		image: "./products/iot-dashboard.png", // Placeholder - ganti dengan gambar asli
+		image: "/products/iot-dashboard.png",
 		category: "IoT Solutions",
 		rating: 5,
+		sold: 12, // TAMBAHAN: Jumlah terjual (edit manual di sini)
 		featured: true,
 		features: [
 			"Real-time device monitoring",
@@ -35,9 +36,10 @@ const SELL_PRODUCTS = [
 		shortDescription: "Complete network infrastructure management",
 		price: 12000000,
 		originalPrice: 18000000,
-		image: "./products/network-management.png",
+		image: "/products/network-management.png",
 		category: "Network Solutions",
 		rating: 5,
+		sold: 8, // TAMBAHAN
 		featured: true,
 		features: [
 			"Network device monitoring",
@@ -64,9 +66,10 @@ const SELL_PRODUCTS = [
 		shortDescription: "Complete online store solution",
 		price: 10000000,
 		originalPrice: 15000000,
-		image: "./products/ecommerce.png",
+		image: "/products/ecommerce.png",
 		category: "Web Application",
 		rating: 5,
+		sold: 15, // TAMBAHAN
 		featured: false,
 		features: [
 			"Product catalog management",
@@ -93,9 +96,10 @@ const SELL_PRODUCTS = [
 		shortDescription: "Professional business website",
 		price: 5000000,
 		originalPrice: 7500000,
-		image: "./products/company-profile.png",
+		image: "/products/company-profile.png",
 		category: "Web Design",
 		rating: 4,
+		sold: 25, // TAMBAHAN
 		featured: false,
 		features: [
 			"Modern responsive design",
@@ -122,9 +126,10 @@ const SELL_PRODUCTS = [
 		shortDescription: "All-in-one school administration system",
 		price: 18000000,
 		originalPrice: 25000000,
-		image: "./products/school-management.png",
+		image: "/products/school-management.png",
 		category: "Education Software",
 		rating: 5,
+		sold: 6, // TAMBAHAN
 		featured: true,
 		features: [
 			"Student information management",
@@ -152,9 +157,10 @@ const SELL_PRODUCTS = [
 		shortDescription: "Complete healthcare management solution",
 		price: 25000000,
 		originalPrice: 35000000,
-		image: "./products/hospital-management.png",
+		image: "/products/hospital-management.png",
 		category: "Healthcare Software",
 		rating: 5,
+		sold: 4, // TAMBAHAN
 		featured: false,
 		features: [
 			"Patient registration and records",

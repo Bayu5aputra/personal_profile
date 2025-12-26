@@ -2,21 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { 
-	faArrowLeft, 
-	faShoppingCart, 
-	faStar, 
-	faCheckCircle, 
-	faClock, 
-	faHeadset, 
+import {
+	faArrowLeft,
+	faStar,
+	faCheckCircle,
+	faClock,
+	faHeadset,
 	faFileAlt,
 	faPalette,
 	faCertificate,
-	faEnvelope,
-	faPhone,
-	faWhatsapp
+	faEnvelope
 } from "@fortawesome/free-solid-svg-icons";
-import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import {
+	faGithub,
+	faLinkedin,
+	faWhatsapp
+} from "@fortawesome/free-brands-svg-icons";
 
 import NavBar from "../components/common/navBar";
 import Footer from "../components/common/footer";
@@ -34,10 +35,10 @@ const ProductDetail = () => {
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
-		
-		// Find product by id
-		const foundProduct = SELL_PRODUCTS.find(p => p.id === parseInt(id));
-		setProduct(foundProduct);
+		const found = SELL_PRODUCTS.find(
+			(p) => p.id === parseInt(id)
+		);
+		setProduct(found);
 	}, [id]);
 
 	if (!product) {
@@ -47,7 +48,10 @@ const ProductDetail = () => {
 				<div className="content-wrapper">
 					<div className="product-not-found">
 						<h2>Product not found</h2>
-						<button onClick={() => navigate('/projects')} className="back-button">
+						<button
+							className="product-back-button"
+							onClick={() => navigate("/projects")}
+						>
 							<FontAwesomeIcon icon={faArrowLeft} />
 							Back to Projects
 						</button>
@@ -57,31 +61,36 @@ const ProductDetail = () => {
 		);
 	}
 
-	const handleContactWhatsApp = () => {
+	const handleWhatsApp = () => {
 		const message = encodeURIComponent(
-			`Hi, I'm interested in "${product.title}". Can you provide more information?`
+			`Hi, I'm interested in "${product.title}". Can you give me more details?`
 		);
-		window.open(`https://wa.me/6281234567890?text=${message}`, '_blank'); // Ganti dengan nomor WA Anda
+		window.open(
+			`https://wa.me/6285881770712?text=${message}`,
+			"_blank"
+		);
 	};
 
-	const handleContactEmail = () => {
-		const subject = encodeURIComponent(`Inquiry about ${product.title}`);
+	const handleEmail = () => {
+		const subject = encodeURIComponent(
+			`Inquiry about ${product.title}`
+		);
 		const body = encodeURIComponent(
-			`Hi Bayu,\n\nI'm interested in purchasing "${product.title}".\n\nPlease provide more information about:\n- Payment methods\n- Delivery timeline\n- Customization options\n\nThank you!`
+			`Hi Bayu,\n\nI'm interested in "${product.title}".\nPlease share more details.\n\nThank you.`
 		);
 		window.location.href = `mailto:${INFO.main.email}?subject=${subject}&body=${body}`;
 	};
 
 	return (
-		<React.Fragment>
+		<>
 			<Helmet>
-				<title>{`${product.title} | ${INFO.main.title}`}</title>
+				<title>{product.title} | {INFO.main.title}</title>
 				<meta name="description" content={product.description} />
-				<meta name="keywords" content={`${product.category}, ${product.technologies.join(', ')}`} />
 			</Helmet>
 
 			<div className="page-content">
 				<NavBar />
+
 				<div className="content-wrapper">
 					<div className="product-detail-logo-container">
 						<div className="product-detail-logo">
@@ -90,24 +99,27 @@ const ProductDetail = () => {
 					</div>
 
 					<div className="product-detail-container">
-						{/* Back Button */}
-						<button 
-							className="product-back-button" 
-							onClick={() => navigate('/projects')}
+
+						<button
+							className="product-back-button"
+							onClick={() => navigate("/projects")}
 						>
 							<FontAwesomeIcon icon={faArrowLeft} />
 							<span>Back to Projects</span>
 						</button>
 
-						{/* Product Header */}
+						{/* ================= HEADER ================= */}
 						<div className="product-detail-header">
+
+							{/* LEFT */}
 							<div className="product-detail-left">
 								<div className="product-image-section">
-									<img 
-										src={product.image} 
-										alt={product.title} 
+									<img
+										src={product.image}
+										alt={product.title}
 										className="product-detail-image"
 									/>
+
 									{product.featured && (
 										<div className="featured-badge">
 											<FontAwesomeIcon icon={faStar} />
@@ -117,61 +129,91 @@ const ProductDetail = () => {
 								</div>
 							</div>
 
+							{/* RIGHT */}
 							<div className="product-detail-right">
-								<div className="product-category-badge">{product.category}</div>
-								<h1 className="product-detail-title">{product.title}</h1>
-								
-								{/* Rating */}
-								<div className="product-detail-rating">
-									{[...Array(5)].map((_, index) => (
-										<FontAwesomeIcon
-											key={index}
-											icon={faStar}
-											className={index < product.rating ? 'star-filled' : 'star-empty'}
-										/>
-									))}
-									<span className="rating-text">({product.rating}.0 / 5.0)</span>
+								<div className="product-category-badge">
+									{product.category}
 								</div>
 
-								<p className="product-detail-description">{product.description}</p>
+								<h1 className="product-detail-title">
+									{product.title}
+								</h1>
 
-								{/* Price Section */}
+								{/* Rating + Sold */}
+								<div className="product-detail-stats">
+									<div className="product-detail-rating">
+										{[...Array(5)].map((_, i) => (
+											<FontAwesomeIcon
+												key={i}
+												icon={faStar}
+												className={
+													i < product.rating
+														? "star-filled"
+														: "star-empty"
+												}
+											/>
+										))}
+										<span className="rating-text">
+											({product.rating}.0 / 5.0)
+										</span>
+									</div>
+
+									{product.sold > 0 && (
+										<div className="sold-badge-large">
+											<span className="sold-icon">🔥</span>
+											<span>{product.sold} sold</span>
+										</div>
+									)}
+								</div>
+
+								<p className="product-detail-description">
+									{product.description}
+								</p>
+
+								{/* PRICE */}
 								<div className="product-price-section">
 									{product.originalPrice && (
 										<div className="price-comparison">
-											<span className="price-label">Original Price:</span>
+											<span className="price-label">
+												Original Price
+											</span>
 											<span className="price-original">
-												Rp {product.originalPrice.toLocaleString('id-ID')}
+												Rp {product.originalPrice.toLocaleString("id-ID")}
 											</span>
 										</div>
 									)}
-									<div className="price-current-wrapper">
-										<span className="price-label">Special Price:</span>
-										<div className="price-current">
-											Rp {product.price.toLocaleString('id-ID')}
-										</div>
+
+									<div className="price-current">
+										Rp {product.price.toLocaleString("id-ID")}
 									</div>
+
 									{product.originalPrice && (
 										<div className="price-save">
-											You save: Rp {(product.originalPrice - product.price).toLocaleString('id-ID')} 
-											({Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF)
+											Save Rp {(product.originalPrice - product.price).toLocaleString("id-ID")}
 										</div>
 									)}
 								</div>
 
-								{/* CTA Buttons */}
+								{/* CTA */}
 								<div className="product-cta-buttons">
-									<button className="cta-button primary" onClick={handleContactWhatsApp}>
+									<button
+										className="cta-button primary"
+										onClick={handleWhatsApp}
+									>
 										<FontAwesomeIcon icon={faWhatsapp} />
-										<span>Contact via WhatsApp</span>
+										WhatsApp
 									</button>
-									<button className="cta-button secondary" onClick={handleContactEmail}>
+
+									<button
+										className="cta-button secondary"
+										onClick={handleEmail}
+									>
 										<FontAwesomeIcon icon={faEnvelope} />
-										<span>Email Inquiry</span>
+										Email
 									</button>
 								</div>
 
-								{/* Quick Info */}
+								{/* QUICK INFO */}
 								<div className="product-quick-info">
 									<div className="quick-info-item">
 										<FontAwesomeIcon icon={faClock} />
@@ -180,6 +222,7 @@ const ProductDetail = () => {
 											<span>{product.delivery}</span>
 										</div>
 									</div>
+
 									<div className="quick-info-item">
 										<FontAwesomeIcon icon={faHeadset} />
 										<div>
@@ -187,6 +230,7 @@ const ProductDetail = () => {
 											<span>{product.support}</span>
 										</div>
 									</div>
+
 									<div className="quick-info-item">
 										<FontAwesomeIcon icon={faCertificate} />
 										<div>
@@ -198,112 +242,80 @@ const ProductDetail = () => {
 							</div>
 						</div>
 
-						{/* Product Details Tabs */}
+						{/* ================= DETAILS ================= */}
 						<div className="product-detail-tabs">
-							{/* Features */}
+
 							<div className="detail-section">
 								<h2 className="section-title">
 									<FontAwesomeIcon icon={faCheckCircle} />
 									Key Features
 								</h2>
+
 								<div className="features-grid">
-									{product.features.map((feature, index) => (
-										<div key={index} className="feature-item">
-											<FontAwesomeIcon icon={faCheckCircle} className="feature-icon" />
-											<span>{feature}</span>
+									{product.features.map((f, i) => (
+										<div key={i} className="feature-item">
+											<FontAwesomeIcon
+												icon={faCheckCircle}
+												className="feature-icon"
+											/>
+											<span>{f}</span>
 										</div>
 									))}
 								</div>
 							</div>
 
-							{/* Technologies */}
 							<div className="detail-section">
 								<h2 className="section-title">
 									<FontAwesomeIcon icon={faPalette} />
-									Technologies Used
+									Technologies
 								</h2>
+
 								<div className="technologies-tags">
-									{product.technologies.map((tech, index) => (
-										<span key={index} className="tech-tag">
-											{tech}
+									{product.technologies.map((t, i) => (
+										<span key={i} className="tech-tag">
+											{t}
 										</span>
 									))}
 								</div>
 							</div>
 
-							{/* Additional Info */}
-							<div className="detail-section">
-								<h2 className="section-title">
-									<FontAwesomeIcon icon={faFileAlt} />
-									What's Included
-								</h2>
-								<div className="included-items">
-									<div className="included-item">
-										<FontAwesomeIcon icon={faCheckCircle} className="check-icon" />
-										<div>
-											<strong>Documentation:</strong> {product.documentation}
-										</div>
-									</div>
-									<div className="included-item">
-										<FontAwesomeIcon icon={faCheckCircle} className="check-icon" />
-										<div>
-											<strong>Technical Support:</strong> {product.support}
-										</div>
-									</div>
-									<div className="included-item">
-										<FontAwesomeIcon icon={faCheckCircle} className="check-icon" />
-										<div>
-											<strong>Customization:</strong> {product.customization}
-										</div>
-									</div>
-									<div className="included-item">
-										<FontAwesomeIcon icon={faCheckCircle} className="check-icon" />
-										<div>
-											<strong>Delivery Time:</strong> {product.delivery}
-										</div>
-									</div>
-									{product.demoUrl && (
-										<div className="included-item">
-											<FontAwesomeIcon icon={faCheckCircle} className="check-icon" />
-											<div>
-												<strong>Live Demo:</strong> 
-												<a href={product.demoUrl} target="_blank" rel="noopener noreferrer">
-													{product.demoUrl}
-												</a>
-											</div>
-										</div>
-									)}
-								</div>
-							</div>
-
-							{/* Contact Section */}
 							<div className="detail-section contact-section">
 								<h2 className="section-title">
 									<FontAwesomeIcon icon={faEnvelope} />
-									Interested? Let's Talk!
+									Contact
 								</h2>
-								<p className="contact-description">
-									Have questions or ready to purchase? Contact me through any of these channels:
-								</p>
+
 								<div className="contact-methods">
-									<a href={`mailto:${INFO.main.email}`} className="contact-method">
+									<a
+										href={`mailto:${INFO.main.email}`}
+										className="contact-method"
+									>
 										<FontAwesomeIcon icon={faEnvelope} />
-										<span>{INFO.main.email}</span>
+										{INFO.main.email}
 									</a>
-									<a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" className="contact-method">
-										<FontAwesomeIcon icon={faWhatsapp} />
-										<span>WhatsApp: +62 812-3456-7890</span>
-									</a>
-									<a href={INFO.socials.linkedin} target="_blank" rel="noopener noreferrer" className="contact-method">
+
+									<a
+										href={INFO.socials.linkedin}
+										target="_blank"
+										rel="noreferrer"
+										className="contact-method"
+									>
 										<FontAwesomeIcon icon={faLinkedin} />
-										<span>LinkedIn Profile</span>
+										LinkedIn
 									</a>
-									<a href={INFO.socials.github} target="_blank" rel="noopener noreferrer" className="contact-method">
+
+									<a
+										href={INFO.socials.github}
+										target="_blank"
+										rel="noreferrer"
+										className="contact-method"
+									>
 										<FontAwesomeIcon icon={faGithub} />
-										<span>GitHub Portfolio</span>
+										GitHub
 									</a>
 								</div>
 							</div>
+
 						</div>
 					</div>
 
@@ -312,7 +324,7 @@ const ProductDetail = () => {
 					</div>
 				</div>
 			</div>
-		</React.Fragment>
+		</>
 	);
 };
 
