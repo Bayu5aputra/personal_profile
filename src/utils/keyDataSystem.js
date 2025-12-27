@@ -29,7 +29,7 @@ const saveKeys = (keys) => {
 	localStorage.setItem('review_keys', JSON.stringify(keys));
 };
 
-// Initialize default keys (10 keys)
+// Initialize default keys (10 keys) - HANYA jika localStorage kosong
 export const initializeKeys = () => {
 	const existingKeys = getAllKeys();
 	if (existingKeys.length === 0) {
@@ -41,7 +41,8 @@ export const initializeKeys = () => {
 				usedBy: null,
 				usedAt: null,
 				productId: null,
-				createdAt: new Date().toISOString()
+				createdAt: new Date().toISOString(),
+				protected: false // TAMBAHAN: Flag untuk proteksi
 			});
 		}
 		saveKeys(newKeys);
@@ -62,7 +63,8 @@ export const addKeys = (count = 1) => {
 			usedBy: null,
 			usedAt: null,
 			productId: null,
-			createdAt: new Date().toISOString()
+			createdAt: new Date().toISOString(),
+			protected: false // TAMBAHAN: Flag untuk proteksi
 		});
 	}
 	
@@ -86,7 +88,7 @@ export const validateKey = (keyToValidate) => {
 	return { valid: true, message: 'Valid key' };
 };
 
-// Mark key as used
+// Mark key as used - TAMBAHAN: Set protected = true
 export const useKey = (keyToUse, userName, productId) => {
 	const keys = getAllKeys();
 	const keyIndex = keys.findIndex(k => k.key === keyToUse.toUpperCase());
@@ -99,6 +101,7 @@ export const useKey = (keyToUse, userName, productId) => {
 	keys[keyIndex].usedBy = userName;
 	keys[keyIndex].usedAt = new Date().toISOString();
 	keys[keyIndex].productId = productId;
+	keys[keyIndex].protected = true; // PERBAIKAN: Protect key yang sudah dipakai
 	
 	saveKeys(keys);
 	return true;
@@ -116,27 +119,55 @@ export const getUsedKeysCount = () => {
 	return keys.filter(k => k.used).length;
 };
 
-// Delete all keys (reset system)
+// PERBAIKAN: Delete all keys - HANYA hapus yang belum dipakai (not protected)
 export const deleteAllKeys = () => {
-	localStorage.removeItem('review_keys');
-	return true;
+	const keys = getAllKeys();
+	// Filter: hanya simpan keys yang sudah used (protected)
+	const protectedKeys = keys.filter(k => k.protected === true);
+	saveKeys(protectedKeys);
+	return {
+		deleted: keys.length - protectedKeys.length,
+		protected: protectedKeys.length
+	};
 };
 
-// Delete specific key
+// PERBAIKAN: Delete specific key - tidak bisa hapus jika protected
 export const deleteKey = (keyToDelete) => {
 	const keys = getAllKeys();
+	const keyData = keys.find(k => k.key === keyToDelete);
+	
+	// Cek apakah key protected
+	if (keyData && keyData.protected) {
+		return {
+			success: false,
+			message: 'Cannot delete used key. This key is protected because it has been used for a review.'
+		};
+	}
+	
 	const filteredKeys = keys.filter(k => k.key !== keyToDelete);
 	saveKeys(filteredKeys);
-	return true;
+	return {
+		success: true,
+		message: 'Key deleted successfully'
+	};
 };
 
 // Get key statistics
 export const getKeyStatistics = () => {
 	const keys = getAllKeys();
+	const protectedCount = keys.filter(k => k.protected === true).length;
+	
 	return {
 		total: keys.length,
 		available: keys.filter(k => !k.used).length,
 		used: keys.filter(k => k.used).length,
+		protected: protectedCount, // TAMBAHAN: Jumlah key yang dilindungi
 		usageRate: keys.length > 0 ? ((keys.filter(k => k.used).length / keys.length) * 100).toFixed(1) : 0
 	};
+};
+
+// TAMBAHAN: Function untuk mendapatkan jumlah protected keys
+export const getProtectedKeysCount = () => {
+	const keys = getAllKeys();
+	return keys.filter(k => k.protected === true).length;
 };

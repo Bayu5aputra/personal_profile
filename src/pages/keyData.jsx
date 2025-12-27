@@ -9,12 +9,14 @@ import {
 	faTimesCircle,
 	faChartBar,
 	faCopy,
-	faExclamationTriangle
+	faExclamationTriangle,
+	faSignOutAlt
 } from "@fortawesome/free-solid-svg-icons";
 
 import NavBar from "../components/common/navBar";
 import Footer from "../components/common/footer";
 import Logo from "../components/common/logo";
+import LoginModal from "../components/keydata/LoginModal";
 import INFO from "../data/user";
 
 import {
@@ -22,28 +24,67 @@ import {
 	addKeys,
 	deleteKey,
 	deleteAllKeys,
-	getKeyStatistics,
-	initializeKeys
+	getKeyStatistics
 } from "../utils/keyDataSystem";
+
+import {
+	isAuthenticated,
+	login,
+	logout,
+	extendSession
+} from "../utils/passwordSystem";
 
 import "./styles/keyData.css";
 
 const KeyData = () => {
+	const [authenticated, setAuthenticated] = useState(false);
 	const [keys, setKeys] = useState([]);
 	const [stats, setStats] = useState({ total: 0, available: 0, used: 0, usageRate: 0 });
 	const [generateCount, setGenerateCount] = useState(10);
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 	const [copiedKey, setCopiedKey] = useState(null);
+	const [deleteMessage, setDeleteMessage] = useState(null);
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
-		loadKeys();
+		
+		// Check authentication
+		if (isAuthenticated()) {
+			setAuthenticated(true);
+			loadKeys();
+		}
 	}, []);
 
+	// Extend session on user activity
+	useEffect(() => {
+		if (authenticated) {
+			const handleActivity = () => extendSession();
+			
+			window.addEventListener('mousemove', handleActivity);
+			window.addEventListener('keypress', handleActivity);
+			
+			return () => {
+				window.removeEventListener('mousemove', handleActivity);
+				window.removeEventListener('keypress', handleActivity);
+			};
+		}
+	}, [authenticated]);
+
+	const handleLogin = (password) => {
+		const result = login(password);
+		if (result.success) {
+			setAuthenticated(true);
+			loadKeys();
+		}
+		return result;
+	};
+
+	const handleLogout = () => {
+		logout();
+		setAuthenticated(false);
+	};
+
 	const loadKeys = () => {
-		// Initialize keys if empty
-		initializeKeys();
-		
 		const allKeys = getAllKeys();
 		setKeys(allKeys);
 		
@@ -59,20 +100,46 @@ const KeyData = () => {
 
 	const handleDeleteKey = (keyToDelete) => {
 		if (window.confirm(`Are you sure you want to delete key: ${keyToDelete}?`)) {
-			deleteKey(keyToDelete);
-			loadKeys();
+			const result = deleteKey(keyToDelete);
+			
+			if (!result.success) {
+				setDeleteMessage({
+					type: 'error',
+					text: result.message
+				});
+				setTimeout(() => setDeleteMessage(null), 5000);
+			} else {
+				setDeleteMessage({
+					type: 'success',
+					text: 'Key deleted successfully'
+				});
+				setTimeout(() => setDeleteMessage(null), 3000);
+				loadKeys();
+			}
 		}
 	};
 
 	const handleDeleteAllKeys = () => {
-		deleteAllKeys();
+		const result = deleteAllKeys();
 		loadKeys();
 		setShowDeleteConfirm(false);
+		
+		if (result.protected > 0) {
+			setDeleteMessage({
+				type: 'warning',
+				text: `Deleted ${result.deleted} unused keys. ${result.protected} used keys are protected and cannot be deleted.`
+			});
+		} else {
+			setDeleteMessage({
+				type: 'success',
+				text: `All ${result.deleted} keys deleted successfully.`
+			});
+		}
+		
+		setTimeout(() => setDeleteMessage(null), 5000);
 	};
 
-	// 🔥 FIX: Fallback copy method untuk environment non-HTTPS
 	const handleCopyKey = (key) => {
-		// Method 1: Try modern clipboard API (HTTPS only)
 		if (navigator.clipboard && navigator.clipboard.writeText) {
 			navigator.clipboard.writeText(key)
 				.then(() => {
@@ -84,12 +151,10 @@ const KeyData = () => {
 					copyTextFallback(key);
 				});
 		} else {
-			// Method 2: Fallback for non-HTTPS or unsupported browsers
 			copyTextFallback(key);
 		}
 	};
 
-	// Fallback copy method (works everywhere)
 	const copyTextFallback = (text) => {
 		const textArea = document.createElement('textarea');
 		textArea.value = text;
@@ -128,6 +193,18 @@ const KeyData = () => {
 		});
 	};
 
+	if (!authenticated) {
+		return (
+			<>
+				<Helmet>
+					<title>Key Data Management | {INFO.main.title}</title>
+					<meta name="description" content="Manage review key data" />
+				</Helmet>
+				<LoginModal onLogin={handleLogin} />
+			</>
+		);
+	}
+
 	return (
 		<>
 			<Helmet>
@@ -147,16 +224,37 @@ const KeyData = () => {
 
 					<div className="keydata-container">
 						<div className="keydata-header">
-							<h1 className="keydata-title">
-								<FontAwesomeIcon icon={faKey} />
-								Key Data Management
-							</h1>
-							<p className="keydata-subtitle">
-								Generate and manage review authentication keys. Each key can only be used once to submit a review.
-							</p>
+							<div className="keydata-header-content">
+								<div className="keydata-header-left">
+									<h1 className="keydata-title">
+										<FontAwesomeIcon icon={faKey} />
+										Key Data Management
+									</h1>
+									<p className="keydata-subtitle">
+										Generate and manage review authentication keys. Each key can only be used once to submit a review.
+									</p>
+								</div>
+								
+								<div className="keydata-header-right">
+									<button className="logout-button" onClick={handleLogout}>
+										<FontAwesomeIcon icon={faSignOutAlt} />
+										<span>Logout</span>
+									</button>
+								</div>
+							</div>
 						</div>
 
-						{/* Statistics Cards */}
+						{deleteMessage && (
+							<div className={`delete-message delete-message-${deleteMessage.type}`}>
+								<div className="delete-message-icon">
+									{deleteMessage.type === 'error' && <FontAwesomeIcon icon={faTimesCircle} />}
+									{deleteMessage.type === 'success' && <FontAwesomeIcon icon={faCheckCircle} />}
+									{deleteMessage.type === 'warning' && <FontAwesomeIcon icon={faExclamationTriangle} />}
+								</div>
+								<span>{deleteMessage.text}</span>
+							</div>
+						)}
+
 						<div className="keydata-stats">
 							<div className="stat-card stat-total">
 								<div className="stat-icon">
@@ -199,7 +297,6 @@ const KeyData = () => {
 							</div>
 						</div>
 
-						{/* Actions */}
 						<div className="keydata-actions">
 							<div className="action-group">
 								<input
@@ -223,27 +320,31 @@ const KeyData = () => {
 							<button
 								className="action-button delete-all-button"
 								onClick={() => setShowDeleteConfirm(true)}
+								disabled={keys.length === 0}
 							>
 								<FontAwesomeIcon icon={faTrash} />
-								Delete All Keys
+								Delete All Unused Keys
 							</button>
 						</div>
 
-						{/* Delete Confirmation Modal */}
 						{showDeleteConfirm && (
 							<div className="delete-confirm-modal">
 								<div className="delete-confirm-content">
 									<div className="delete-confirm-icon">
 										<FontAwesomeIcon icon={faExclamationTriangle} />
 									</div>
-									<h3>Delete All Keys?</h3>
-									<p>This will delete all keys including used keys and review data. This action cannot be undone.</p>
+									<h3>Delete All Unused Keys?</h3>
+									<p>
+										This will delete all unused keys ({keys.filter(k => !k.used).length} keys).
+										<br />
+										<strong>Used keys are protected and will not be deleted.</strong>
+									</p>
 									<div className="delete-confirm-actions">
 										<button
 											className="confirm-delete-button"
 											onClick={handleDeleteAllKeys}
 										>
-											Yes, Delete All
+											Yes, Delete Unused Keys
 										</button>
 										<button
 											className="cancel-delete-button"
@@ -256,7 +357,6 @@ const KeyData = () => {
 							</div>
 						)}
 
-						{/* Keys Table */}
 						<div className="keydata-table-container">
 							<table className="keydata-table">
 								<thead>
@@ -279,7 +379,7 @@ const KeyData = () => {
 										</tr>
 									) : (
 										keys.map((keyData, index) => (
-											<tr key={index} className={keyData.used ? 'key-used' : 'key-available'}>
+											<tr key={index} className={keyData.used ? 'key-used key-protected' : 'key-available'}>
 												<td>
 													<div className="key-cell">
 														<code className="key-code">{keyData.key}</code>
@@ -298,7 +398,7 @@ const KeyData = () => {
 												<td>
 													<span className={`status-badge ${keyData.used ? 'status-used' : 'status-available'}`}>
 														<FontAwesomeIcon icon={keyData.used ? faTimesCircle : faCheckCircle} />
-														{keyData.used ? 'Used' : 'Available'}
+														{keyData.used ? 'Used (Protected)' : 'Available'}
 													</span>
 												</td>
 												<td className="date-cell">{formatDate(keyData.createdAt)}</td>
@@ -306,13 +406,23 @@ const KeyData = () => {
 												<td className="date-cell">{formatDate(keyData.usedAt)}</td>
 												<td>{keyData.productId || '-'}</td>
 												<td>
-													<button
-														className="delete-key-button"
-														onClick={() => handleDeleteKey(keyData.key)}
-														title="Delete key"
-													>
-														<FontAwesomeIcon icon={faTrash} />
-													</button>
+													{keyData.used ? (
+														<button
+															className="delete-key-button protected-button"
+															title="Cannot delete protected key"
+															disabled
+														>
+															<FontAwesomeIcon icon={faTrash} />
+														</button>
+													) : (
+														<button
+															className="delete-key-button"
+															onClick={() => handleDeleteKey(keyData.key)}
+															title="Delete key"
+														>
+															<FontAwesomeIcon icon={faTrash} />
+														</button>
+													)}
 												</td>
 											</tr>
 										))
