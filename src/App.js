@@ -12,6 +12,7 @@ import Notfound from "./pages/404";
 import ProductDetail from "./pages/productDetail";
 import KeyData from "./pages/keyData";
 import LoadingScreen from "./components/homepage/LoadingScreen";
+import ContentManagement from "./pages/contentManagement";
 
 import { TRACKING_ID } from "./data/tracking";
 import "./app.css";
@@ -58,6 +59,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/keydata" element={<KeyData />} />
+          <Route path="/cms" element={<ContentManagement />} />
           <Route path="*" element={<Notfound />} />
         </Routes>
       </div>
