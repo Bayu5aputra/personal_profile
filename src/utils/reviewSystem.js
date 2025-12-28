@@ -1,6 +1,4 @@
 // HYBRID Review System - Firebase (Primary) + localStorage (Fallback)
-// Sistem akan otomatis fallback ke localStorage jika Firebase gagal
-
 import { db } from './firebase';
 import { 
   collection, 
@@ -9,8 +7,50 @@ import {
   query, 
   where,
   orderBy,
-  serverTimestamp 
+  serverTimestamp,
+  doc,
+  setDoc
 } from 'firebase/firestore';
+
+// ============================================
+// CONNECTION TESTING
+// ============================================
+
+let firebaseConnected = false;
+let connectionTested = false;
+
+// Test Firebase connection
+export const testFirebaseConnection = async () => {
+  if (connectionTested) {
+    console.log(`📊 Firebase Status: ${firebaseConnected ? '✅ Connected' : '❌ Disconnected'}`);
+    return firebaseConnected;
+  }
+  
+  console.log("🔍 Testing Firebase connection...");
+  
+  try {
+    // Try to write a test document
+    const testRef = doc(db, 'connection_test', 'test_' + Date.now());
+    await setDoc(testRef, {
+      timestamp: serverTimestamp(),
+      message: 'Connection test successful'
+    });
+    
+    firebaseConnected = true;
+    connectionTested = true;
+    console.log("✅ Firebase connection test PASSED");
+    console.log("🎉 You are connected to Firebase!");
+    return true;
+  } catch (error) {
+    firebaseConnected = false;
+    connectionTested = true;
+    console.error("❌ Firebase connection test FAILED:", error);
+    console.error("   Error code:", error.code);
+    console.error("   Error message:", error.message);
+    console.log("⚠️ Falling back to localStorage mode");
+    return false;
+  }
+};
 
 // ============================================
 // FIREBASE FUNCTIONS (Primary)
@@ -19,6 +59,8 @@ import {
 // Add review to Firebase
 export const addReviewToFirebase = async (productId, reviewData) => {
   try {
+    console.log("📤 Attempting to add review to Firebase...");
+    
     const docRef = await addDoc(collection(db, 'reviews'), {
       productId: parseInt(productId),
       name: reviewData.name,
@@ -30,10 +72,13 @@ export const addReviewToFirebase = async (productId, reviewData) => {
       source: 'firebase'
     });
     
-    console.log("✅ Review added to Firebase:", docRef.id);
+    console.log("✅ Review added to Firebase successfully!");
+    console.log("   Document ID:", docRef.id);
     return { success: true, id: docRef.id, source: 'firebase' };
   } catch (error) {
-    console.error("❌ Error adding review to Firebase:", error);
+    console.error("❌ Failed to add review to Firebase:", error);
+    console.error("   Error code:", error.code);
+    console.error("   Error message:", error.message);
     return { success: false, error, source: 'firebase' };
   }
 };
@@ -41,6 +86,8 @@ export const addReviewToFirebase = async (productId, reviewData) => {
 // Get reviews from Firebase
 export const getReviewsFromFirebase = async (productId) => {
   try {
+    console.log(`📥 Fetching reviews for product ${productId} from Firebase...`);
+    
     const q = query(
       collection(db, 'reviews'),
       where('productId', '==', parseInt(productId)),
@@ -59,10 +106,21 @@ export const getReviewsFromFirebase = async (productId) => {
       });
     });
     
-    console.log(`✅ Loaded ${reviews.length} reviews from Firebase`);
+    console.log(`✅ Successfully loaded ${reviews.length} reviews from Firebase`);
     return { success: true, reviews, source: 'firebase' };
   } catch (error) {
-    console.error("❌ Error getting reviews from Firebase:", error);
+    console.error("❌ Failed to get reviews from Firebase:", error);
+    console.error("   Error code:", error.code);
+    console.error("   Error message:", error.message);
+    
+    // Special handling for index error
+    if (error.code === 'failed-precondition' || error.message.includes('index')) {
+      console.log("\n🔗 INDEX REQUIRED:");
+      console.log("   Firebase needs to create an index for this query.");
+      console.log("   The index will be created automatically on first query.");
+      console.log("   If you see a link in the error above, click it to create the index faster.\n");
+    }
+    
     return { success: false, reviews: [], error, source: 'firebase' };
   }
 };
@@ -74,11 +132,15 @@ export const getReviewsFromFirebase = async (productId) => {
 // Get reviews from localStorage
 export const getReviewsFromLocalStorage = (productId) => {
   const reviews = localStorage.getItem(`product_reviews_${productId}`);
-  return reviews ? JSON.parse(reviews) : [];
+  const parsed = reviews ? JSON.parse(reviews) : [];
+  console.log(`💾 Loaded ${parsed.length} reviews from localStorage`);
+  return parsed;
 };
 
 // Add review to localStorage
 export const addReviewToLocalStorage = (productId, reviewData) => {
+  console.log("💾 Adding review to localStorage...");
+  
   const reviews = getReviewsFromLocalStorage(productId);
   
   const newReview = {
@@ -95,7 +157,7 @@ export const addReviewToLocalStorage = (productId, reviewData) => {
   reviews.push(newReview);
   localStorage.setItem(`product_reviews_${productId}`, JSON.stringify(reviews));
   
-  console.log("✅ Review added to localStorage");
+  console.log("✅ Review added to localStorage successfully!");
   return { success: true, review: newReview, source: 'localStorage' };
 };
 
@@ -105,37 +167,63 @@ export const addReviewToLocalStorage = (productId, reviewData) => {
 
 // Main function: Add review (Try Firebase, fallback to localStorage)
 export const addReview = async (productId, reviewData) => {
-  // Try Firebase first
-  const firebaseResult = await addReviewToFirebase(productId, reviewData);
+  console.log("\n📝 Starting review submission...");
+  console.log("   Product ID:", productId);
+  console.log("   Reviewer:", reviewData.name);
+  console.log("   Rating:", reviewData.rating);
   
-  if (firebaseResult.success) {
-    // Juga simpan ke localStorage sebagai backup
-    addReviewToLocalStorage(productId, reviewData);
-    return firebaseResult;
+  // Test connection first
+  await testFirebaseConnection();
+  
+  // Try Firebase if connected
+  if (firebaseConnected) {
+    console.log("🔥 Using Firebase (primary)");
+    const firebaseResult = await addReviewToFirebase(productId, reviewData);
+    
+    if (firebaseResult.success) {
+      // Also save to localStorage as backup
+      addReviewToLocalStorage(productId, reviewData);
+      console.log("🎉 Review submission complete (Firebase + localStorage backup)\n");
+      return firebaseResult;
+    }
   }
   
   // Fallback to localStorage if Firebase fails
-  console.log("⚠️ Falling back to localStorage");
-  return addReviewToLocalStorage(productId, reviewData);
+  console.log("⚠️ Falling back to localStorage mode");
+  const result = addReviewToLocalStorage(productId, reviewData);
+  console.log("🎉 Review submission complete (localStorage only)\n");
+  return result;
 };
 
 // Main function: Get reviews (Try Firebase, fallback to localStorage)
 export const getProductReviews = async (productId) => {
-  // Try Firebase first
-  const firebaseResult = await getReviewsFromFirebase(productId);
+  console.log(`\n📖 Loading reviews for product ${productId}...`);
   
-  if (firebaseResult.success && firebaseResult.reviews.length > 0) {
-    // Cache to localStorage for offline access
-    localStorage.setItem(
-      `product_reviews_${productId}`, 
-      JSON.stringify(firebaseResult.reviews)
-    );
-    return firebaseResult.reviews;
+  // Test connection first
+  await testFirebaseConnection();
+  
+  // Try Firebase if connected
+  if (firebaseConnected) {
+    console.log("🔥 Attempting to load from Firebase...");
+    const firebaseResult = await getReviewsFromFirebase(productId);
+    
+    if (firebaseResult.success && firebaseResult.reviews.length > 0) {
+      // Cache to localStorage for offline access
+      localStorage.setItem(
+        `product_reviews_${productId}`, 
+        JSON.stringify(firebaseResult.reviews)
+      );
+      console.log("💾 Cached reviews to localStorage for offline access");
+      console.log("🎉 Reviews loaded successfully from Firebase\n");
+      return firebaseResult.reviews;
+    }
   }
   
-  // Fallback to localStorage if Firebase fails or empty
-  console.log("⚠️ Falling back to localStorage");
-  return getReviewsFromLocalStorage(productId);
+  // Fallback to localStorage
+  console.log("💾 Loading from localStorage...");
+  const reviews = getReviewsFromLocalStorage(productId);
+  console.log("🎉 Reviews loaded successfully from localStorage\n");
+  return reviews;
 };
 
 // ============================================
@@ -144,7 +232,6 @@ export const getProductReviews = async (productId) => {
 
 // Calculate average rating
 export const calculateAverageRating = (productId) => {
-  // Gunakan data dari localStorage untuk kalkulasi cepat
   const reviews = getReviewsFromLocalStorage(productId);
   
   if (reviews.length === 0) {
@@ -188,14 +275,20 @@ export const hasUserReviewed = (productId, userName) => {
 };
 
 // ============================================
-// SYNC FUNCTION (Optional - untuk sync localStorage ke Firebase)
+// SYNC FUNCTION
 // ============================================
 
 export const syncLocalStorageToFirebase = async () => {
-  console.log("🔄 Starting sync from localStorage to Firebase...");
+  console.log("\n🔄 Starting sync from localStorage to Firebase...");
+  
+  // Test connection first
+  const isConnected = await testFirebaseConnection();
+  if (!isConnected) {
+    console.log("❌ Cannot sync: Firebase not connected\n");
+    return { success: false, message: "Firebase not connected" };
+  }
   
   try {
-    // Get all products with reviews from localStorage
     const allKeys = Object.keys(localStorage).filter(key => 
       key.startsWith('product_reviews_')
     );
@@ -206,7 +299,6 @@ export const syncLocalStorageToFirebase = async () => {
       const productId = key.replace('product_reviews_', '');
       const reviews = JSON.parse(localStorage.getItem(key) || '[]');
       
-      // Upload reviews that are from localStorage only
       for (const review of reviews) {
         if (review.source === 'localStorage') {
           const result = await addReviewToFirebase(productId, {
@@ -222,7 +314,7 @@ export const syncLocalStorageToFirebase = async () => {
       }
     }
     
-    console.log(`✅ Sync completed: ${syncCount} reviews uploaded to Firebase`);
+    console.log(`✅ Sync completed: ${syncCount} reviews uploaded to Firebase\n`);
     return { success: true, count: syncCount };
   } catch (error) {
     console.error("❌ Sync failed:", error);

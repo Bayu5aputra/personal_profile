@@ -10,8 +10,9 @@ import ReadArticle from "./pages/readArticle";
 import Contact from "./pages/contact";
 import Notfound from "./pages/404";
 import ProductDetail from "./pages/productDetail";
-import KeyData from "./pages/keyData"; // TAMBAHAN
+import KeyData from "./pages/keyData";
 import LoadingScreen from "./components/homepage/LoadingScreen";
+import FirebaseStatus from "./components/common/FirebaseStatus"; // TAMBAHAN
 
 import { TRACKING_ID } from "./data/tracking";
 import "./app.css";
@@ -48,6 +49,9 @@ function App() {
 				<LoadingScreen onLoadingComplete={handleLoadingComplete} />
 			)}
 			
+			{/* TAMBAHAN: Firebase Status Indicator */}
+			{!isLoading && <FirebaseStatus />}
+			
 			<div className={`main-content ${isLoading ? 'content-hidden' : 'content-visible'}`}>
 				<Routes>
 					<Route path="/" element={<Homepage />} />
@@ -57,7 +61,7 @@ function App() {
 					<Route path="/article/:slug" element={<ReadArticle />} />
 					<Route path="/contact" element={<Contact />} />
 					<Route path="/product/:id" element={<ProductDetail />} />
-					<Route path="/keydata" element={<KeyData />} /> {/* TAMBAHAN */}
+					<Route path="/keydata" element={<KeyData />} />
 					<Route path="*" element={<Notfound />} />
 				</Routes>
 			</div>
