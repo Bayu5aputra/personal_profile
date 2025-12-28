@@ -33,7 +33,7 @@ export const testFirebaseConnection = async () => {
     
     firebaseConnected = true;
     connectionTested = true;
-    console.log("✅ Firebase reviews ready");
+    // HAPUS log "Firebase reviews ready"
     return true;
   } catch (error) {
     firebaseConnected = false;
@@ -63,7 +63,7 @@ export const addReview = async (productId, reviewData) => {
     
     return { success: true, id: docRef.id, source: 'firebase' };
   } catch (error) {
-    console.error("Failed to add review:", error.message);
+    console.error("❌ Add review failed:", error.message);
     return { success: false, error, source: 'firebase' };
   }
 };
@@ -91,7 +91,7 @@ export const getProductReviews = async (productId) => {
     
     return reviews;
   } catch (error) {
-    console.error("Failed to get reviews:", error.message);
+    console.error("❌ Get reviews failed:", error.message);
     return [];
   }
 };

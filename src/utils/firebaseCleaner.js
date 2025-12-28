@@ -14,6 +14,7 @@ export const clearAllReviews = async () => {
     
     return { success: true, count: deleteCount };
   } catch (error) {
+    console.error('❌ Clear reviews failed:', error.message);
     return { success: false, error: error.message };
   }
 };
@@ -31,6 +32,7 @@ export const clearAllKeys = async () => {
     
     return { success: true, count: deleteCount };
   } catch (error) {
+    console.error('❌ Clear keys failed:', error.message);
     return { success: false, error: error.message };
   }
 };
@@ -48,6 +50,7 @@ export const clearConnectionTests = async () => {
     
     return { success: true, count: deleteCount };
   } catch (error) {
+    console.error('❌ Clear tests failed:', error.message);
     return { success: false, error: error.message };
   }
 };
@@ -59,6 +62,8 @@ export const clearAllFirebaseData = async () => {
     const keys = await clearAllKeys();
     const tests = await clearConnectionTests();
     
+    console.log(`✅ Cleared: ${reviews.count} reviews, ${keys.count} keys, ${tests.count} tests`);
+    
     return {
       success: true,
       reviews: reviews.count,
@@ -66,13 +71,13 @@ export const clearAllFirebaseData = async () => {
       tests: tests.count
     };
   } catch (error) {
+    console.error('❌ Clear all failed:', error.message);
     return { success: false, error: error.message };
   }
 };
 
-// DO NOT expose to window in production
-// For development only, comment out in production
-if (process.env.NODE_ENV === 'development') {
+// Expose to window - SILENT MODE (no startup logs)
+if (typeof window !== 'undefined') {
   window.firebaseCleaner = {
     clearAllReviews,
     clearAllKeys,

@@ -41,9 +41,15 @@ export const getAllKeys = async () => {
       });
     });
     
+    // HAPUS log "Loaded X keys from Firebase"
     return keys;
   } catch (error) {
-    console.error("Failed to get keys:", error.message);
+    console.error("❌ Get keys failed:", error.message);
+    
+    if (error.code === 'permission-denied') {
+      console.error("🚫 Permission denied");
+    }
+    
     return [];
   }
 };
@@ -52,6 +58,8 @@ export const getAllKeys = async () => {
 export const addKeys = async (count = 1) => {
   try {
     const newKeys = [];
+    
+    // HAPUS log "Generating X keys..."
     
     for (let i = 0; i < count; i++) {
       const keyData = {
@@ -66,11 +74,21 @@ export const addKeys = async (count = 1) => {
       
       const docRef = await addDoc(collection(db, 'review_keys'), keyData);
       newKeys.push({ id: docRef.id, ...keyData });
+      
+      // HAPUS log per-key generation
     }
     
+    // Hanya log hasil akhir
+    console.log(`✅ Generated ${newKeys.length} keys`);
     return newKeys;
   } catch (error) {
-    console.error("Failed to add keys:", error.message);
+    console.error("❌ Generate keys failed:", error.message);
+    
+    if (error.code === 'permission-denied') {
+      console.error("🚫 Permission denied");
+      alert('Permission denied. Please make sure you are logged in with an authorized email address.');
+    }
+    
     return [];
   }
 };
@@ -97,8 +115,8 @@ export const validateKey = async (keyToValidate) => {
     
     return { valid: true, message: 'Valid key', id: querySnapshot.docs[0].id };
   } catch (error) {
-    console.error("Failed to validate key:", error.message);
-    return { valid: false, message: 'Validation error' };
+    console.error("❌ Validate key failed:", error.message);
+    return { valid: false, message: 'Validation error: ' + error.message };
   }
 };
 
@@ -120,9 +138,10 @@ export const useKey = async (keyToUse, userName, productId) => {
       protected: true
     });
     
+    // HAPUS log "Key X marked as used"
     return true;
   } catch (error) {
-    console.error("Failed to use key:", error.message);
+    console.error("❌ Use key failed:", error.message);
     return false;
   }
 };
@@ -132,9 +151,15 @@ export const deleteKey = async (keyId) => {
   try {
     const keyRef = doc(db, 'review_keys', keyId);
     await deleteDoc(keyRef);
+    // HAPUS log per-deletion
     return { success: true, message: 'Key deleted successfully' };
   } catch (error) {
-    console.error("Failed to delete key:", error.message);
+    console.error("❌ Delete key failed:", error.message);
+    
+    if (error.code === 'permission-denied') {
+      return { success: false, message: 'Cannot delete protected key' };
+    }
+    
     return { success: false, message: error.message };
   }
 };
@@ -145,20 +170,27 @@ export const deleteAllUnusedKeys = async () => {
     const keys = await getAllKeys();
     const unusedKeys = keys.filter(k => !k.used && !k.protected);
     
+    // HAPUS log "Deleting X unused keys..."
+    
     let deleteCount = 0;
     for (const key of unusedKeys) {
-      await deleteKey(key.id);
-      deleteCount++;
+      const result = await deleteKey(key.id);
+      if (result.success) {
+        deleteCount++;
+      }
     }
     
     const protectedCount = keys.filter(k => k.protected).length;
+    
+    // Hanya log hasil akhir
+    console.log(`✅ Deleted ${deleteCount} keys (${protectedCount} protected)`);
     
     return {
       deleted: deleteCount,
       protected: protectedCount
     };
   } catch (error) {
-    console.error("Failed to delete unused keys:", error.message);
+    console.error("❌ Delete unused keys failed:", error.message);
     return { deleted: 0, protected: 0 };
   }
 };
@@ -168,15 +200,18 @@ export const getKeyStatistics = async () => {
   try {
     const keys = await getAllKeys();
     
-    return {
+    const stats = {
       total: keys.length,
       available: keys.filter(k => !k.used).length,
       used: keys.filter(k => k.used).length,
       protected: keys.filter(k => k.protected).length,
       usageRate: keys.length > 0 ? ((keys.filter(k => k.used).length / keys.length) * 100).toFixed(1) : 0
     };
+    
+    // HAPUS log statistics
+    return stats;
   } catch (error) {
-    console.error("Failed to get statistics:", error.message);
+    console.error("❌ Get statistics failed:", error.message);
     return {
       total: 0,
       available: 0,

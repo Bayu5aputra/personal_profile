@@ -25,9 +25,10 @@ try {
   auth = getAuth(app);
   googleProvider = new GoogleAuthProvider();
   
-  console.log("✅ Firebase connection successful");
+  // HAPUS log ini atau ganti dengan yang lebih sederhana
+  // console.log("✅ Firebase connection successful");
 } catch (error) {
-  console.error("❌ Firebase connection failed:", error.message);
+  console.error("❌ Firebase init failed:", error.message);
 }
 
 export { db, auth, googleProvider };
