@@ -1,7 +1,7 @@
 // Import fungsi yang dibutuhkan dari SDK
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Konfigurasi Firebase
 const firebaseConfig = {
@@ -13,34 +13,22 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID || "1:21903232898:web:f1c36a444b2e68b8a7099b"
 };
 
-// Log Firebase Configuration (HANYA PROJECT ID untuk keamanan)
-console.log("🔥 Firebase Configuration:");
-console.log("   Project ID:", firebaseConfig.projectId);
-console.log("   Auth Domain:", firebaseConfig.authDomain);
-
 // Inisialisasi Firebase
 let app;
 let db;
 let auth;
+let googleProvider;
 
 try {
   app = initializeApp(firebaseConfig);
-  console.log("✅ Firebase App initialized successfully");
-  
-  // Inisialisasi Firestore
   db = getFirestore(app);
-  console.log("✅ Firestore initialized successfully");
-  
-  // Inisialisasi Auth
   auth = getAuth(app);
-  console.log("✅ Firebase Auth initialized successfully");
+  googleProvider = new GoogleAuthProvider();
   
-  console.log("🎉 All Firebase services are ready!");
+  console.log("✅ Firebase connection successful");
 } catch (error) {
-  console.error("❌ Firebase initialization error:", error);
-  console.error("   Error code:", error.code);
-  console.error("   Error message:", error.message);
+  console.error("❌ Firebase connection failed:", error.message);
 }
 
-export { db, auth };
+export { db, auth, googleProvider };
 export default app;

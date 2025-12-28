@@ -12,61 +12,57 @@ import Notfound from "./pages/404";
 import ProductDetail from "./pages/productDetail";
 import KeyData from "./pages/keyData";
 import LoadingScreen from "./components/homepage/LoadingScreen";
-import FirebaseStatus from "./components/common/FirebaseStatus"; // TAMBAHAN
 
 import { TRACKING_ID } from "./data/tracking";
 import "./app.css";
 
 function App() {
-	const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-	useEffect(() => {
-		if (TRACKING_ID !== "") {
-			ReactGA.initialize(TRACKING_ID);
-		}
-	}, []);
+  useEffect(() => {
+    if (TRACKING_ID !== "") {
+      ReactGA.initialize(TRACKING_ID);
+    }
+  }, []);
 
-	const handleLoadingComplete = () => {
-		setIsLoading(false);
-		document.body.classList.remove('loading');
-		document.body.classList.add('loaded');
-		
-		setTimeout(() => {
-			const loadingElement = document.querySelector('.loading-screen');
-			if (loadingElement) {
-				loadingElement.remove();
-			}
-		}, 1500);
-	};
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+    document.body.classList.remove('loading');
+    document.body.classList.add('loaded');
+    
+    setTimeout(() => {
+      const loadingElement = document.querySelector('.loading-screen');
+      if (loadingElement) {
+        loadingElement.remove();
+      }
+    }, 1500);
+  };
 
-	useEffect(() => {
-		document.body.classList.add('loading');
-	}, []);
+  useEffect(() => {
+    document.body.classList.add('loading');
+  }, []);
 
-	return (
-		<div className="App">
-			{isLoading && (
-				<LoadingScreen onLoadingComplete={handleLoadingComplete} />
-			)}
-			
-			{/* TAMBAHAN: Firebase Status Indicator */}
-			{!isLoading && <FirebaseStatus />}
-			
-			<div className={`main-content ${isLoading ? 'content-hidden' : 'content-visible'}`}>
-				<Routes>
-					<Route path="/" element={<Homepage />} />
-					<Route path="/about" element={<About />} />
-					<Route path="/projects" element={<Projects />} />
-					<Route path="/articles" element={<Articles />} />
-					<Route path="/article/:slug" element={<ReadArticle />} />
-					<Route path="/contact" element={<Contact />} />
-					<Route path="/product/:id" element={<ProductDetail />} />
-					<Route path="/keydata" element={<KeyData />} />
-					<Route path="*" element={<Notfound />} />
-				</Routes>
-			</div>
-		</div>
-	);
+  return (
+    <div className="App">
+      {isLoading && (
+        <LoadingScreen onLoadingComplete={handleLoadingComplete} />
+      )}
+      
+      <div className={`main-content ${isLoading ? 'content-hidden' : 'content-visible'}`}>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/articles" element={<Articles />} />
+          <Route path="/article/:slug" element={<ReadArticle />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/keydata" element={<KeyData />} />
+          <Route path="*" element={<Notfound />} />
+        </Routes>
+      </div>
+    </div>
+  );
 }
 
 export default App;
