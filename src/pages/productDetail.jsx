@@ -36,12 +36,20 @@ const ProductDetail = () => {
 	const [averageRating, setAverageRating] = useState({ average: 0, count: 0 });
 
 	// Function to reload rating (dipanggil setelah review baru)
-	const reloadRating = () => {
+	const reloadRating = async () => {
 		if (product) {
+			// Force reload from Firebase/localStorage
 			const rating = calculateAverageRating(product.id);
 			setAverageRating(rating);
 		}
 	};
+
+	// Auto-reload rating saat component mount
+	useEffect(() => {
+		if (product) {
+			reloadRating();
+		}
+	}, [product]);
 
 	useEffect(() => {
 		window.scrollTo(0, 0);

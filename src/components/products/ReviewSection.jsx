@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faUser, faCheckCircle, faKey } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faUser, faCheckCircle, faKey, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import {
 	getProductReviews,
 	addReview,
@@ -16,13 +16,15 @@ const ReviewSection = ({ productId, onReviewAdded }) => {
 	const [averageRating, setAverageRating] = useState({ average: 0, count: 0 });
 	const [distribution, setDistribution] = useState({});
 	const [showForm, setShowForm] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
+	const [isSubmitting, setIsSubmitting] = useState(false);
 	
 	// Form state
 	const [formData, setFormData] = useState({
 		name: "",
 		rating: 5,
 		comment: "",
-		keyData: "" // TAMBAHAN: Key data input
+		keyData: ""
 	});
 	const [formError, setFormError] = useState("");
 	const [formSuccess, setFormSuccess] = useState("");
@@ -32,15 +34,25 @@ const ReviewSection = ({ productId, onReviewAdded }) => {
 		loadReviews();
 	}, [productId]);
 
-	const loadReviews = () => {
-		const productReviews = getProductReviews(productId);
-		setReviews(productReviews);
-		
-		const avgRating = calculateAverageRating(productId);
-		setAverageRating(avgRating);
-		
-		const dist = getRatingDistribution(productId);
-		setDistribution(dist);
+	const loadReviews = async () => {
+		setIsLoading(true);
+		try {
+			// Get reviews (will try Firebase first, then localStorage)
+			const productReviews = await getProductReviews(productId);
+			setReviews(productReviews);
+			
+			// Calculate statistics
+			const avgRating = calculateAverageRating(productId);
+			setAverageRating(avgRating);
+			
+			const dist = getRatingDistribution(productId);
+			setDistribution(dist);
+		} catch (error) {
+			console.error("Error loading reviews:", error);
+			setFormError("Failed to load reviews. Please refresh the page.");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const handleInputChange = (e) => {
@@ -52,17 +64,21 @@ const ReviewSection = ({ productId, onReviewAdded }) => {
 		setFormError("");
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setIsSubmitting(true);
+		setFormError("");
 		
 		// Validation
 		if (!formData.name.trim()) {
 			setFormError("Please enter your name");
+			setIsSubmitting(false);
 			return;
 		}
 		
 		if (!formData.keyData.trim()) {
 			setFormError("Please enter your key data");
+			setIsSubmitting(false);
 			return;
 		}
 		
@@ -70,62 +86,79 @@ const ReviewSection = ({ productId, onReviewAdded }) => {
 		const keyValidation = validateKey(formData.keyData);
 		if (!keyValidation.valid) {
 			setFormError(keyValidation.message);
+			setIsSubmitting(false);
 			return;
 		}
 		
 		if (!formData.comment.trim()) {
 			setFormError("Please write a review");
+			setIsSubmitting(false);
 			return;
 		}
 		
 		if (formData.comment.trim().length < 10) {
 			setFormError("Review must be at least 10 characters");
+			setIsSubmitting(false);
 			return;
 		}
 		
 		// Check if user already reviewed
 		if (hasUserReviewed(productId, formData.name)) {
 			setFormError("You have already submitted a review for this product");
+			setIsSubmitting(false);
 			return;
 		}
 		
-		// Mark key as used
-		const keyUsed = useKey(formData.keyData, formData.name, productId);
-		if (!keyUsed) {
-			setFormError("Failed to use key. Please try again.");
-			return;
+		try {
+			// Mark key as used
+			const keyUsed = useKey(formData.keyData, formData.name, productId);
+			if (!keyUsed) {
+				setFormError("Failed to use key. Please try again.");
+				setIsSubmitting(false);
+				return;
+			}
+			
+			// Add review to Firebase (with localStorage fallback)
+			const result = await addReview(productId, {
+				name: formData.name,
+				rating: formData.rating,
+				comment: formData.comment
+			});
+			
+			if (result.success) {
+				// Reset form
+				setFormData({
+					name: "",
+					rating: 5,
+					comment: "",
+					keyData: ""
+				});
+				
+				const source = result.source === 'firebase' ? 'Firebase' : 'Local Storage';
+				setFormSuccess(`Thank you for your review! It has been submitted successfully (Saved to ${source}).`);
+				setShowForm(false);
+				
+				// Reload reviews
+				await loadReviews();
+				
+				// Callback to parent untuk update rating di header
+				if (onReviewAdded) {
+					onReviewAdded();
+				}
+				
+				// Clear success message after 5 seconds
+				setTimeout(() => {
+					setFormSuccess("");
+				}, 5000);
+			} else {
+				setFormError("Failed to submit review. Please try again.");
+			}
+		} catch (error) {
+			console.error("Error submitting review:", error);
+			setFormError("An error occurred. Please try again.");
+		} finally {
+			setIsSubmitting(false);
 		}
-		
-		// Add review
-		addReview(productId, {
-			name: formData.name,
-			rating: formData.rating,
-			comment: formData.comment
-		});
-		
-		// Reset form
-		setFormData({
-			name: "",
-			rating: 5,
-			comment: "",
-			keyData: ""
-		});
-		
-		setFormSuccess("Thank you for your review! It has been submitted successfully.");
-		setShowForm(false);
-		
-		// Reload reviews
-		loadReviews();
-		
-		// Callback to parent untuk update rating di header
-		if (onReviewAdded) {
-			onReviewAdded();
-		}
-		
-		// Clear success message after 3 seconds
-		setTimeout(() => {
-			setFormSuccess("");
-		}, 3000);
 	};
 
 	const formatDate = (dateString) => {
@@ -147,6 +180,17 @@ const ReviewSection = ({ productId, onReviewAdded }) => {
 			/>
 		));
 	};
+
+	if (isLoading) {
+		return (
+			<div className="review-section">
+				<div className="review-loading">
+					<FontAwesomeIcon icon={faSpinner} spin size="2x" />
+					<p>Loading reviews...</p>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="review-section">
@@ -224,10 +268,10 @@ const ReviewSection = ({ productId, onReviewAdded }) => {
 								onChange={handleInputChange}
 								placeholder="Enter your name"
 								className="form-input"
+								disabled={isSubmitting}
 							/>
 						</div>
 
-						{/* TAMBAHAN: Key Data Input */}
 						<div className="form-group">
 							<label>
 								Key Data *
@@ -243,6 +287,7 @@ const ReviewSection = ({ productId, onReviewAdded }) => {
 								placeholder="Enter your key (e.g., XXXX-XXXX-XXXX)"
 								className="form-input key-input"
 								maxLength="14"
+								disabled={isSubmitting}
 							/>
 							<small className="key-help">
 								Enter the key provided to you. Each key can only be used once.
@@ -267,6 +312,7 @@ const ReviewSection = ({ productId, onReviewAdded }) => {
 								placeholder="Share your experience with this product..."
 								rows="5"
 								className="form-textarea"
+								disabled={isSubmitting}
 							/>
 							<small className="char-count">
 								{formData.comment.length} characters (minimum 10)
@@ -278,8 +324,19 @@ const ReviewSection = ({ productId, onReviewAdded }) => {
 						)}
 
 						<div className="form-actions">
-							<button type="submit" className="submit-button">
-								Submit Review
+							<button 
+								type="submit" 
+								className="submit-button"
+								disabled={isSubmitting}
+							>
+								{isSubmitting ? (
+									<>
+										<FontAwesomeIcon icon={faSpinner} spin />
+										<span>Submitting...</span>
+									</>
+								) : (
+									<span>Submit Review</span>
+								)}
 							</button>
 							<button 
 								type="button" 
@@ -289,6 +346,7 @@ const ReviewSection = ({ productId, onReviewAdded }) => {
 									setFormError("");
 									setFormData({ name: "", rating: 5, comment: "", keyData: "" });
 								}}
+								disabled={isSubmitting}
 							>
 								Cancel
 							</button>
@@ -318,6 +376,11 @@ const ReviewSection = ({ productId, onReviewAdded }) => {
 												<span className="verified-badge">
 													<FontAwesomeIcon icon={faCheckCircle} />
 													Verified
+												</span>
+											)}
+											{review.source && (
+												<span className={`source-badge source-${review.source}`}>
+													{review.source === 'firebase' ? '☁️ Cloud' : '💾 Local'}
 												</span>
 											)}
 										</div>

@@ -90,7 +90,7 @@
 
 .distribution-fill {
 	height: 100%;
-	background: linear-gradient(90deg, #FFD700, #FFA500);
+	background: linear-gradient(90deg, #ffd700, #ffa500);
 	transition: width 0.3s ease;
 }
 
@@ -108,7 +108,7 @@
 }
 
 .star-filled {
-	color: #FFD700;
+	color: #ffd700;
 }
 
 .star-empty {
@@ -131,7 +131,7 @@
 	gap: 12px;
 	padding: 15px 20px;
 	background: rgba(76, 175, 80, 0.1);
-	border-left: 4px solid #4CAF50;
+	border-left: 4px solid #4caf50;
 	border-radius: 8px;
 	margin-bottom: 20px;
 	color: #2e7d32;
@@ -155,7 +155,11 @@
 .write-review-button {
 	width: 100%;
 	padding: 15px;
-	background: linear-gradient(135deg, var(--link-color), var(--primary-color));
+	background: linear-gradient(
+		135deg,
+		var(--link-color),
+		var(--primary-color)
+	);
 	color: white;
 	border: none;
 	border-radius: 12px;
@@ -334,7 +338,11 @@
 	width: 50px;
 	height: 50px;
 	border-radius: 50%;
-	background: linear-gradient(135deg, var(--link-color), var(--primary-color));
+	background: linear-gradient(
+		135deg,
+		var(--link-color),
+		var(--primary-color)
+	);
 	color: white;
 	display: flex;
 	align-items: center;
@@ -364,7 +372,7 @@
 	gap: 4px;
 	padding: 3px 8px;
 	background: rgba(76, 175, 80, 0.1);
-	color: #4CAF50;
+	color: #4caf50;
 	font-size: 11px;
 	font-weight: 600;
 	border-radius: 12px;
@@ -453,7 +461,7 @@
 	}
 
 	.key-input {
-		font-family: 'Courier New', monospace;
+		font-family: "Courier New", monospace;
 		letter-spacing: 2px;
 		text-transform: uppercase;
 	}
@@ -464,5 +472,104 @@
 		font-size: 12px;
 		color: var(--tertiary-color);
 		font-style: italic;
+	}
+	/* ===== ADDITIONAL STYLES FOR FIREBASE INTEGRATION ===== */
+
+	/* Loading State */
+	.review-loading {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 80px 20px;
+		gap: 20px;
+	}
+
+	.review-loading svg {
+		color: var(--link-color);
+	}
+
+	.review-loading p {
+		font-size: 16px;
+		color: var(--tertiary-color);
+		font-weight: 600;
+	}
+
+	/* Source Badge (Firebase/Local) */
+	.source-badge {
+		display: inline-flex;
+		align-items: center;
+		padding: 3px 10px;
+		border-radius: 12px;
+		font-size: 10px;
+		font-weight: 600;
+		margin-left: 8px;
+	}
+
+	.source-badge.source-firebase {
+		background: rgba(76, 175, 80, 0.1);
+		color: #4caf50;
+	}
+
+	.source-badge.source-localStorage {
+		background: rgba(255, 152, 0, 0.1);
+		color: #ff9800;
+	}
+
+	/* Submitting State */
+	.submit-button:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	.submit-button svg {
+		margin-right: 8px;
+	}
+
+	/* Key Info Icon */
+	.key-info-icon {
+		margin-left: 8px;
+		color: var(--link-color);
+		cursor: help;
+		font-size: 14px;
+	}
+
+	.key-input {
+		font-family: "Courier New", monospace;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+	}
+
+	.key-help {
+		display: block;
+		margin-top: 8px;
+		font-size: 12px;
+		color: var(--tertiary-color);
+		font-style: italic;
+	}
+
+	/* Error Animation */
+	.form-error {
+		animation: shake 0.5s ease;
+	}
+
+	@keyframes shake {
+		0%,
+		100% {
+			transform: translateX(0);
+		}
+		10%,
+		30%,
+		50%,
+		70%,
+		90% {
+			transform: translateX(-5px);
+		}
+		20%,
+		40%,
+		60%,
+		80% {
+			transform: translateX(5px);
+		}
 	}
 }
