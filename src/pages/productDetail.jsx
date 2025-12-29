@@ -24,9 +24,7 @@ import Logo from "../components/common/logo";
 import ReviewSection from "../components/products/ReviewSection";
 
 import INFO from "../data/user";
-import SELL_PRODUCTS from "../data/sellProducts";
 import { calculateAverageRating } from "../utils/reviewSystem";
-
 import { getProductById } from "../utils/contentManagement";
 
 import "./styles/productDetail.css";
@@ -39,70 +37,37 @@ const ProductDetail = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	// Function to reload rating (dipanggil setelah review baru)
 	const reloadRating = async () => {
 		if (product) {
-			// Force reload from localStorage
 			const rating = calculateAverageRating(product.id);
 			setAverageRating(rating);
 		}
 	};
 
-	// Load product data dengan Firebase sebagai primary source
 	const loadProduct = async () => {
 		setIsLoading(true);
 		setError(null);
 		
 		try {
-			// Try Firebase first
 			console.log("Loading from Firebase...");
 			const firebaseProduct = await getProductById(parseInt(id));
 			
 			if (firebaseProduct) {
 				console.log("Product loaded from Firebase:", firebaseProduct);
 				setProduct(firebaseProduct);
-				// Load rating from localStorage
 				const rating = calculateAverageRating(firebaseProduct.id);
-				setAverageRating(rating);
-				setIsLoading(false);
-				return;
-			}
-			
-			// Fallback to local data if Firebase returns null
-			console.log("No Firebase data, falling back to local...");
-			const found = SELL_PRODUCTS.find((p) => p.id === parseInt(id));
-			
-			if (found) {
-				setProduct(found);
-				const rating = calculateAverageRating(found.id);
 				setAverageRating(rating);
 			} else {
 				setError("Product not found");
 			}
 		} catch (error) {
-			console.error("Failed to load from Firebase:", error);
+			console.error("Failed to load product:", error);
 			setError("Failed to load product data");
-			
-			// Fallback to local data on error
-			try {
-				const found = SELL_PRODUCTS.find((p) => p.id === parseInt(id));
-				if (found) {
-					setProduct(found);
-					const rating = calculateAverageRating(found.id);
-					setAverageRating(rating);
-				} else {
-					setError("Product not found");
-				}
-			} catch (localError) {
-				console.error("Local data error:", localError);
-				setError("Failed to load product");
-			}
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
-	// Load product saat component mount atau id berubah
 	useEffect(() => {
 		window.scrollTo(0, 0);
 		if (id) {
@@ -110,14 +75,12 @@ const ProductDetail = () => {
 		}
 	}, [id]);
 
-	// Auto-reload rating saat product berubah
 	useEffect(() => {
 		if (product) {
 			reloadRating();
 		}
 	}, [product]);
 
-	// Handle loading state
 	if (isLoading) {
 		return (
 			<div className="page-content">
@@ -135,7 +98,6 @@ const ProductDetail = () => {
 		);
 	}
 
-	// Handle error state
 	if (error || !product) {
 		return (
 			<div className="page-content">
@@ -187,12 +149,10 @@ const ProductDetail = () => {
 		window.location.href = `mailto:${INFO.main.email}?subject=${subject}&body=${body}`;
 	};
 
-	// Display rating - prioritize localStorage, fallback to product rating
 	const displayRating = averageRating.count > 0 
 	? averageRating.average 
 	: 0;
 
-	// SOLD = JUMLAH REVIEW
 	const soldCount = averageRating.count;
 
 	return (
@@ -225,20 +185,18 @@ const ProductDetail = () => {
 							<span>Back to Projects</span>
 						</button>
 
-						{/* ================= HEADER ================= */}
 						<div className="product-detail-header">
 
-							{/* LEFT - IMAGE */}
 							<div className="product-detail-left">
 								<div className="product-image-section">
 									<img
-										src={product.image}
+										src={product.image || '/no_image.png'}
 										alt={product.title}
 										className="product-detail-image"
 										loading="lazy"
 										onError={(e) => {
 											e.target.onerror = null;
-											e.target.src = "/fallback-image.jpg";
+											e.target.src = '/no_image.png';
 										}}
 									/>
 
@@ -251,7 +209,6 @@ const ProductDetail = () => {
 								</div>
 							</div>
 
-							{/* RIGHT - INFO */}
 							<div className="product-detail-right">
 								<div className="product-category-badge">
 									{product.category}
@@ -261,7 +218,6 @@ const ProductDetail = () => {
 									{product.title}
 								</h1>
 
-								{/* Rating + Sold */}
 								<div className="product-detail-stats">
 									<div className="product-detail-rating">
 										{[...Array(5)].map((_, i) => (
@@ -281,7 +237,6 @@ const ProductDetail = () => {
 										</span>
 									</div>
 
-									{/* SOLD = JUMLAH REVIEW */}
 									{soldCount > 0 && (
 										<div className="sold-badge-large">
 											<span className="sold-icon">🔥</span>
@@ -294,7 +249,6 @@ const ProductDetail = () => {
 									{product.description}
 								</p>
 
-								{/* PRICE */}
 								<div className="product-price-section">
 									{product.originalPrice && (
 										<div className="price-comparison">
@@ -318,7 +272,6 @@ const ProductDetail = () => {
 									)}
 								</div>
 
-								{/* CTA */}
 								<div className="product-cta-buttons">
 									<button
 										className="cta-button primary"
@@ -339,7 +292,6 @@ const ProductDetail = () => {
 									</button>
 								</div>
 
-								{/* QUICK INFO */}
 								<div className="product-quick-info">
 									<div className="quick-info-item">
 										<FontAwesomeIcon icon={faClock} />
@@ -368,7 +320,6 @@ const ProductDetail = () => {
 							</div>
 						</div>
 
-						{/* ================= DETAILS ================= */}
 						<div className="product-detail-tabs">
 
 							<div className="detail-section">
@@ -444,7 +395,6 @@ const ProductDetail = () => {
 
 						</div>
 
-						{/* ================= REVIEW SECTION ================= */}
 						<ReviewSection 
 							productId={product.id}
 							onReviewAdded={reloadRating}

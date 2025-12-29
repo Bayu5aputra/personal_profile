@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
-// import { Helmet } from "react-helmet";
 import { Helmet } from "react-helmet-async";
 
 import NavBar from "../components/common/navBar";
 import Footer from "../components/common/footer";
 import Logo from "../components/common/logo";
-import Article from "../components/articles/article";
+import ArticlesList from "../components/articles/ArticlesList";
 
 import INFO from "../data/user";
 import SEO from "../data/seo";
-import myArticles from "../data/articles";
 
 import "./styles/articles.css";
 
@@ -50,22 +48,7 @@ const Articles = () => {
 						</div>
 
 						<div className="articles-container">
-							<div className="articles-wrapper">
-								{myArticles.map((article, index) => (
-									<div
-										className="articles-article"
-										key={(index + 1).toString()}
-									>
-										<Article
-											key={(index + 1).toString()}
-											date={article().date}
-											title={article().title}
-											description={article().description}
-											link={"/article/" + (index + 1)}
-										/>
-									</div>
-								))}
-							</div>
+							<ArticlesList />
 						</div>
 					</div>
 					<div className="page-footer">

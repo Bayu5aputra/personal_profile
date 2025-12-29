@@ -1,453 +1,443 @@
-import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-	faPlus,
-	faEdit,
-	faTrash,
-	faEye,
-	faSave,
-	faTimes,
-	faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
+  faPlus,
+  faEdit,
+  faTrash,
+  faSave,
+  faTimes,
+  faSpinner,
+  faExclamationTriangle,
+  faImage
+} from '@fortawesome/free-solid-svg-icons';
 import {
-	getAllProducts,
-	addProduct,
-	updateProduct,
-	deleteProduct,
-} from "../../utils/contentManagement";
-import "./styles/productsManagement.css";
+  getAllProducts,
+  addProduct,
+  updateProduct,
+  deleteProduct
+} from '../../utils/contentManagement';
+
+import './styles/productsManagement.css'; // ✅ DIPERBAIKI: case-sensitive
 
 const ProductsManagement = () => {
-	const [products, setProducts] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [showForm, setShowForm] = useState(false);
-	const [editingProduct, setEditingProduct] = useState(null);
-	const [formData, setFormData] = useState({
-		title: "",
-		description: "",
-		shortDescription: "",
-		price: "",
-		originalPrice: "",
-		image: "",
-		category: "",
-		featured: false,
-		features: [],
-		technologies: [],
-	});
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [formData, setFormData] = useState({
+    id: '',
+    title: '',
+    description: '',
+    image: '',
+    price: '',
+    originalPrice: '',
+    category: '',
+    features: '',
+    technologies: '',
+    delivery: '1-2 days',
+    support: '24/7',
+    license: 'Single use'
+  });
 
-	useEffect(() => {
-		loadProducts();
-	}, []);
+  useEffect(() => {
+    loadProducts();
+  }, []);
 
-	const loadProducts = async () => {
-		setIsLoading(true);
-		const data = await getAllProducts();
-		setProducts(data);
-		setIsLoading(false);
-	};
+  const loadProducts = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const data = await getAllProducts();
+      setProducts(data);
+    } catch (err) {
+      console.error('Error loading products:', err);
+      setError('Failed to load products');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-	const handleInputChange = (e) => {
-		const { name, value, type, checked } = e.target;
-		setFormData((prev) => ({
-			...prev,
-			[name]: type === "checkbox" ? checked : value,
-		}));
-	};
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
-	const handleArrayInput = (e, fieldName) => {
-		const value = e.target.value;
-		const array = value.split("\n").filter((item) => item.trim() !== "");
-		setFormData((prev) => ({
-			...prev,
-			[fieldName]: array,
-		}));
-	};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      // Parse features and technologies
+      const featuresArray = formData.features
+        .split('\n')
+        .filter(f => f.trim() !== '')
+        .map(f => f.trim());
+      
+      const technologiesArray = formData.technologies
+        .split(',')
+        .filter(t => t.trim() !== '')
+        .map(t => t.trim());
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		setIsLoading(true);
+      const productData = {
+        id: parseInt(formData.id),
+        title: formData.title,
+        description: formData.description,
+        image: formData.image || '/no_image.png', // Default placeholder
+        price: parseFloat(formData.price),
+        originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : null,
+        category: formData.category,
+        features: featuresArray,
+        technologies: technologiesArray,
+        delivery: formData.delivery,
+        support: formData.support,
+        license: formData.license
+      };
 
-		const productData = {
-			...formData,
-			price: parseFloat(formData.price),
-			originalPrice: parseFloat(formData.originalPrice) || null,
-		};
+      if (editingProduct) {
+        await updateProduct(editingProduct.firebaseId, productData);
+      } else {
+        await addProduct(productData);
+      }
 
-		let result;
-		if (editingProduct) {
-			// Update existing product
-			result = await updateProduct(editingProduct.id, productData);
-		} else {
-			// Add new product - generate numeric ID
-			const allProducts = await getAllProducts();
-			
-			// Find maximum numeric ID from existing products
-			const maxId = allProducts.reduce((max, product) => {
-				// Check both document ID and numeric ID field
-				const productId = product.id || product.documentId || 0;
-				// Convert to number if possible
-				const numId = typeof productId === 'number' ? productId : 
-							(!isNaN(productId) ? parseInt(productId) : 0);
-				return numId > max ? numId : max;
-			}, 0);
-			
-			// Add numeric ID to product data for compatibility with existing system
-			productData.id = maxId + 1;
-			
-			result = await addProduct(productData);
-		}
+      await loadProducts();
+      resetForm();
+      alert(editingProduct ? 'Product updated successfully!' : 'Product added successfully!');
+    } catch (err) {
+      console.error('Error saving product:', err);
+      alert('Failed to save product: ' + err.message);
+    }
+  };
 
-		if (result.success) {
-			alert(
-				editingProduct
-					? "Product updated successfully!"
-					: "Product added successfully!"
-			);
-			resetForm();
-			loadProducts();
-		} else {
-			alert("Failed to save product: " + result.error);
-		}
+  const handleEdit = (product) => {
+    setEditingProduct(product);
+    setFormData({
+      id: product.id || '',
+      title: product.title || '',
+      description: product.description || '',
+      image: product.image && product.image !== '/no_image.png' ? product.image : '',
+      price: product.price || '',
+      originalPrice: product.originalPrice || '',
+      category: product.category || '',
+      features: product.features ? product.features.join('\n') : '',
+      technologies: product.technologies ? product.technologies.join(', ') : '',
+      delivery: product.delivery || '1-2 days',
+      support: product.support || '24/7',
+      license: product.license || 'Single use'
+    });
+    setShowForm(true);
+  };
 
-		setIsLoading(false);
-	};
+  const handleDelete = async (firebaseId, title) => {
+    if (window.confirm(`Are you sure you want to delete "${title}"?`)) {
+      try {
+        await deleteProduct(firebaseId);
+        await loadProducts();
+        alert('Product deleted successfully!');
+      } catch (err) {
+        console.error('Error deleting product:', err);
+        alert('Failed to delete product: ' + err.message);
+      }
+    }
+  };
 
-	const handleEdit = (product) => {
-		setEditingProduct(product);
-		setFormData({
-			title: product.title || "",
-			description: product.description || "",
-			shortDescription: product.shortDescription || "",
-			price: product.price?.toString() || "",
-			originalPrice: product.originalPrice?.toString() || "",
-			image: product.image || "",
-			category: product.category || "",
-			featured: product.featured || false,
-			features: product.features || [],
-			technologies: product.technologies || [],
-		});
-		setShowForm(true);
-	};
+  const resetForm = () => {
+    setFormData({
+      id: '',
+      title: '',
+      description: '',
+      image: '',
+      price: '',
+      originalPrice: '',
+      category: '',
+      features: '',
+      technologies: '',
+      delivery: '1-2 days',
+      support: '24/7',
+      license: 'Single use'
+    });
+    setEditingProduct(null);
+    setShowForm(false);
+  };
 
-	const handleDelete = async (productId) => {
-		if (
-			window.confirm(
-				"Are you sure you want to delete this product? This action cannot be undone."
-			)
-		) {
-			const result = await deleteProduct(productId);
-			if (result.success) {
-				alert("Product deleted successfully!");
-				loadProducts();
-			} else {
-				alert("Failed to delete product: " + result.error);
-			}
-		}
-	};
+  if (isLoading) {
+    return (
+      <div className="cms-loading">
+        <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+        <p>Loading products...</p>
+      </div>
+    );
+  }
 
-	const resetForm = () => {
-		setFormData({
-			title: "",
-			description: "",
-			shortDescription: "",
-			price: "",
-			originalPrice: "",
-			image: "",
-			category: "",
-			featured: false,
-			features: [],
-			technologies: [],
-		});
-		setEditingProduct(null);
-		setShowForm(false);
-	};
+  if (error) {
+    return (
+      <div className="cms-error">
+        <FontAwesomeIcon icon={faExclamationTriangle} size="3x" />
+        <p>{error}</p>
+        <button onClick={loadProducts} className="retry-button">
+          Retry
+        </button>
+      </div>
+    );
+  }
 
-	// Helper function to get numeric ID for view URL
-	const getProductNumericId = (product) => {
-		// If product has numeric ID field, use it
-		if (product.id && typeof product.id === 'number') {
-			return product.id;
-		}
-		// If product has id field that's a string number
-		if (product.id && !isNaN(product.id)) {
-			return parseInt(product.id);
-		}
-		// Fallback: use Firebase document ID hash as number
-		if (product.documentId) {
-			// Create a simple hash from the document ID
-			let hash = 0;
-			for (let i = 0; i < product.documentId.length; i++) {
-				hash = ((hash << 5) - hash) + product.documentId.charCodeAt(i);
-				hash = hash & hash;
-			}
-			return Math.abs(hash) % 10000; // Keep it within reasonable range
-		}
-		// Last resort: use index
-		return products.indexOf(product) + 1;
-	};
+  return (
+    <div className="products-management">
+      <div className="management-header">
+        <h2>Products Management</h2>
+        <button 
+          className="add-button"
+          onClick={() => setShowForm(true)}
+        >
+          <FontAwesomeIcon icon={faPlus} />
+          Add New Product
+        </button>
+      </div>
 
-	if (isLoading && products.length === 0) {
-		return (
-			<div className="cms-loading">
-				<FontAwesomeIcon icon={faSpinner} spin size="2x" />
-				<p>Loading products...</p>
-			</div>
-		);
-	}
+      {showForm && (
+        <div className="form-overlay">
+          <div className="form-container">
+            <div className="form-header">
+              <h3>{editingProduct ? 'Edit Product' : 'Add New Product'}</h3>
+              <button onClick={resetForm} className="close-button">
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
 
-	return (
-		<div className="products-management">
-			<div className="management-header">
-				<h2>Products Management</h2>
-				{!showForm && (
-					<button
-						className="btn-add"
-						onClick={() => setShowForm(true)}
-					>
-						<FontAwesomeIcon icon={faPlus} />
-						Add New Product
-					</button>
-				)}
-			</div>
+            <form onSubmit={handleSubmit} className="product-form">
+              <div className="form-grid">
+                <div className="form-group">
+                  <label>Product ID *</label>
+                  <input
+                    type="number"
+                    name="id"
+                    value={formData.id}
+                    onChange={handleInputChange}
+                    required
+                    disabled={!!editingProduct}
+                  />
+                </div>
 
-			{showForm && (
-				<div className="product-form-container">
-					<div className="form-header">
-						<h3>
-							{editingProduct ? "Edit Product" : "Add New Product"}
-						</h3>
-						<button className="btn-close" onClick={resetForm}>
-							<FontAwesomeIcon icon={faTimes} />
-						</button>
-					</div>
+                <div className="form-group">
+                  <label>Category *</label>
+                  <input
+                    type="text"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="e.g., Web Development"
+                  />
+                </div>
 
-					<form onSubmit={handleSubmit} className="product-form">
-						<div className="form-row">
-							<div className="form-group">
-								<label>Title *</label>
-								<input
-									type="text"
-									name="title"
-									value={formData.title}
-									onChange={handleInputChange}
-									required
-								/>
-							</div>
+                <div className="form-group full-width">
+                  <label>Title *</label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Product title"
+                  />
+                </div>
 
-							<div className="form-group">
-								<label>Category *</label>
-								<input
-									type="text"
-									name="category"
-									value={formData.category}
-									onChange={handleInputChange}
-									required
-								/>
-							</div>
-						</div>
+                <div className="form-group full-width">
+                  <label>Description *</label>
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                    required
+                    rows="3"
+                    placeholder="Product description"
+                  />
+                </div>
 
-						<div className="form-group">
-							<label>Short Description *</label>
-							<input
-								type="text"
-								name="shortDescription"
-								value={formData.shortDescription}
-								onChange={handleInputChange}
-								required
-							/>
-						</div>
+                <div className="form-group full-width">
+                  <label>
+                    <FontAwesomeIcon icon={faImage} /> Image URL (optional)
+                  </label>
+                  <input
+                    type="url"
+                    name="image"
+                    value={formData.image}
+                    onChange={handleInputChange}
+                    placeholder="https://example.com/image.jpg (leave empty for placeholder)"
+                  />
+                  <small className="form-hint">
+                    Leave empty to use default placeholder image
+                  </small>
+                </div>
 
-						<div className="form-group">
-							<label>Full Description *</label>
-							<textarea
-								name="description"
-								value={formData.description}
-								onChange={handleInputChange}
-								rows="4"
-								required
-							/>
-						</div>
+                <div className="form-group">
+                  <label>Price (Rp) *</label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="299000"
+                  />
+                </div>
 
-						<div className="form-row">
-							<div className="form-group">
-								<label>Price (Rp) *</label>
-								<input
-									type="number"
-									name="price"
-									value={formData.price}
-									onChange={handleInputChange}
-									required
-								/>
-							</div>
+                <div className="form-group">
+                  <label>Original Price (Rp)</label>
+                  <input
+                    type="number"
+                    name="originalPrice"
+                    value={formData.originalPrice}
+                    onChange={handleInputChange}
+                    placeholder="399000 (optional)"
+                  />
+                </div>
 
-							<div className="form-group">
-								<label>Original Price (Rp)</label>
-								<input
-									type="number"
-									name="originalPrice"
-									value={formData.originalPrice}
-									onChange={handleInputChange}
-								/>
-							</div>
-						</div>
+                <div className="form-group">
+                  <label>Delivery Time</label>
+                  <input
+                    type="text"
+                    name="delivery"
+                    value={formData.delivery}
+                    onChange={handleInputChange}
+                    placeholder="1-2 days"
+                  />
+                </div>
 
-						<div className="form-group">
-							<label>Image URL *</label>
-							<input
-								type="text"
-								name="image"
-								value={formData.image}
-								onChange={handleInputChange}
-								placeholder="/products/product-name.png"
-								required
-							/>
-						</div>
+                <div className="form-group">
+                  <label>Support</label>
+                  <input
+                    type="text"
+                    name="support"
+                    value={formData.support}
+                    onChange={handleInputChange}
+                    placeholder="24/7"
+                  />
+                </div>
 
-						<div className="form-group">
-							<label>
-								Features (one per line) *
-								<small>Press Enter after each feature</small>
-							</label>
-							<textarea
-								value={formData.features.join("\n")}
-								onChange={(e) => handleArrayInput(e, "features")}
-								rows="6"
-								placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
-								required
-							/>
-						</div>
+                <div className="form-group full-width">
+                  <label>License Type</label>
+                  <input
+                    type="text"
+                    name="license"
+                    value={formData.license}
+                    onChange={handleInputChange}
+                    placeholder="Single use"
+                  />
+                </div>
 
-						<div className="form-group">
-							<label>
-								Technologies (one per line) *
-								<small>Press Enter after each technology</small>
-							</label>
-							<textarea
-								value={formData.technologies.join("\n")}
-								onChange={(e) =>
-									handleArrayInput(e, "technologies")
-								}
-								rows="4"
-								placeholder="React&#10;Node.js&#10;MongoDB"
-								required
-							/>
-						</div>
+                <div className="form-group full-width">
+                  <label>Features (one per line)</label>
+                  <textarea
+                    name="features"
+                    value={formData.features}
+                    onChange={handleInputChange}
+                    rows="5"
+                    placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
+                  />
+                </div>
 
-						<div className="form-group checkbox-group">
-							<label>
-								<input
-									type="checkbox"
-									name="featured"
-									checked={formData.featured}
-									onChange={handleInputChange}
-								/>
-								<span>Featured Product</span>
-							</label>
-						</div>
+                <div className="form-group full-width">
+                  <label>Technologies (comma separated)</label>
+                  <input
+                    type="text"
+                    name="technologies"
+                    value={formData.technologies}
+                    onChange={handleInputChange}
+                    placeholder="React, Node.js, MongoDB"
+                  />
+                </div>
+              </div>
 
-						<div className="form-actions">
-							<button
-								type="submit"
-								className="btn-save"
-								disabled={isLoading}
-							>
-								<FontAwesomeIcon icon={faSave} />
-								{editingProduct ? "Update Product" : "Save Product"}
-							</button>
-							<button
-								type="button"
-								className="btn-cancel"
-								onClick={resetForm}
-							>
-								Cancel
-							</button>
-						</div>
-					</form>
-				</div>
-			)}
+              <div className="form-actions">
+                <button type="button" onClick={resetForm} className="cancel-button">
+                  <FontAwesomeIcon icon={faTimes} />
+                  Cancel
+                </button>
+                <button type="submit" className="save-button">
+                  <FontAwesomeIcon icon={faSave} />
+                  {editingProduct ? 'Update' : 'Save'} Product
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
-			<div className="products-list">
-				<h3>Existing Products ({products.length})</h3>
+      <div className="products-table-container">
+        <table className="products-table">
+          <thead>
+            <tr>
+              <th>Firebase ID</th>
+              <th>ID</th>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.length === 0 ? (
+              <tr>
+                <td colSpan="7" className="empty-state">
+                  No products found. Click "Add New Product" to create one.
+                </td>
+              </tr>
+            ) : (
+              products.map((product) => {
+                // Fix untuk firebaseId.substring error
+                const displayFirebaseId = product.firebaseId 
+                  ? (typeof product.firebaseId === 'string' 
+                    ? product.firebaseId.substring(0, 8) 
+                    : String(product.firebaseId).substring(0, 8))
+                  : 'N/A';
 
-				{products.length === 0 ? (
-					<div className="empty-state">
-						<p>No products yet. Add your first product!</p>
-					</div>
-				) : (
-					<div className="products-grid">
-						{products.map((product, index) => {
-							const numericId = getProductNumericId(product);
-							const firebaseId = product.id || product.documentId;
-							
-							return (
-								<div key={firebaseId} className="product-card">
-									<div className="product-card-image">
-										<img
-											src={product.image}
-											alt={product.title}
-											onError={(e) => {
-												e.target.onerror = null;
-												e.target.src = "/products/placeholder.jpg";
-											}}
-										/>
-										{product.featured && (
-											<span className="badge-featured">
-												Featured
-											</span>
-										)}
-									</div>
-
-									<div className="product-card-content">
-										<h4>{product.title}</h4>
-										<p className="product-category">
-											{product.category}
-										</p>
-										<p className="product-price">
-											Rp {product.price?.toLocaleString("id-ID")}
-										</p>
-										<p className="product-id">
-											ID: {numericId} {firebaseId && `(Firebase: ${firebaseId.substring(0, 8)}...)`}
-										</p>
-
-										<div className="product-card-actions">
-											<button
-												className="btn-action btn-view"
-												onClick={() =>
-													window.open(
-														`/product/${numericId}`,
-														"_blank"
-													)
-												}
-												title="View Product"
-											>
-												<FontAwesomeIcon icon={faEye} />
-											</button>
-											<button
-												className="btn-action btn-edit"
-												onClick={() => handleEdit(product)}
-												title="Edit Product"
-											>
-												<FontAwesomeIcon icon={faEdit} />
-											</button>
-											<button
-												className="btn-action btn-delete"
-												onClick={() =>
-													handleDelete(firebaseId)
-												}
-												title="Delete Product"
-											>
-												<FontAwesomeIcon icon={faTrash} />
-											</button>
-										</div>
-									</div>
-								</div>
-							);
-						})}
-					</div>
-				)}
-			</div>
-		</div>
-	);
+                return (
+                  <tr key={product.firebaseId || product.id}>
+                    <td className="firebase-id">{displayFirebaseId}</td>
+                    <td>{product.id}</td>
+                    <td>
+                      <img 
+                        src={product.image || '/no_image.png'} 
+                        alt={product.title}
+                        className="product-thumbnail"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = '/no_image.png';
+                        }}
+                      />
+                    </td>
+                    <td className="product-title">{product.title}</td>
+                    <td>{product.category}</td>
+                    <td>Rp {product.price?.toLocaleString('id-ID')}</td>
+                    <td className="actions">
+                      <button
+                        onClick={() => handleEdit(product)}
+                        className="edit-button"
+                        title="Edit"
+                      >
+                        <FontAwesomeIcon icon={faEdit} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(product.firebaseId, product.title)}
+                        className="delete-button"
+                        title="Delete"
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 };
 
 export default ProductsManagement;

@@ -66,4 +66,56 @@
 		min-width: 85%;
 		max-width: 85%;
 	}
+
+	/* Articles Loading, Error, Empty States */
+	.articles-loading-container,
+	.articles-error-container,
+	.articles-empty-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding: 80px 20px;
+		gap: 20px;
+		text-align: center;
+		min-height: 400px;
+	}
+
+	.articles-loading-container svg {
+		color: var(--link-color);
+	}
+
+	.articles-loading-container p,
+	.articles-error-container p,
+	.articles-empty-container p {
+		font-size: 16px;
+		color: var(--tertiary-color);
+		font-weight: 600;
+		margin: 0;
+	}
+
+	.articles-error-container svg {
+		color: #ff9800;
+	}
+
+	.retry-button {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		padding: 12px 24px;
+		background: linear-gradient(135deg, var(--link-color), var(--primary-color));
+		color: white;
+		border: none;
+		border-radius: 10px;
+		font-size: 14px;
+		font-weight: 700;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		margin-top: 15px;
+	}
+
+	.retry-button:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 8px 20px rgba(20, 184, 166, 0.4);
+	}
 }

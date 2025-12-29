@@ -1,42 +1,194 @@
-.all-projects-container {
+/* ===================================
+   PROJECTS CONTAINER
+   =================================== */
+
+.projects-container {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: stretch;
-	padding-top: 30px;
-	padding-bottom: 30px;
-	margin-left: -35px;
-	margin-right: -35px;
+	gap: 25px;
+	width: 100%;
 }
 
-.all-projects-project {
-	width: calc(100% / 3);
-	box-sizing: border-box;
-	padding: 10px;
-	overflow: hidden;
+/* ===================================
+   LOADING STATE
+   =================================== */
+
+.projects-loading {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 300px;
+	width: 100%;
+	padding: 60px 20px;
+	gap: 20px;
 }
 
-@media (max-width: 600px) {
-	.all-projects-project {
-		width: calc(100% / 2);
-	}
+.projects-loading svg {
+	color: var(--link-color, #667eea);
+}
 
-	/* Loading State */
-	.projects-loading {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: 60px 20px;
-		color: var(--tertiary-color);
-		font-style: italic;
-	}
+.projects-loading p {
+	font-size: 16px;
+	color: var(--secondary-color, #6c757d);
+	margin: 0;
+}
 
+/* ===================================
+   ERROR STATE
+   =================================== */
+
+.projects-error {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 300px;
+	width: 100%;
+	padding: 60px 20px;
+	gap: 20px;
+	text-align: center;
+}
+
+.projects-error svg {
+	color: #e74c3c;
+}
+
+.projects-error p {
+	font-size: 16px;
+	color: var(--secondary-color, #6c757d);
+	max-width: 500px;
+	line-height: 1.6;
+	margin: 0;
+}
+
+.retry-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 24px;
+	background: linear-gradient(135deg, var(--link-color, #667eea), #764ba2);
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	margin-top: 10px;
+}
+
+.retry-button:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.retry-button:active {
+	transform: translateY(0);
+}
+
+/* ===================================
+   EMPTY STATE (FRIENDLY VERSION)
+   =================================== */
+
+.projects-empty {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 350px;
+	width: 100%;
+	padding: 80px 20px;
+	gap: 15px;
+	text-align: center;
+	background: linear-gradient(135deg, rgba(102, 126, 234, 0.03), rgba(118, 75, 162, 0.03));
+	border-radius: 16px;
+	border: 2px dashed rgba(102, 126, 234, 0.2);
+}
+
+.projects-empty .empty-icon {
+	margin-bottom: 10px;
+}
+
+.projects-empty .empty-icon svg {
+	color: var(--link-color, #667eea);
+	opacity: 0.6;
+}
+
+.projects-empty h3 {
+	font-size: 24px;
+	font-weight: 700;
+	color: var(--primary-color, #2c3e50);
+	margin: 10px 0 5px 0;
+}
+
+.projects-empty p {
+	font-size: 16px;
+	color: var(--secondary-color, #6c757d);
+	max-width: 450px;
+	line-height: 1.6;
+	margin: 0 0 20px 0;
+}
+
+.retry-button-secondary {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 20px;
+	background: transparent;
+	color: var(--link-color, #667eea);
+	border: 2px solid var(--link-color, #667eea);
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.retry-button-secondary:hover {
+	background: var(--link-color, #667eea);
+	color: white;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.retry-button-secondary:active {
+	transform: translateY(0);
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+
+@media (max-width: 768px) {
 	.projects-empty {
-		display: flex;
-		justify-content: center;
-		align-items: center;
 		padding: 60px 20px;
-		color: var(--tertiary-color);
-		font-style: italic;
-		text-align: center;
+		min-height: 300px;
+	}
+
+	.projects-empty h3 {
+		font-size: 20px;
+	}
+
+	.projects-empty p {
+		font-size: 14px;
+	}
+
+	.projects-loading,
+	.projects-error {
+		min-height: 250px;
+		padding: 40px 15px;
+	}
+}
+
+@media (max-width: 480px) {
+	.projects-empty {
+		padding: 40px 15px;
+	}
+
+	.retry-button,
+	.retry-button-secondary {
+		font-size: 13px;
+		padding: 10px 18px;
 	}
 }

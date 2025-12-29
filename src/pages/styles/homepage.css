@@ -51,10 +51,10 @@
 	width: 100%;
 	height: 100%;
 	border-radius: 10%;
-	background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
 	backdrop-filter: blur(20px);
-	border: 1px solid rgba(255,255,255,0.1);
-	box-shadow: 
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow:
 		0 20px 40px rgba(0, 0, 0, 0.1),
 		0 8px 16px rgba(0, 0, 0, 0.05);
 	display: flex;
@@ -133,7 +133,7 @@
 	font-size: 14px;
 	letter-spacing: 0.5px;
 	transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-	box-shadow: 
+	box-shadow:
 		0 4px 15px rgba(0, 0, 0, 0.1),
 		0 2px 5px rgba(0, 0, 0, 0.08),
 		inset 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -154,10 +154,10 @@
 	left: -100%;
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(90deg, 
-		transparent, 
-		rgba(255, 255, 255, 0.8), 
-		transparent);
+	background: linear-gradient(90deg,
+			transparent,
+			rgba(255, 255, 255, 0.8),
+			transparent);
 	transition: left 0.7s ease;
 	z-index: 1;
 }
@@ -180,7 +180,7 @@
 /* Hover Effects */
 .homepage-view-more-button:hover {
 	transform: translateY(-3px) translateZ(8px) rotateX(3deg);
-	box-shadow: 
+	box-shadow:
 		0 12px 25px rgba(0, 0, 0, 0.15),
 		0 4px 10px rgba(0, 0, 0, 0.1),
 		inset 0 1px 0 rgba(255, 255, 255, 0.95);
@@ -199,7 +199,7 @@
 /* Active State */
 .homepage-view-more-button:active {
 	transform: translateY(-1px) translateZ(4px) rotateX(1deg);
-	box-shadow: 
+	box-shadow:
 		0 6px 18px rgba(0, 0, 0, 0.12),
 		0 2px 6px rgba(0, 0, 0, 0.08),
 		inset 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -208,15 +208,18 @@
 
 /* Animasi pulse subtle */
 @keyframes subtlePulse {
-	0%, 100% {
-		box-shadow: 
+
+	0%,
+	100% {
+		box-shadow:
 			0 4px 15px rgba(0, 0, 0, 0.1),
 			0 2px 5px rgba(0, 0, 0, 0.08),
 			inset 0 1px 0 rgba(255, 255, 255, 0.9);
 		transform: translateY(0) translateZ(0) rotateX(0);
 	}
+
 	50% {
-		box-shadow: 
+		box-shadow:
 			0 6px 20px rgba(0, 0, 0, 0.13),
 			0 3px 8px rgba(0, 0, 0, 0.09),
 			inset 0 1px 0 rgba(255, 255, 255, 0.95);
@@ -303,7 +306,7 @@
 		padding: 11px 25px;
 		font-size: 13px;
 	}
-	
+
 	.homepage-view-more-container {
 		margin-top: 30px;
 		padding: 18px 0;
@@ -334,11 +337,11 @@
 		padding: 10px 22px;
 		font-size: 12px;
 	}
-	
+
 	.homepage-view-more-button:hover {
 		transform: translateY(-2px) translateZ(5px) rotateX(2deg);
 	}
-	
+
 	.homepage-view-more-container {
 		margin-top: 25px;
 		padding: 15px 0;
@@ -352,4 +355,20 @@
 
 .homepage-view-more-button:hover {
 	color: white !important;
+}
+
+/* Homepage Articles Empty State */
+.homepage-articles-empty {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 40px 20px;
+	text-align: center;
+}
+
+.homepage-articles-empty p {
+	font-size: 15px;
+	color: var(--tertiary-color);
+	font-style: italic;
+	margin: 0;
 }

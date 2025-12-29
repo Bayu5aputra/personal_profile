@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { Helmet } from "react-helmet";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
@@ -21,7 +20,7 @@ import TechStackCarousel from "../components/homepage/TechStackCarousel";
 
 import INFO from "../data/user";
 import SEO from "../data/seo";
-import myArticles from "../data/articles";
+import { getAllArticles } from "../utils/contentManagement";
 
 import "./styles/homepage.css";
 
@@ -29,10 +28,22 @@ const Homepage = () => {
   const [stayLogo, setStayLogo] = useState(false);
   const [logoSize, setLogoSize] = useState(80);
   const [oldLogoSize, setOldLogoSize] = useState(80);
+  const [latestArticles, setLatestArticles] = useState([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    loadLatestArticles();
   }, []);
+
+  const loadLatestArticles = async () => {
+    try {
+      const articles = await getAllArticles();
+      setLatestArticles(articles.slice(0, 2));
+    } catch (error) {
+      console.error("Failed to load articles:", error);
+      setLatestArticles([]);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,8 +80,6 @@ const Homepage = () => {
     borderRadius: stayLogo ? "50%" : "none",
     boxShadow: stayLogo ? "0px 4px 10px rgba(0, 0, 0, 0.25)" : "none",
   };
-
-  const latestArticles = myArticles.slice(0, 2);
 
   return (
     <React.Fragment>
@@ -114,7 +123,6 @@ const Homepage = () => {
             </div>
 
             <div className="homepage-socials">
-              {/* Hapus bagian Twitter dan sesuaikan social media yang ada */}
               <a
                 href={INFO.socials.github}
                 target="_blank"
@@ -170,26 +178,31 @@ const Homepage = () => {
 
             <div className="homepage-after-title">
               <div className="homepage-articles">
-                {latestArticles.map((article, index) => (
-                  <div
-                    className="homepage-article"
-                    key={(index + 1).toString()}
-                  >
-                    <Article
-                      key={(index + 1).toString()}
-                      date={article().date}
-                      title={article().title}
-                      description={article().description}
-                      link={"/article/" + (index + 1)}
-                    />
-                  </div>
-                ))}
-                
-                {myArticles.length > 2 && (
-                  <div className="homepage-view-more-container">
-                    <Link to="/articles" className="homepage-view-more-button">
-                      View More Articles
-                    </Link>
+                {latestArticles.length > 0 ? (
+                  <>
+                    {latestArticles.map((article) => (
+                      <div
+                        className="homepage-article"
+                        key={article.id}
+                      >
+                        <Article
+                          date={article.date}
+                          title={article.title}
+                          description={article.description}
+                          link={`/article/${article.slug}`}
+                        />
+                      </div>
+                    ))}
+                    
+                    <div className="homepage-view-more-container">
+                      <Link to="/articles" className="homepage-view-more-button">
+                        View More Articles
+                      </Link>
+                    </div>
+                  </>
+                ) : (
+                  <div className="homepage-articles-empty">
+                    <p>No articles available yet.</p>
                   </div>
                 )}
               </div>

@@ -10,7 +10,8 @@ import {
   where,
   updateDoc,
   serverTimestamp,
-  setDoc
+  setDoc,
+  orderBy
 } from 'firebase/firestore';
 
 // ============================================
@@ -19,13 +20,17 @@ import {
 
 export const getAllProducts = async () => {
   try {
-    const querySnapshot = await getDocs(collection(db, 'products'));
+    const querySnapshot = await getDocs(
+      query(collection(db, 'products'), orderBy('createdAt', 'desc'))
+    );
     const products = [];
     
     querySnapshot.forEach((doc) => {
+      const data = doc.data();
       products.push({
-        id: doc.id,
-        ...doc.data()
+        documentId: doc.id, // Firebase document ID
+        id: data.id || doc.id, // Numeric or document ID
+        ...data
       });
     });
     
@@ -38,32 +43,32 @@ export const getAllProducts = async () => {
 
 export const getProductById = async (productId) => {
   try {
-    // Jika productId adalah string dan bukan numeric string, anggap sebagai Firebase doc ID
-    if (typeof productId === 'string' && isNaN(productId)) {
+    // Try numeric ID first
+    const numericId = typeof productId === 'string' ? parseInt(productId) : productId;
+    
+    if (!isNaN(numericId)) {
+      const q = query(
+        collection(db, 'products'),
+        where('id', '==', numericId)
+      );
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0];
+        return { documentId: doc.id, id: doc.data().id, ...doc.data() };
+      }
+    }
+    
+    // Try as document ID
+    if (typeof productId === 'string') {
       const docRef = doc(db, 'products', productId);
       const docSnap = await getDoc(docRef);
       
       if (docSnap.exists()) {
-        return { id: docSnap.id, ...docSnap.data() };
+        return { documentId: docSnap.id, id: docSnap.data().id, ...docSnap.data() };
       }
     }
     
-    // Convert to number jika perlu
-    const numericId = typeof productId === 'string' ? parseInt(productId) : productId;
-    
-    // Query by numeric ID field (untuk kompatibilitas dengan data lokal)
-    const q = query(
-      collection(db, 'products'),
-      where('id', '==', numericId)
-    );
-    const querySnapshot = await getDocs(q);
-    
-    if (!querySnapshot.empty) {
-      const doc = querySnapshot.docs[0];
-      return { id: doc.id, ...doc.data() };
-    }
-    
-    console.log("ℹ️ Product not found in Firebase:", productId);
     return null;
   } catch (error) {
     console.error("❌ Get product by ID failed:", error.message);
@@ -73,6 +78,11 @@ export const getProductById = async (productId) => {
 
 export const addProduct = async (productData) => {
   try {
+    // Ensure image path or use placeholder
+    if (!productData.image || productData.image.trim() === '') {
+      productData.image = '/no_image.png';
+    }
+    
     const docRef = await addDoc(collection(db, 'products'), {
       ...productData,
       createdAt: serverTimestamp(),
@@ -89,6 +99,11 @@ export const addProduct = async (productData) => {
 
 export const updateProduct = async (productId, productData) => {
   try {
+    // Ensure image path or use placeholder
+    if (!productData.image || productData.image.trim() === '') {
+      productData.image = '/no_image.png';
+    }
+    
     const productRef = doc(db, 'products', productId);
     await updateDoc(productRef, {
       ...productData,
@@ -114,34 +129,15 @@ export const deleteProduct = async (productId) => {
   }
 };
 
-// Fungsi tambahan untuk mendapatkan product dengan field ID numerik
-export const getProductByNumericId = async (numericId) => {
-  return await getProductById(numericId);
-};
-
-// Fungsi untuk mendapatkan product berdasarkan Firebase document ID
-export const getProductByDocId = async (docId) => {
-  try {
-    const docRef = doc(db, 'products', docId);
-    const docSnap = await getDoc(docRef);
-    
-    if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() };
-    }
-    return null;
-  } catch (error) {
-    console.error("❌ Get product by doc ID failed:", error.message);
-    return null;
-  }
-};
-
 // ============================================
 // PROJECTS MANAGEMENT
 // ============================================
 
 export const getAllProjects = async () => {
   try {
-    const querySnapshot = await getDocs(collection(db, 'projects'));
+    const querySnapshot = await getDocs(
+      query(collection(db, 'projects'), orderBy('createdAt', 'desc'))
+    );
     const projects = [];
     
     querySnapshot.forEach((doc) => {
@@ -207,7 +203,9 @@ export const deleteProject = async (projectId) => {
 
 export const getAllArticles = async () => {
   try {
-    const querySnapshot = await getDocs(collection(db, 'articles'));
+    const querySnapshot = await getDocs(
+      query(collection(db, 'articles'), orderBy('createdAt', 'desc'))
+    );
     const articles = [];
     
     querySnapshot.forEach((doc) => {
@@ -221,6 +219,26 @@ export const getAllArticles = async () => {
   } catch (error) {
     console.error("❌ Get articles failed:", error.message);
     return [];
+  }
+};
+
+export const getArticleBySlug = async (slug) => {
+  try {
+    const q = query(
+      collection(db, 'articles'),
+      where('slug', '==', slug)
+    );
+    const querySnapshot = await getDocs(q);
+    
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0];
+      return { id: doc.id, ...doc.data() };
+    }
+    
+    return null;
+  } catch (error) {
+    console.error("❌ Get article by slug failed:", error.message);
+    return null;
   }
 };
 
@@ -349,54 +367,5 @@ export const getDashboardStats = async () => {
       keys: 0,
       users: 0
     };
-  }
-};
-
-// Fungsi utilitas untuk migrasi data lokal ke Firebase
-export const migrateLocalProductsToFirebase = async (localProducts) => {
-  try {
-    const results = [];
-    
-    for (const product of localProducts) {
-      try {
-        // Cek apakah product sudah ada di Firebase
-        const existingProduct = await getProductById(product.id);
-        
-        if (!existingProduct) {
-          // Tambahkan ke Firebase
-          const result = await addProduct({
-            id: product.id, // Simpan ID numerik di field 'id'
-            title: product.title,
-            description: product.description,
-            price: product.price,
-            originalPrice: product.originalPrice || null,
-            image: product.image,
-            category: product.category || 'Digital Product',
-            featured: product.featured || false,
-            delivery: product.delivery || 'Instant download',
-            support: product.support || 'Email support',
-            license: product.license || 'Personal & Commercial Use',
-            features: product.features || [],
-            technologies: product.technologies || [],
-            createdAt: new Date().toISOString()
-          });
-          
-          if (result.success) {
-            results.push({ id: product.id, firebaseId: result.id, status: 'success' });
-          } else {
-            results.push({ id: product.id, status: 'failed', error: result.error });
-          }
-        } else {
-          results.push({ id: product.id, status: 'already_exists' });
-        }
-      } catch (error) {
-        results.push({ id: product.id, status: 'error', error: error.message });
-      }
-    }
-    
-    return results;
-  } catch (error) {
-    console.error("❌ Migration failed:", error.message);
-    return [];
   }
 };

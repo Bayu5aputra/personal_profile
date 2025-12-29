@@ -1,154 +1,210 @@
-@import "../../../data/styles.css";
+/* ===================================
+   SELL PRODUCTS SECTION
+   =================================== */
 
-.all-sell-products-container {
-	margin-top: 80px;
-	padding-top: 40px;
-	border-top: 3px solid var(--link-color);
-}
-
-.sell-products-header {
-	text-align: center;
-	margin-bottom: 50px;
-	animation: fadeInUp 0.6s ease-out;
-}
-
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(30px);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+.sell-products-section {
+	width: 100%;
+	margin-top: 50px;
 }
 
 .sell-products-title {
-	font-size: 38px;
-	font-weight: 800;
+	margin-bottom: 30px;
+	font-size: 28px;
+	font-weight: 700;
 	color: var(--primary-color);
-	margin: 0 0 15px 0;
-	letter-spacing: -0.5px;
-	background: linear-gradient(135deg, var(--primary-color), var(--link-color));
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	background-clip: text;
 }
 
-.sell-products-subtitle {
+/* ===================================
+   LOADING STATE
+   =================================== */
+
+.sell-products-loading {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 300px;
+	padding: 60px 20px;
+	gap: 20px;
+}
+
+.sell-products-loading svg {
+	color: var(--link-color);
+}
+
+.sell-products-loading p {
 	font-size: 16px;
 	color: var(--secondary-color);
-	max-width: 600px;
-	margin: 0 auto;
+	margin: 0;
+}
+
+/* ===================================
+   ERROR STATE
+   =================================== */
+
+.sell-products-error {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 300px;
+	padding: 60px 20px;
+	gap: 20px;
+	text-align: center;
+}
+
+.sell-products-error svg {
+	color: #e74c3c;
+}
+
+.sell-products-error p {
+	font-size: 16px;
+	color: var(--secondary-color);
+	max-width: 500px;
 	line-height: 1.6;
+	margin: 0;
 }
 
-.sell-products-grid {
+.retry-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 24px;
+	background: linear-gradient(135deg, var(--link-color), #667eea);
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	margin-top: 10px;
+}
+
+.retry-button:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.retry-button:active {
+	transform: translateY(0);
+}
+
+/* ===================================
+   EMPTY STATE (FRIENDLY VERSION)
+   =================================== */
+
+.sell-products-empty {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 350px;
+	padding: 80px 20px;
+	gap: 15px;
+	text-align: center;
+	background: linear-gradient(135deg, rgba(102, 126, 234, 0.03), rgba(118, 75, 162, 0.03));
+	border-radius: 16px;
+	border: 2px dashed rgba(102, 126, 234, 0.2);
+}
+
+.sell-products-empty .empty-icon {
+	margin-bottom: 10px;
+}
+
+.sell-products-empty .empty-icon svg {
+	color: var(--link-color);
+	opacity: 0.6;
+}
+
+.sell-products-empty h3 {
+	font-size: 24px;
+	font-weight: 700;
+	color: var(--primary-color);
+	margin: 10px 0 5px 0;
+}
+
+.sell-products-empty p {
+	font-size: 16px;
+	color: var(--secondary-color);
+	max-width: 450px;
+	line-height: 1.6;
+	margin: 0 0 20px 0;
+}
+
+.retry-button-secondary {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 20px;
+	background: transparent;
+	color: var(--link-color);
+	border: 2px solid var(--link-color);
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.retry-button-secondary:hover {
+	background: var(--link-color);
+	color: white;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.retry-button-secondary:active {
+	transform: translateY(0);
+}
+
+/* ===================================
+   PRODUCTS CONTAINER
+   =================================== */
+
+.sell-products-container {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	gap: 30px;
-	margin-bottom: 60px;
+	margin-top: 30px;
 }
 
-.sell-products-item {
-	animation: fadeInScale 0.6s ease-out backwards;
-}
-
-.sell-products-item:nth-child(1) {
-	animation-delay: 0.1s;
-}
-
-.sell-products-item:nth-child(2) {
-	animation-delay: 0.2s;
-}
-
-.sell-products-item:nth-child(3) {
-	animation-delay: 0.3s;
-}
-
-.sell-products-item:nth-child(4) {
-	animation-delay: 0.4s;
-}
-
-.sell-products-item:nth-child(5) {
-	animation-delay: 0.5s;
-}
-
-.sell-products-item:nth-child(6) {
-	animation-delay: 0.6s;
-}
-
-@keyframes fadeInScale {
-	from {
-		opacity: 0;
-		transform: scale(0.9);
-	}
-
-	to {
-		opacity: 1;
-		transform: scale(1);
-	}
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-	.sell-products-grid {
-		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-		gap: 25px;
-	}
-
-	.sell-products-title {
-		font-size: 32px;
-	}
-
-	.sell-products-subtitle {
-		font-size: 15px;
-	}
-}
+/* ===================================
+   RESPONSIVE
+   =================================== */
 
 @media (max-width: 768px) {
-	.all-sell-products-container {
-		margin-top: 60px;
-		padding-top: 30px;
-	}
-
-	.sell-products-header {
-		margin-bottom: 35px;
-	}
-
-	.sell-products-title {
-		font-size: 28px;
-	}
-
-	.sell-products-subtitle {
-		font-size: 14px;
-	}
-
-	.sell-products-grid {
-		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-		gap: 20px;
-	}
-}
-
-@media (max-width: 600px) {
-	.sell-products-grid {
-		grid-template-columns: 1fr;
-		gap: 20px;
-	}
-
 	.sell-products-title {
 		font-size: 24px;
 	}
 
-	/* Loading State */
-	.sell-products-loading {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: 80px 20px;
-		color: var(--tertiary-color);
-		font-style: italic;
-		font-size: 16px;
+	.sell-products-container {
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+
+	.sell-products-empty {
+		padding: 60px 20px;
+		min-height: 300px;
+	}
+
+	.sell-products-empty h3 {
+		font-size: 20px;
+	}
+
+	.sell-products-empty p {
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 480px) {
+	.sell-products-empty {
+		padding: 40px 15px;
+	}
+
+	.retry-button,
+	.retry-button-secondary {
+		font-size: 13px;
+		padding: 10px 18px;
 	}
 }
