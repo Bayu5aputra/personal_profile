@@ -103,7 +103,11 @@
 	padding: 80px 20px;
 	gap: 15px;
 	text-align: center;
-	background: linear-gradient(135deg, rgba(102, 126, 234, 0.03), rgba(118, 75, 162, 0.03));
+	background: linear-gradient(
+		135deg,
+		rgba(102, 126, 234, 0.03),
+		rgba(118, 75, 162, 0.03)
+	);
 	border-radius: 16px;
 	border: 2px dashed rgba(102, 126, 234, 0.2);
 }
@@ -159,19 +163,32 @@
 }
 
 /* ===================================
-   PRODUCTS CONTAINER
+   PRODUCTS CONTAINER - Grid Layout Konsisten
    =================================== */
 
 .sell-products-container {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-	gap: 30px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 25px;
+	width: 100%;
 	margin-top: 30px;
+}
+
+.sell-products-container > * {
+	flex-basis: calc(33.333% - 17px);
+	max-width: calc(33.333% - 17px);
 }
 
 /* ===================================
    RESPONSIVE
    =================================== */
+
+@media (max-width: 1024px) {
+	.sell-products-container > * {
+		flex-basis: calc(50% - 13px);
+		max-width: calc(50% - 13px);
+	}
+}
 
 @media (max-width: 768px) {
 	.sell-products-title {
@@ -179,32 +196,11 @@
 	}
 
 	.sell-products-container {
-		grid-template-columns: 1fr;
 		gap: 20px;
 	}
 
-	.sell-products-empty {
-		padding: 60px 20px;
-		min-height: 300px;
-	}
-
-	.sell-products-empty h3 {
-		font-size: 20px;
-	}
-
-	.sell-products-empty p {
-		font-size: 14px;
-	}
-}
-
-@media (max-width: 480px) {
-	.sell-products-empty {
-		padding: 40px 15px;
-	}
-
-	.retry-button,
-	.retry-button-secondary {
-		font-size: 13px;
-		padding: 10px 18px;
+	.sell-products-container > * {
+		flex-basis: 100%;
+		max-width: 100%;
 	}
 }

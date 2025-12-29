@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner, faExclamationTriangle, faSync, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faExclamationTriangle, faSync } from "@fortawesome/free-solid-svg-icons";
 import SellProduct from "./sellProduct";
 import { getAllProducts } from "../../utils/contentManagement";
 
@@ -21,13 +21,7 @@ const AllSellProducts = () => {
 		
 		try {
 			const firebaseProducts = await getAllProducts();
-			
-			if (firebaseProducts.length > 0) {
-				setProducts(firebaseProducts);
-			} else {
-				// Tidak set error, biarkan products kosong untuk menampilkan empty state
-				setProducts([]);
-			}
+			setProducts(firebaseProducts);
 		} catch (error) {
 			console.error("Failed to load products:", error);
 			setError("Failed to load products from server. Please try refreshing the page.");
@@ -40,7 +34,6 @@ const AllSellProducts = () => {
 		loadProducts();
 	};
 
-	// Loading state
 	if (isLoading) {
 		return (
 			<div className="sell-products-section">
@@ -53,7 +46,6 @@ const AllSellProducts = () => {
 		);
 	}
 
-	// Error state (only for actual errors, not empty data)
 	if (error) {
 		return (
 			<div className="sell-products-section">
@@ -70,27 +62,10 @@ const AllSellProducts = () => {
 		);
 	}
 
-	// Empty state (no products available - this is NOT an error)
 	if (products.length === 0) {
-		return (
-			<div className="sell-products-section">
-				<div className="title sell-products-title">Products for Sale</div>
-				<div className="sell-products-empty">
-					<div className="empty-icon">
-						<FontAwesomeIcon icon={faShoppingBag} size="3x" />
-					</div>
-					<h3>No Products Available</h3>
-					<p>There are no products for sale yet, please come back later</p>
-					<button className="retry-button-secondary" onClick={handleRefresh}>
-						<FontAwesomeIcon icon={faSync} />
-						<span>Check Again</span>
-					</button>
-				</div>
-			</div>
-		);
+		return null;
 	}
 
-	// Success state with products
 	return (
 		<div className="sell-products-section">
 			<div className="title sell-products-title">Products for Sale</div>
@@ -103,7 +78,9 @@ const AllSellProducts = () => {
 						description={product.description}
 						image={product.image || '/no_image.png'}
 						price={product.price}
+						originalPrice={product.originalPrice}
 						category={product.category}
+						featured={product.featured}
 					/>
 				))}
 			</div>

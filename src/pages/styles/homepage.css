@@ -51,12 +51,14 @@
 	width: 100%;
 	height: 100%;
 	border-radius: 10%;
-	background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+	background: linear-gradient(
+		135deg,
+		rgba(255, 255, 255, 0.05),
+		rgba(255, 255, 255, 0.02)
+	);
 	backdrop-filter: blur(20px);
 	border: 1px solid rgba(255, 255, 255, 0.1);
-	box-shadow:
-		0 20px 40px rgba(0, 0, 0, 0.1),
-		0 8px 16px rgba(0, 0, 0, 0.05);
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.05);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -133,9 +135,7 @@
 	font-size: 14px;
 	letter-spacing: 0.5px;
 	transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-	box-shadow:
-		0 4px 15px rgba(0, 0, 0, 0.1),
-		0 2px 5px rgba(0, 0, 0, 0.08),
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.08),
 		inset 0 1px 0 rgba(255, 255, 255, 0.9);
 	border: 1px solid rgba(255, 255, 255, 0.3);
 	cursor: pointer;
@@ -148,29 +148,35 @@
 
 /* Efek shine background */
 .homepage-view-more-button::before {
-	content: '';
+	content: "";
 	position: absolute;
 	top: 0;
 	left: -100%;
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(90deg,
-			transparent,
-			rgba(255, 255, 255, 0.8),
-			transparent);
+	background: linear-gradient(
+		90deg,
+		transparent,
+		rgba(255, 255, 255, 0.8),
+		transparent
+	);
 	transition: left 0.7s ease;
 	z-index: 1;
 }
 
 /* Gradient background yang muncul saat hover */
 .homepage-view-more-button::after {
-	content: '';
+	content: "";
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(135deg, var(--link-color), var(--primary-color));
+	background: linear-gradient(
+		135deg,
+		var(--link-color),
+		var(--primary-color)
+	);
 	opacity: 0;
 	transition: all 0.4s ease;
 	z-index: -1;
@@ -180,9 +186,7 @@
 /* Hover Effects */
 .homepage-view-more-button:hover {
 	transform: translateY(-3px) translateZ(8px) rotateX(3deg);
-	box-shadow:
-		0 12px 25px rgba(0, 0, 0, 0.15),
-		0 4px 10px rgba(0, 0, 0, 0.1),
+	box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1),
 		inset 0 1px 0 rgba(255, 255, 255, 0.95);
 	color: white !important;
 	letter-spacing: 0.7px;
@@ -199,28 +203,22 @@
 /* Active State */
 .homepage-view-more-button:active {
 	transform: translateY(-1px) translateZ(4px) rotateX(1deg);
-	box-shadow:
-		0 6px 18px rgba(0, 0, 0, 0.12),
-		0 2px 6px rgba(0, 0, 0, 0.08),
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08),
 		inset 0 1px 0 rgba(255, 255, 255, 0.9);
 	transition: all 0.1s ease;
 }
 
 /* Animasi pulse subtle */
 @keyframes subtlePulse {
-
 	0%,
 	100% {
-		box-shadow:
-			0 4px 15px rgba(0, 0, 0, 0.1),
-			0 2px 5px rgba(0, 0, 0, 0.08),
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.08),
 			inset 0 1px 0 rgba(255, 255, 255, 0.9);
 		transform: translateY(0) translateZ(0) rotateX(0);
 	}
 
 	50% {
-		box-shadow:
-			0 6px 20px rgba(0, 0, 0, 0.13),
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.13),
 			0 3px 8px rgba(0, 0, 0, 0.09),
 			inset 0 1px 0 rgba(255, 255, 255, 0.95);
 		transform: translateY(-1px) translateZ(2px) rotateX(1deg);
@@ -371,4 +369,37 @@
 	color: var(--tertiary-color);
 	font-style: italic;
 	margin: 0;
+}
+/* ===================================
+   ARTICLES EMPTY STATE - Subtle
+   =================================== */
+
+.homepage-articles-empty {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 60px 20px;
+	text-align: center;
+	background: rgba(240, 240, 240, 0.3);
+	border-radius: 16px;
+	border: 2px dashed #e0e0e0;
+	margin-top: 20px;
+}
+
+.homepage-articles-empty p {
+	font-size: 15px;
+	color: var(--tertiary-color);
+	font-style: italic;
+	margin: 0;
+	font-weight: 500;
+}
+
+@media (max-width: 768px) {
+	.homepage-articles-empty {
+		padding: 40px 15px;
+	}
+
+	.homepage-articles-empty p {
+		font-size: 14px;
+	}
 }

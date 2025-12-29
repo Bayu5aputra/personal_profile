@@ -28,8 +28,8 @@ export const getAllProducts = async () => {
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       products.push({
-        documentId: doc.id, // Firebase document ID
-        id: data.id || doc.id, // Numeric or document ID
+        documentId: doc.id,
+        id: data.id || doc.id,
         ...data
       });
     });
@@ -43,7 +43,6 @@ export const getAllProducts = async () => {
 
 export const getProductById = async (productId) => {
   try {
-    // Try numeric ID first
     const numericId = typeof productId === 'string' ? parseInt(productId) : productId;
     
     if (!isNaN(numericId)) {
@@ -59,7 +58,6 @@ export const getProductById = async (productId) => {
       }
     }
     
-    // Try as document ID
     if (typeof productId === 'string') {
       const docRef = doc(db, 'products', productId);
       const docSnap = await getDoc(docRef);
@@ -78,7 +76,6 @@ export const getProductById = async (productId) => {
 
 export const addProduct = async (productData) => {
   try {
-    // Ensure image path or use placeholder
     if (!productData.image || productData.image.trim() === '') {
       productData.image = '/no_image.png';
     }
@@ -99,7 +96,6 @@ export const addProduct = async (productData) => {
 
 export const updateProduct = async (productId, productData) => {
   try {
-    // Ensure image path or use placeholder
     if (!productData.image || productData.image.trim() === '') {
       productData.image = '/no_image.png';
     }
@@ -120,8 +116,10 @@ export const updateProduct = async (productId, productData) => {
 
 export const deleteProduct = async (productId) => {
   try {
-    await deleteDoc(doc(db, 'products', productId));
-    console.log("✅ Product deleted:", productId);
+    const docId = typeof productId === 'string' ? productId : String(productId);
+    
+    await deleteDoc(doc(db, 'products', docId));
+    console.log("✅ Product deleted:", docId);
     return { success: true };
   } catch (error) {
     console.error("❌ Delete product failed:", error.message);

@@ -17,7 +17,7 @@ import {
   deleteProduct
 } from '../../utils/contentManagement';
 
-import './styles/productsManagement.css'; // ✅ DIPERBAIKI: case-sensitive
+import './styles/productsManagement.css';
 
 const ProductsManagement = () => {
   const [products, setProducts] = useState([]);
@@ -37,7 +37,8 @@ const ProductsManagement = () => {
     technologies: '',
     delivery: '1-2 days',
     support: '24/7',
-    license: 'Single use'
+    license: 'Single use',
+    featured: false
   });
 
   useEffect(() => {
@@ -70,7 +71,6 @@ const ProductsManagement = () => {
     e.preventDefault();
     
     try {
-      // Parse features and technologies
       const featuresArray = formData.features
         .split('\n')
         .filter(f => f.trim() !== '')
@@ -85,7 +85,7 @@ const ProductsManagement = () => {
         id: parseInt(formData.id),
         title: formData.title,
         description: formData.description,
-        image: formData.image || '/no_image.png', // Default placeholder
+        image: formData.image || '/no_image.png',
         price: parseFloat(formData.price),
         originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : null,
         category: formData.category,
@@ -93,11 +93,12 @@ const ProductsManagement = () => {
         technologies: technologiesArray,
         delivery: formData.delivery,
         support: formData.support,
-        license: formData.license
+        license: formData.license,
+        featured: formData.featured
       };
 
       if (editingProduct) {
-        await updateProduct(editingProduct.firebaseId, productData);
+        await updateProduct(editingProduct.documentId, productData);
       } else {
         await addProduct(productData);
       }
@@ -125,15 +126,16 @@ const ProductsManagement = () => {
       technologies: product.technologies ? product.technologies.join(', ') : '',
       delivery: product.delivery || '1-2 days',
       support: product.support || '24/7',
-      license: product.license || 'Single use'
+      license: product.license || 'Single use',
+      featured: product.featured || false
     });
     setShowForm(true);
   };
 
-  const handleDelete = async (firebaseId, title) => {
+  const handleDelete = async (documentId, title) => {
     if (window.confirm(`Are you sure you want to delete "${title}"?`)) {
       try {
-        await deleteProduct(firebaseId);
+        await deleteProduct(documentId);
         await loadProducts();
         alert('Product deleted successfully!');
       } catch (err) {
@@ -156,7 +158,8 @@ const ProductsManagement = () => {
       technologies: '',
       delivery: '1-2 days',
       support: '24/7',
-      license: 'Single use'
+      license: 'Single use',
+      featured: false
     });
     setEditingProduct(null);
     setShowForm(false);
@@ -329,6 +332,22 @@ const ProductsManagement = () => {
                 </div>
 
                 <div className="form-group full-width">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="featured"
+                      checked={formData.featured}
+                      onChange={(e) => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
+                      style={{ width: 'auto', marginRight: '10px' }}
+                    />
+                    Mark as Featured Product
+                  </label>
+                  <small className="form-hint">
+                    Featured products will display a special badge
+                  </small>
+                </div>
+
+                <div className="form-group full-width">
                   <label>Features (one per line)</label>
                   <textarea
                     name="features"
@@ -370,12 +389,12 @@ const ProductsManagement = () => {
         <table className="products-table">
           <thead>
             <tr>
-              <th>Firebase ID</th>
               <th>ID</th>
               <th>Image</th>
               <th>Title</th>
               <th>Category</th>
               <th>Price</th>
+              <th>Featured</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -387,51 +406,48 @@ const ProductsManagement = () => {
                 </td>
               </tr>
             ) : (
-              products.map((product) => {
-                // Fix untuk firebaseId.substring error
-                const displayFirebaseId = product.firebaseId 
-                  ? (typeof product.firebaseId === 'string' 
-                    ? product.firebaseId.substring(0, 8) 
-                    : String(product.firebaseId).substring(0, 8))
-                  : 'N/A';
-
-                return (
-                  <tr key={product.firebaseId || product.id}>
-                    <td className="firebase-id">{displayFirebaseId}</td>
-                    <td>{product.id}</td>
-                    <td>
-                      <img 
-                        src={product.image || '/no_image.png'} 
-                        alt={product.title}
-                        className="product-thumbnail"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = '/no_image.png';
-                        }}
-                      />
-                    </td>
-                    <td className="product-title">{product.title}</td>
-                    <td>{product.category}</td>
-                    <td>Rp {product.price?.toLocaleString('id-ID')}</td>
-                    <td className="actions">
-                      <button
-                        onClick={() => handleEdit(product)}
-                        className="edit-button"
-                        title="Edit"
-                      >
-                        <FontAwesomeIcon icon={faEdit} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(product.firebaseId, product.title)}
-                        className="delete-button"
-                        title="Delete"
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })
+              products.map((product) => (
+                <tr key={product.documentId || product.id}>
+                  <td>{product.id}</td>
+                  <td>
+                    <img 
+                      src={product.image || '/no_image.png'} 
+                      alt={product.title}
+                      className="product-thumbnail"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = '/no_image.png';
+                      }}
+                    />
+                  </td>
+                  <td className="product-title">{product.title}</td>
+                  <td>{product.category}</td>
+                  <td>Rp {product.price?.toLocaleString('id-ID')}</td>
+                  <td>
+                    {product.featured ? (
+                      <span className="badge-featured">⭐ Yes</span>
+                    ) : (
+                      <span className="badge-normal">No</span>
+                    )}
+                  </td>
+                  <td className="actions">
+                    <button
+                      onClick={() => handleEdit(product)}
+                      className="edit-button"
+                      title="Edit"
+                    >
+                      <FontAwesomeIcon icon={faEdit} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(product.documentId, product.title)}
+                      className="delete-button"
+                      title="Delete"
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </td>
+                </tr>
+              ))
             )}
           </tbody>
         </table>
