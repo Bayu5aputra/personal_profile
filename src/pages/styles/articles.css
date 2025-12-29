@@ -1,3 +1,9 @@
+@import "../../data/styles.css";
+
+/* ===================================
+   LOGO & CONTAINER
+   =================================== */
+
 .articles-logo-container {
 	display: flex;
 	justify-content: left;
@@ -11,6 +17,7 @@
 	border-radius: 50%;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 	top: 4vh;
+	z-index: 999;
 }
 
 .articles-main-container {
@@ -21,13 +28,86 @@
 	padding-top: 120px;
 }
 
+/* ===================================
+   HEADER WITH REFRESH BUTTON
+   =================================== */
+
+.articles-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 30px;
+	margin-bottom: 40px;
+	flex-wrap: wrap;
+}
+
+.articles-header-content {
+	flex: 1;
+	min-width: 300px;
+}
+
+.articles-title {
+	font-size: 32px;
+	font-weight: 700;
+	color: var(--primary-color);
+	margin: 0 0 15px 0;
+	line-height: 1.3;
+	width: 100%;
+}
+
+.articles-subtitle {
+	font-size: 16px;
+	color: var(--secondary-color);
+	line-height: 1.6;
+	margin: 0;
+	width: 100%;
+}
+
+/* Refresh Button */
+.articles-refresh-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 24px;
+	background: white;
+	color: var(--link-color);
+	border: 2px solid var(--link-color);
+	border-radius: 12px;
+	font-size: 14px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	flex-shrink: 0;
+	box-shadow: 0 4px 15px rgba(20, 184, 166, 0.2);
+}
+
+.articles-refresh-button:hover {
+	background: var(--link-color);
+	color: white;
+	transform: translateY(-3px);
+	box-shadow: 0 8px 20px rgba(20, 184, 166, 0.4);
+}
+
+.articles-refresh-button svg {
+	font-size: 16px;
+	transition: transform 0.3s ease;
+}
+
+.articles-refresh-button:hover svg {
+	transform: rotate(180deg);
+}
+
+/* ===================================
+   ARTICLES CONTAINER
+   =================================== */
+
 .articles-container {
 	display: flex;
 	flex-direction: column;
 }
 
 .articles-wrapper {
-	padding-top: 50px;
+	padding-top: 20px;
 	padding-bottom: 50px;
 	display: flex;
 	flex-direction: column;
@@ -41,12 +121,207 @@
 	width: 100%;
 }
 
+/* ===================================
+   LOADING STATE
+   =================================== */
+
+.articles-loading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 80px 20px;
+	gap: 20px;
+}
+
+.articles-loading svg {
+	color: var(--link-color);
+}
+
+.articles-loading p {
+	font-size: 16px;
+	color: var(--secondary-color);
+	margin: 0;
+}
+
+/* ===================================
+   ERROR STATE
+   =================================== */
+
+.articles-error {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 80px 20px;
+	gap: 20px;
+	text-align: center;
+	background: rgba(244, 67, 54, 0.05);
+	border-radius: 16px;
+	border: 2px solid rgba(244, 67, 54, 0.2);
+	margin-top: 40px;
+}
+
+.articles-error svg {
+	color: #ef4444;
+}
+
+.articles-error p {
+	font-size: 16px;
+	color: var(--secondary-color);
+	max-width: 500px;
+	margin: 0;
+}
+
+.articles-retry-button {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 24px;
+	background: var(--link-color);
+	color: white;
+	border: none;
+	border-radius: 12px;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	margin-top: 10px;
+}
+
+.articles-retry-button:hover {
+	background: var(--primary-color);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ===================================
+   EMPTY STATE
+   =================================== */
+
+.articles-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 80px 20px;
+	text-align: center;
+	background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+	border-radius: 24px;
+	border: 2px dashed rgba(148, 163, 184, 0.3);
+	margin: 40px 0;
+	min-height: 300px;
+	transition: all 0.3s ease;
+}
+
+.articles-empty:hover {
+	border-color: rgba(148, 163, 184, 0.5);
+	background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+}
+
+.empty-icon {
+	width: 80px;
+	height: 80px;
+	background: linear-gradient(135deg, var(--link-color) 0%, var(--primary-color) 100%);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 24px;
+	box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
+}
+
+.empty-icon svg {
+	font-size: 32px;
+	color: white;
+}
+
+.empty-message {
+	font-size: 20px;
+	font-weight: 700;
+	color: var(--primary-color);
+	margin: 0 0 12px 0;
+}
+
+.empty-hint {
+	font-size: 15px;
+	color: var(--secondary-color);
+	margin: 0;
+	max-width: 400px;
+	line-height: 1.6;
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+
 @media (max-width: 1024px) {
+	.articles-main-container {
+		padding-top: 100px;
+	}
+
+	.articles-header {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.articles-refresh-button {
+		width: 100%;
+		justify-content: center;
+	}
+
 	.articles-title {
-		width: 100% !important;
+		font-size: 28px;
+	}
+}
+
+@media (max-width: 768px) {
+	.articles-main-container {
+		padding-top: 80px;
+	}
+
+	.articles-title {
+		font-size: 24px;
 	}
 
 	.articles-subtitle {
-		width: 100% !important;
+		font-size: 14px;
+	}
+
+	.articles-empty {
+		padding: 60px 20px;
+		margin: 30px 0;
+	}
+
+	.empty-icon {
+		width: 60px;
+		height: 60px;
+	}
+
+	.empty-icon svg {
+		font-size: 24px;
+	}
+
+	.empty-message {
+		font-size: 18px;
+	}
+
+	.empty-hint {
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 480px) {
+	.articles-title {
+		font-size: 20px;
+	}
+
+	.articles-empty {
+		padding: 50px 15px;
+	}
+
+	.articles-refresh-button {
+		padding: 10px 20px;
+		font-size: 13px;
 	}
 }
