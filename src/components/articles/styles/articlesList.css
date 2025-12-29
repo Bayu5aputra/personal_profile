@@ -1,0 +1,234 @@
+@import "../../../data/styles.css";
+
+/* ============================================
+   ARTICLES SECTION
+   ============================================ */
+
+.homepage-articles-section {
+	padding: 60px 0;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.articles-section-title {
+	font-size: 32px;
+	font-weight: 700;
+	color: var(--primary-color);
+	margin-bottom: 15px;
+	line-height: 1.3;
+}
+
+.articles-subtitle {
+	font-size: 16px;
+	color: var(--secondary-color);
+	margin-bottom: 40px;
+	line-height: 1.6;
+	max-width: 800px;
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+
+.articles-loading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 80px 20px;
+	gap: 20px;
+}
+
+.articles-loading svg {
+	color: var(--link-color);
+}
+
+.articles-loading p {
+	font-size: 16px;
+	color: var(--secondary-color);
+	margin: 0;
+}
+
+/* ============================================
+   ERROR STATE
+   ============================================ */
+
+.articles-error {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 80px 20px;
+	gap: 20px;
+	text-align: center;
+}
+
+.articles-error svg {
+	color: #ef4444;
+}
+
+.articles-error p {
+	font-size: 16px;
+	color: var(--secondary-color);
+	max-width: 500px;
+	margin: 0;
+}
+
+.articles-retry-button {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 24px;
+	background: var(--link-color);
+	color: white;
+	border: none;
+	border-radius: 12px;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	margin-top: 10px;
+}
+
+.articles-retry-button:hover {
+	background: var(--primary-color);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   EMPTY STATE - MODERN & CLEAN
+   ============================================ */
+
+.homepage-articles-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 80px 20px;
+	text-align: center;
+	background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+	border-radius: 24px;
+	border: 2px dashed rgba(148, 163, 184, 0.3);
+	margin: 40px 0;
+	min-height: 300px;
+	transition: all 0.3s ease;
+}
+
+.homepage-articles-empty:hover {
+	border-color: rgba(148, 163, 184, 0.5);
+	background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+}
+
+.empty-icon {
+	width: 80px;
+	height: 80px;
+	background: linear-gradient(135deg, var(--link-color) 0%, var(--primary-color) 100%);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 24px;
+	box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
+}
+
+.empty-icon svg {
+	font-size: 32px;
+	color: white;
+}
+
+.empty-message {
+	font-size: 20px;
+	font-weight: 700;
+	color: var(--primary-color);
+	margin: 0 0 12px 0;
+}
+
+.empty-hint {
+	font-size: 15px;
+	color: var(--secondary-color);
+	margin: 0;
+	max-width: 400px;
+	line-height: 1.6;
+}
+
+/* ============================================
+   ARTICLES GRID
+   ============================================ */
+
+.homepage-articles-container {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 25px;
+	margin-top: 40px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1024px) {
+	.homepage-articles-section {
+		padding: 50px 20px;
+	}
+
+	.articles-section-title {
+		font-size: 28px;
+	}
+
+	.homepage-articles-container {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 20px;
+	}
+}
+
+@media (max-width: 768px) {
+	.homepage-articles-section {
+		padding: 40px 20px;
+	}
+
+	.articles-section-title {
+		font-size: 24px;
+	}
+
+	.articles-subtitle {
+		font-size: 14px;
+	}
+
+	.homepage-articles-container {
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+
+	.homepage-articles-empty {
+		padding: 60px 20px;
+		margin: 30px 0;
+	}
+
+	.empty-icon {
+		width: 60px;
+		height: 60px;
+	}
+
+	.empty-icon svg {
+		font-size: 24px;
+	}
+
+	.empty-message {
+		font-size: 18px;
+	}
+
+	.empty-hint {
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 480px) {
+	.articles-section-title {
+		font-size: 20px;
+	}
+
+	.homepage-articles-empty {
+		padding: 50px 15px;
+	}
+}
