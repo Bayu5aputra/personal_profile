@@ -194,14 +194,31 @@
 }
 
 @keyframes pulse {
-	0%, 100% { transform: scale(1); }
-	50% { transform: scale(1.05); }
+
+	0%,
+	100% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.05);
+	}
 }
 
 @keyframes fire {
-	0%, 100% { transform: rotate(0deg); }
-	25% { transform: rotate(-10deg); }
-	75% { transform: rotate(10deg); }
+
+	0%,
+	100% {
+		transform: rotate(0deg);
+	}
+
+	25% {
+		transform: rotate(-10deg);
+	}
+
+	75% {
+		transform: rotate(10deg);
+	}
 }
 
 /* ============================================
@@ -506,11 +523,11 @@
 		grid-template-columns: 1fr;
 		gap: 30px;
 	}
-	
+
 	.features-grid {
 		grid-template-columns: 1fr;
 	}
-	
+
 	.product-quick-info {
 		grid-template-columns: 1fr;
 	}
@@ -520,23 +537,23 @@
 	.product-detail-container {
 		padding-top: 100px;
 	}
-	
+
 	.product-detail-header {
 		padding: 30px;
 	}
-	
+
 	.product-detail-title {
 		font-size: 28px;
 	}
-	
+
 	.price-current {
 		font-size: 32px;
 	}
-	
+
 	.product-cta-buttons {
 		flex-direction: column;
 	}
-	
+
 	.detail-section {
 		padding: 30px;
 	}
@@ -546,25 +563,77 @@
 	.product-detail-header {
 		padding: 20px;
 	}
-	
+
 	.product-detail-title {
 		font-size: 24px;
 	}
-	
+
 	.price-current {
 		font-size: 28px;
 	}
-	
+
 	.product-detail-stats {
 		flex-direction: column;
 		align-items: flex-start;
 	}
-	
+
 	.detail-section {
 		padding: 20px;
 	}
-	
+
 	.section-title {
 		font-size: 20px;
+	}
+
+	/* ... existing styles ... */
+
+	/* Loading State */
+	.product-loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 60vh;
+		font-size: 18px;
+		color: var(--tertiary-color);
+	}
+
+	.product-not-found {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		min-height: 60vh;
+		gap: 20px;
+	}
+
+	.product-not-found h2 {
+		font-size: 32px;
+		font-weight: 700;
+		color: var(--primary-color);
+	}
+
+	/* Loading State */
+	.product-loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 60vh;
+		font-size: 18px;
+		color: var(--tertiary-color);
+	}
+
+	.product-not-found {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		min-height: 60vh;
+		gap: 20px;
+	}
+
+	.product-not-found h2 {
+		font-size: 32px;
+		font-weight: 700;
+		color: var(--primary-color);
 	}
 }

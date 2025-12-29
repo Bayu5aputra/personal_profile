@@ -1,0 +1,372 @@
+@import "../../../data/styles.css";
+
+.products-management {
+	padding: 20px 0;
+}
+
+.management-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px;
+}
+
+.management-header h2 {
+	font-size: 28px;
+	font-weight: 700;
+	color: var(--primary-color);
+	margin: 0;
+}
+
+.btn-add {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 24px;
+	background: linear-gradient(
+		135deg,
+		var(--link-color),
+		var(--primary-color)
+	);
+	color: white;
+	border: none;
+	border-radius: 10px;
+	font-size: 14px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.btn-add:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 8px 20px rgba(20, 184, 166, 0.4);
+}
+
+/* Form Container */
+.product-form-container {
+	background: white;
+	padding: 30px;
+	border-radius: 16px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	margin-bottom: 40px;
+}
+
+.form-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 25px;
+	padding-bottom: 15px;
+	border-bottom: 2px solid var(--quaternary-color);
+}
+
+.form-header h3 {
+	font-size: 22px;
+	font-weight: 700;
+	color: var(--primary-color);
+	margin: 0;
+}
+
+.btn-close {
+	background: transparent;
+	border: none;
+	color: var(--tertiary-color);
+	font-size: 20px;
+	cursor: pointer;
+	padding: 5px 10px;
+	border-radius: 6px;
+	transition: all 0.3s ease;
+}
+
+.btn-close:hover {
+	background: rgba(244, 67, 54, 0.1);
+	color: #f44336;
+}
+
+/* Form Styles */
+.product-form {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.form-row {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 20px;
+}
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.form-group label {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--secondary-color);
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.form-group label small {
+	font-size: 12px;
+	color: var(--tertiary-color);
+	font-weight: 400;
+	font-style: italic;
+}
+
+.form-group input,
+.form-group textarea {
+	padding: 12px 16px;
+	border: 2px solid var(--quaternary-color);
+	border-radius: 8px;
+	font-size: 14px;
+	font-family: inherit;
+	transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+	outline: none;
+	border-color: var(--link-color);
+	box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+}
+
+.form-group textarea {
+	resize: vertical;
+	min-height: 100px;
+}
+
+.checkbox-group label {
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
+/* Form Actions */
+.form-actions {
+	display: flex;
+	gap: 15px;
+	margin-top: 10px;
+}
+
+.btn-save,
+.btn-cancel {
+	flex: 1;
+	padding: 14px;
+	border: none;
+	border-radius: 10px;
+	font-size: 15px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+}
+
+.btn-save {
+	background: var(--link-color);
+	color: white;
+}
+
+.btn-save:hover {
+	background: var(--primary-color);
+	transform: translateY(-2px);
+	box-shadow: 0 6px 15px rgba(20, 184, 166, 0.3);
+}
+
+.btn-save:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.btn-cancel {
+	background: white;
+	color: var(--secondary-color);
+	border: 2px solid var(--quaternary-color);
+}
+
+.btn-cancel:hover {
+	background: var(--quaternary-color);
+}
+
+/* Products List */
+.products-list h3 {
+	font-size: 20px;
+	font-weight: 700;
+	color: var(--primary-color);
+	margin-bottom: 20px;
+}
+
+.empty-state {
+	text-align: center;
+	padding: 60px 20px;
+	color: var(--tertiary-color);
+	font-style: italic;
+}
+
+.products-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: 25px;
+}
+
+/* Product Card */
+.product-card {
+	background: white;
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	transition: all 0.3s ease;
+}
+
+.product-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.product-card-image {
+	position: relative;
+	width: 100%;
+	height: 200px;
+	overflow: hidden;
+}
+
+.product-card-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.badge-featured {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background: linear-gradient(135deg, #ffd700, #ffa500);
+	color: white;
+	padding: 6px 12px;
+	border-radius: 20px;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.product-card-content {
+	padding: 20px;
+}
+
+.product-card-content h4 {
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--primary-color);
+	margin: 0 0 8px 0;
+}
+
+.product-category {
+	font-size: 12px;
+	color: var(--link-color);
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	margin: 0 0 12px 0;
+}
+
+.product-price {
+	font-size: 20px;
+	font-weight: 900;
+	color: var(--link-color);
+	margin: 0 0 15px 0;
+}
+
+.product-card-actions {
+	display: flex;
+	gap: 10px;
+	justify-content: space-between;
+}
+
+.btn-action {
+	flex: 1;
+	padding: 10px;
+	border: none;
+	border-radius: 8px;
+	font-size: 14px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.btn-view {
+	background: rgba(33, 150, 243, 0.1);
+	color: #2196f3;
+}
+
+.btn-view:hover {
+	background: #2196f3;
+	color: white;
+}
+
+.btn-edit {
+	background: rgba(255, 152, 0, 0.1);
+	color: #ff9800;
+}
+
+.btn-edit:hover {
+	background: #ff9800;
+	color: white;
+}
+
+.btn-delete {
+	background: rgba(244, 67, 54, 0.1);
+	color: #f44336;
+}
+
+.btn-delete:hover {
+	background: #f44336;
+	color: white;
+}
+
+/* Loading State */
+.cms-loading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 80px 20px;
+	gap: 20px;
+}
+
+.cms-loading svg {
+	color: var(--link-color);
+}
+
+.cms-loading p {
+	font-size: 16px;
+	color: var(--tertiary-color);
+	font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.form-row {
+		grid-template-columns: 1fr;
+	}
+
+	.products-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.form-actions {
+		flex-direction: column;
+	}
+}

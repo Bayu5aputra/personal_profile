@@ -27,6 +27,8 @@ import INFO from "../data/user";
 import SELL_PRODUCTS from "../data/sellProducts";
 import { calculateAverageRating } from "../utils/reviewSystem";
 
+import { getProductById } from "../utils/contentManagement";
+
 import "./styles/productDetail.css";
 
 const ProductDetail = () => {
@@ -34,44 +36,115 @@ const ProductDetail = () => {
 	const { id } = useParams();
 	const [product, setProduct] = useState(null);
 	const [averageRating, setAverageRating] = useState({ average: 0, count: 0 });
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState(null);
 
 	// Function to reload rating (dipanggil setelah review baru)
 	const reloadRating = async () => {
 		if (product) {
-			// Force reload from Firebase/localStorage
+			// Force reload from localStorage
 			const rating = calculateAverageRating(product.id);
 			setAverageRating(rating);
 		}
 	};
 
-	// Auto-reload rating saat component mount
+	// Load product data dengan Firebase sebagai primary source
+	const loadProduct = async () => {
+		setIsLoading(true);
+		setError(null);
+		
+		try {
+			// Try Firebase first
+			console.log("Loading from Firebase...");
+			const firebaseProduct = await getProductById(parseInt(id));
+			
+			if (firebaseProduct) {
+				console.log("Product loaded from Firebase:", firebaseProduct);
+				setProduct(firebaseProduct);
+				// Load rating from localStorage
+				const rating = calculateAverageRating(firebaseProduct.id);
+				setAverageRating(rating);
+				setIsLoading(false);
+				return;
+			}
+			
+			// Fallback to local data if Firebase returns null
+			console.log("No Firebase data, falling back to local...");
+			const found = SELL_PRODUCTS.find((p) => p.id === parseInt(id));
+			
+			if (found) {
+				setProduct(found);
+				const rating = calculateAverageRating(found.id);
+				setAverageRating(rating);
+			} else {
+				setError("Product not found");
+			}
+		} catch (error) {
+			console.error("Failed to load from Firebase:", error);
+			setError("Failed to load product data");
+			
+			// Fallback to local data on error
+			try {
+				const found = SELL_PRODUCTS.find((p) => p.id === parseInt(id));
+				if (found) {
+					setProduct(found);
+					const rating = calculateAverageRating(found.id);
+					setAverageRating(rating);
+				} else {
+					setError("Product not found");
+				}
+			} catch (localError) {
+				console.error("Local data error:", localError);
+				setError("Failed to load product");
+			}
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	// Load product saat component mount atau id berubah
+	useEffect(() => {
+		window.scrollTo(0, 0);
+		if (id) {
+			loadProduct();
+		}
+	}, [id]);
+
+	// Auto-reload rating saat product berubah
 	useEffect(() => {
 		if (product) {
 			reloadRating();
 		}
 	}, [product]);
 
-	useEffect(() => {
-		window.scrollTo(0, 0);
-		const found = SELL_PRODUCTS.find(
-			(p) => p.id === parseInt(id)
+	// Handle loading state
+	if (isLoading) {
+		return (
+			<div className="page-content">
+				<NavBar />
+				<div className="content-wrapper">
+					<div className="product-loading">
+						<div className="loading-spinner"></div>
+						<h2>Loading product...</h2>
+					</div>
+				</div>
+				<div className="page-footer">
+					<Footer />
+				</div>
+			</div>
 		);
-		
-		if (found) {
-			setProduct(found);
-			// Load average rating from localStorage
-			const rating = calculateAverageRating(found.id);
-			setAverageRating(rating);
-		}
-	}, [id]);
+	}
 
-	if (!product) {
+	// Handle error state
+	if (error || !product) {
 		return (
 			<div className="page-content">
 				<NavBar />
 				<div className="content-wrapper">
 					<div className="product-not-found">
-						<h2>Product not found</h2>
+						<div className="error-icon">⚠️</div>
+						<h2>{error || "Product not found"}</h2>
+						<p>Please try again or contact support if the problem persists.</p>
 						<button
 							className="product-back-button"
 							onClick={() => navigate("/projects")}
@@ -79,7 +152,16 @@ const ProductDetail = () => {
 							<FontAwesomeIcon icon={faArrowLeft} />
 							Back to Projects
 						</button>
+						<button
+							className="product-retry-button"
+							onClick={loadProduct}
+						>
+							Try Again
+						</button>
 					</div>
+				</div>
+				<div className="page-footer">
+					<Footer />
 				</div>
 			</div>
 		);
@@ -118,6 +200,9 @@ const ProductDetail = () => {
 			<Helmet>
 				<title>{product.title} | {INFO.main.title}</title>
 				<meta name="description" content={product.description} />
+				<meta property="og:title" content={product.title} />
+				<meta property="og:description" content={product.description} />
+				<meta property="og:image" content={product.image} />
 			</Helmet>
 
 			<div className="page-content">
@@ -150,6 +235,11 @@ const ProductDetail = () => {
 										src={product.image}
 										alt={product.title}
 										className="product-detail-image"
+										loading="lazy"
+										onError={(e) => {
+											e.target.onerror = null;
+											e.target.src = "/fallback-image.jpg";
+										}}
 									/>
 
 									{product.featured && (
@@ -233,6 +323,7 @@ const ProductDetail = () => {
 									<button
 										className="cta-button primary"
 										onClick={handleWhatsApp}
+										aria-label="Contact via WhatsApp"
 									>
 										<FontAwesomeIcon icon={faWhatsapp} />
 										WhatsApp
@@ -241,6 +332,7 @@ const ProductDetail = () => {
 									<button
 										className="cta-button secondary"
 										onClick={handleEmail}
+										aria-label="Contact via Email"
 									>
 										<FontAwesomeIcon icon={faEnvelope} />
 										Email
@@ -286,7 +378,7 @@ const ProductDetail = () => {
 								</h2>
 
 								<div className="features-grid">
-									{product.features.map((f, i) => (
+									{product.features && product.features.map((f, i) => (
 										<div key={i} className="feature-item">
 											<FontAwesomeIcon
 												icon={faCheckCircle}
@@ -305,7 +397,7 @@ const ProductDetail = () => {
 								</h2>
 
 								<div className="technologies-tags">
-									{product.technologies.map((t, i) => (
+									{product.technologies && product.technologies.map((t, i) => (
 										<span key={i} className="tech-tag">
 											{t}
 										</span>

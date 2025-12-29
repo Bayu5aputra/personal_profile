@@ -19,4 +19,24 @@
 	.all-projects-project {
 		width: calc(100% / 2);
 	}
+
+	/* Loading State */
+	.projects-loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 60px 20px;
+		color: var(--tertiary-color);
+		font-style: italic;
+	}
+
+	.projects-empty {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 60px 20px;
+		color: var(--tertiary-color);
+		font-style: italic;
+		text-align: center;
+	}
 }

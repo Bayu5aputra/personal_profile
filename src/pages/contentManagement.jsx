@@ -10,16 +10,16 @@ import {
 	faUsers,
 	faKey,
 	faSignOutAlt,
-	faPlus,
-	faEdit,
-	faTrash,
-	faEye,
 } from "@fortawesome/free-solid-svg-icons";
 
 import NavBar from "../components/common/navBar";
 import Footer from "../components/common/footer";
 import Logo from "../components/common/logo";
 import GoogleLoginModal from "../components/keydata/GoogleLoginModal";
+import ProductsManagement from "../components/cms/ProductsManagement";
+import ProjectsManagement from "../components/cms/ProjectsManagement";
+import ArticlesManagement from "../components/cms/ArticlesManagement";
+import AuthorizedUsersManagement from "../components/cms/AuthorizedUsersManagement";
 import INFO from "../data/user";
 
 import {
@@ -29,13 +29,7 @@ import {
 	getCurrentUser,
 } from "../utils/authSystem";
 
-import {
-	getDashboardStats,
-	getAllProducts,
-	getAllProjects,
-	getAllArticles,
-	getAllAuthorizedUsers,
-} from "../utils/contentManagement";
+import { getDashboardStats } from "../utils/contentManagement";
 
 import "./styles/contentManagement.css";
 
@@ -44,7 +38,7 @@ const ContentManagement = () => {
 	const [user, setUser] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [activeTab, setActiveTab] = useState("dashboard");
-	
+
 	// Dashboard stats
 	const [stats, setStats] = useState({
 		products: 0,
@@ -52,7 +46,7 @@ const ContentManagement = () => {
 		articles: 0,
 		reviews: 0,
 		keys: 0,
-		users: 0
+		users: 0,
 	});
 
 	useEffect(() => {
@@ -103,7 +97,7 @@ const ContentManagement = () => {
 					<title>Content Management | {INFO.main.title}</title>
 				</Helmet>
 				<div className="page-content">
-					<NavBar />
+					<NavBar active="cms" />
 					<div className="content-wrapper">
 						<div className="cms-loading">
 							<p>Loading...</p>
@@ -132,7 +126,7 @@ const ContentManagement = () => {
 			</Helmet>
 
 			<div className="page-content">
-				<NavBar />
+				<NavBar active="cms" />
 
 				<div className="content-wrapper">
 					<div className="cms-logo-container">
@@ -189,48 +183,60 @@ const ContentManagement = () => {
 						{/* Navigation Tabs */}
 						<div className="cms-tabs">
 							<button
-								className={`cms-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
-								onClick={() => setActiveTab('dashboard')}
+								className={`cms-tab ${
+									activeTab === "dashboard" ? "active" : ""
+								}`}
+								onClick={() => setActiveTab("dashboard")}
 							>
 								<FontAwesomeIcon icon={faChartBar} />
 								Dashboard
 							</button>
-							
+
 							<button
-								className={`cms-tab ${activeTab === 'products' ? 'active' : ''}`}
-								onClick={() => setActiveTab('products')}
+								className={`cms-tab ${
+									activeTab === "products" ? "active" : ""
+								}`}
+								onClick={() => setActiveTab("products")}
 							>
 								<FontAwesomeIcon icon={faBoxes} />
 								Products
 							</button>
-							
+
 							<button
-								className={`cms-tab ${activeTab === 'projects' ? 'active' : ''}`}
-								onClick={() => setActiveTab('projects')}
+								className={`cms-tab ${
+									activeTab === "projects" ? "active" : ""
+								}`}
+								onClick={() => setActiveTab("projects")}
 							>
 								<FontAwesomeIcon icon={faProjectDiagram} />
 								Projects
 							</button>
-							
+
 							<button
-								className={`cms-tab ${activeTab === 'articles' ? 'active' : ''}`}
-								onClick={() => setActiveTab('articles')}
+								className={`cms-tab ${
+									activeTab === "articles" ? "active" : ""
+								}`}
+								onClick={() => setActiveTab("articles")}
 							>
 								<FontAwesomeIcon icon={faNewspaper} />
 								Articles
 							</button>
-							
+
 							<button
-								className={`cms-tab ${activeTab === 'users' ? 'active' : ''}`}
-								onClick={() => setActiveTab('users')}
+								className={`cms-tab ${
+									activeTab === "users" ? "active" : ""
+								}`}
+								onClick={() => setActiveTab("users")}
 							>
 								<FontAwesomeIcon icon={faUsers} />
 								Users
 							</button>
-							
+
 							<button
-								className={`cms-tab ${activeTab === 'keys' ? 'active' : ''}`}
-								onClick={() => setActiveTab('keys')}
+								className={`cms-tab ${
+									activeTab === "keys" ? "active" : ""
+								}`}
+								onClick={() => setActiveTab("keys")}
 							>
 								<FontAwesomeIcon icon={faKey} />
 								Review Keys
@@ -239,109 +245,122 @@ const ContentManagement = () => {
 
 						{/* Content Area */}
 						<div className="cms-content">
-							{activeTab === 'dashboard' && (
+							{activeTab === "dashboard" && (
 								<div className="cms-dashboard">
 									<h2>Dashboard Overview</h2>
-									
+
 									<div className="dashboard-stats-grid">
 										<div className="dashboard-stat-card stat-products">
 											<div className="stat-icon">
 												<FontAwesomeIcon icon={faBoxes} />
 											</div>
 											<div className="stat-info">
-												<div className="stat-value">{stats.products}</div>
-												<div className="stat-label">Products</div>
+												<div className="stat-value">
+													{stats.products}
+												</div>
+												<div className="stat-label">
+													Products
+												</div>
 											</div>
 										</div>
-										
+
 										<div className="dashboard-stat-card stat-projects">
 											<div className="stat-icon">
-												<FontAwesomeIcon icon={faProjectDiagram} />
+												<FontAwesomeIcon
+													icon={faProjectDiagram}
+												/>
 											</div>
 											<div className="stat-info">
-												<div className="stat-value">{stats.projects}</div>
-												<div className="stat-label">Projects</div>
+												<div className="stat-value">
+													{stats.projects}
+												</div>
+												<div className="stat-label">
+													Projects
+												</div>
 											</div>
 										</div>
-										
+
 										<div className="dashboard-stat-card stat-articles">
 											<div className="stat-icon">
 												<FontAwesomeIcon icon={faNewspaper} />
 											</div>
 											<div className="stat-info">
-												<div className="stat-value">{stats.articles}</div>
-												<div className="stat-label">Articles</div>
+												<div className="stat-value">
+													{stats.articles}
+												</div>
+												<div className="stat-label">
+													Articles
+												</div>
 											</div>
 										</div>
-										
+
 										<div className="dashboard-stat-card stat-reviews">
 											<div className="stat-icon">
-												<FontAwesomeIcon icon={faEye} />
+												<FontAwesomeIcon icon={faChartBar} />
 											</div>
 											<div className="stat-info">
-												<div className="stat-value">{stats.reviews}</div>
-												<div className="stat-label">Reviews</div>
+												<div className="stat-value">
+													{stats.reviews}
+												</div>
+												<div className="stat-label">
+													Reviews
+												</div>
 											</div>
 										</div>
-										
+
 										<div className="dashboard-stat-card stat-keys">
 											<div className="stat-icon">
 												<FontAwesomeIcon icon={faKey} />
 											</div>
 											<div className="stat-info">
-												<div className="stat-value">{stats.keys}</div>
-												<div className="stat-label">Review Keys</div>
+												<div className="stat-value">
+													{stats.keys}
+												</div>
+												<div className="stat-label">
+													Review Keys
+												</div>
 											</div>
 										</div>
-										
+
 										<div className="dashboard-stat-card stat-users">
 											<div className="stat-icon">
 												<FontAwesomeIcon icon={faUsers} />
 											</div>
 											<div className="stat-info">
-												<div className="stat-value">{stats.users}</div>
-												<div className="stat-label">Authorized Users</div>
+												<div className="stat-value">
+													{stats.users}
+												</div>
+												<div className="stat-label">
+													Authorized Users
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 							)}
-							
-							{activeTab === 'products' && (
-								<div className="cms-section">
-									<h2>Products Management</h2>
-									<p>Manage your sellable products here (Coming Soon)</p>
-								</div>
+
+							{activeTab === "products" && <ProductsManagement />}
+
+							{activeTab === "projects" && <ProjectsManagement />}
+
+							{activeTab === "articles" && <ArticlesManagement />}
+
+							{activeTab === "users" && (
+								<AuthorizedUsersManagement />
 							)}
-							
-							{activeTab === 'projects' && (
-								<div className="cms-section">
-									<h2>Projects Management</h2>
-									<p>Manage your portfolio projects here (Coming Soon)</p>
-								</div>
-							)}
-							
-							{activeTab === 'articles' && (
-								<div className="cms-section">
-									<h2>Articles Management</h2>
-									<p>Manage your blog articles here (Coming Soon)</p>
-								</div>
-							)}
-							
-							{activeTab === 'users' && (
-								<div className="cms-section">
-									<h2>Authorized Users</h2>
-									<p>Manage who can access this CMS (Coming Soon)</p>
-								</div>
-							)}
-							
-							{activeTab === 'keys' && (
+
+							{activeTab === "keys" && (
 								<div className="cms-section">
 									<h2>Review Keys Management</h2>
-									<p>This redirects to /keydata page</p>
-									<button 
+									<p>
+										This redirects to /keydata page for managing review
+										keys
+									</p>
+									<button
 										className="redirect-button"
-										onClick={() => window.location.href = '/keydata'}
+										onClick={() =>
+											(window.location.href = "/keydata")
+										}
 									>
 										Go to Key Data Management
 									</button>
