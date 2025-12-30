@@ -1,177 +1,170 @@
 @import "../../../data/styles.css";
 
 /* ============================================
-   SELL PRODUCT CARD
+   SELL PRODUCT CARD - COMPACT DESIGN
    ============================================ */
 
 .sell-product {
 	position: relative;
-	border-radius: 20px;
+	border-radius: 12px;
 	overflow: hidden;
 	background: white;
 	cursor: pointer;
 	transition: all 0.3s ease;
-	mix-blend-mode: normal;
-	opacity: 0.8;
+	border: 1px solid #e8e8e8;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .sell-product:hover {
-	background: #fafafa;
-	opacity: 1;
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-	transform: translateY(-2px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+	transform: translateY(-4px);
+	border-color: var(--link-color);
 }
 
 /* ============================================
-   IMAGE CONTAINER
+   IMAGE CONTAINER - SQUARE
    ============================================ */
 
 .sell-product-image-container {
 	position: relative;
 	width: 100%;
-	height: 240px;
+	padding-top: 100%; /* Square aspect ratio */
 	overflow: hidden;
-	background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
-	border-radius: 20px 20px 0 0;
+	background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
 .sell-product-image {
+	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	transition: transform 0.5s ease;
+	transition: transform 0.4s ease;
 }
 
 .sell-product:hover .sell-product-image {
-	transform: scale(1.05);
+	transform: scale(1.1);
 }
 
 /* ============================================
-   BADGES - POJOK ATAS
+   BADGES - COMPACT
    ============================================ */
 
-/* Featured Badge - Kiri Atas */
 .featured-badge-top {
 	position: absolute;
-	top: 15px;
-	left: 15px;
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	padding: 8px 16px;
-	background: linear-gradient(135deg, #FFD700, #FFA500);
-	color: white;
-	border-radius: 20px;
-	font-size: 12px;
-	font-weight: 700;
-	text-transform: uppercase;
-	letter-spacing: 0.5px;
-	box-shadow: 0 4px 12px rgba(255, 165, 0, 0.4);
-	z-index: 10;
-	animation: pulse 2s ease-in-out infinite;
-}
-
-.star-icon {
-	font-size: 14px;
-}
-
-@keyframes pulse {
-	0%, 100% { transform: scale(1); }
-	50% { transform: scale(1.05); }
-}
-
-/* Discount Badge - Kanan Atas */
-.discount-badge-top {
-	position: absolute;
-	top: 15px;
-	right: 15px;
-	padding: 8px 14px;
-	background: linear-gradient(135deg, #FF6B6B, #FF4757);
-	color: white;
-	border-radius: 20px;
-	font-size: 13px;
-	font-weight: 900;
-	box-shadow: 0 4px 12px rgba(255, 71, 87, 0.4);
-	z-index: 10;
-}
-
-/* ============================================
-   BADGES - POJOK BAWAH
-   ============================================ */
-
-/* Category Badge - Kiri Bawah */
-.product-category-badge {
-	position: absolute;
-	bottom: 15px;
-	left: 15px;
-	padding: 6px 14px;
-	background: rgba(255, 255, 255, 0.95);
-	backdrop-filter: blur(10px);
-	color: var(--link-color);
-	border-radius: 20px;
-	font-size: 11px;
-	font-weight: 700;
-	text-transform: uppercase;
-	letter-spacing: 0.5px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-	z-index: 10;
-}
-
-/* Sold Badge - Kanan Bawah */
-.sold-count-badge {
-	position: absolute;
-	bottom: 15px;
-	right: 15px;
-	padding: 6px 14px;
-	background: rgba(0, 0, 0, 0.7);
-	backdrop-filter: blur(10px);
-	color: white;
-	border-radius: 20px;
-	font-size: 11px;
-	font-weight: 700;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-	z-index: 10;
-}
-
-/* ============================================
-   CONTENT
-   ============================================ */
-
-.sell-product-content {
-	padding: 25px;
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
-}
-
-/* Rating */
-.product-rating-inline {
+	top: 10px;
+	left: 10px;
 	display: flex;
 	align-items: center;
 	gap: 4px;
-	margin-bottom: 5px;
+	padding: 4px 10px;
+	background: linear-gradient(135deg, #FFD700, #FFA500);
+	color: white;
+	border-radius: 12px;
+	font-size: 10px;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	box-shadow: 0 2px 8px rgba(255, 165, 0, 0.4);
+	z-index: 10;
 }
 
-.product-rating-inline .star-filled {
+.star-icon {
+	font-size: 11px;
+}
+
+.discount-badge-top {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	padding: 4px 10px;
+	background: linear-gradient(135deg, #FF6B6B, #FF4757);
+	color: white;
+	border-radius: 12px;
+	font-size: 11px;
+	font-weight: 900;
+	box-shadow: 0 2px 8px rgba(255, 71, 87, 0.4);
+	z-index: 10;
+}
+
+.product-category-badge {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	padding: 4px 10px;
+	background: rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(8px);
+	color: var(--link-color);
+	border-radius: 10px;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+	z-index: 10;
+}
+
+/* ============================================
+   CONTENT - COMPACT
+   ============================================ */
+
+.sell-product-content {
+	padding: 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	flex: 1;
+	background: white;
+}
+
+/* Rating & Sold - Inline */
+.product-rating-inline {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 2px;
+	flex-wrap: wrap;
+}
+
+.product-rating-stars {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+}
+
+.product-rating-stars .star-filled {
 	color: #FFD700;
-	font-size: 14px;
+	font-size: 11px;
 }
 
-.product-rating-inline .star-empty {
-	color: #e0e0e0;
-	font-size: 14px;
+.product-rating-stars .star-empty {
+	color: #ddd;
+	font-size: 11px;
 }
 
 .rating-count {
-	font-size: 13px;
+	font-size: 11px;
 	color: var(--tertiary-color);
-	margin-left: 4px;
 	font-weight: 600;
+}
+
+.sold-count-inline {
+	font-size: 10px;
+	color: #4CAF50;
+	font-weight: 700;
+	padding: 2px 8px;
+	background: rgba(76, 175, 80, 0.1);
+	border-radius: 10px;
+	white-space: nowrap;
 }
 
 /* Title */
 .sell-product-title {
-	font-size: 18px;
+	font-size: 14px;
 	font-weight: 700;
 	color: var(--primary-color);
 	margin: 0;
@@ -180,14 +173,14 @@
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
-	min-height: 50px;
+	min-height: 40px;
 }
 
 /* Description */
 .sell-product-description {
-	font-size: 14px;
+	font-size: 12px;
 	color: var(--secondary-color);
-	line-height: 1.6;
+	line-height: 1.5;
 	margin: 0;
 	display: -webkit-box;
 	-webkit-line-clamp: 2;
@@ -197,129 +190,120 @@
 }
 
 /* ============================================
-   FOOTER (Price + Link)
+   FOOTER - PRICE INLINE
    ============================================ */
 
 .sell-product-footer {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-end;
-	margin-top: 15px;
-	padding-top: 15px;
-	border-top: 2px solid #f4f4f5;
+	margin-top: auto;
+	padding-top: 10px;
+	border-top: 1px solid #f0f0f0;
 }
 
 .product-price-section {
+	margin-bottom: 10px;
+}
+
+.price-row {
 	display: flex;
-	flex-direction: column;
-	gap: 4px;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 4px;
 }
 
 .price-original {
-	font-size: 13px;
+	font-size: 11px;
 	color: var(--tertiary-color);
 	text-decoration: line-through;
 	font-weight: 500;
 }
 
 .save-amount {
-	font-size: 12px;
+	font-size: 10px;
 	font-weight: 700;
 	color: #4CAF50;
 	background: rgba(76, 175, 80, 0.1);
-	padding: 4px 10px;
-	border-radius: 12px;
-	display: inline-block;
-	width: fit-content;
+	padding: 2px 8px;
+	border-radius: 10px;
 }
 
 .price-current {
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 900;
 	color: var(--link-color);
 	line-height: 1;
-	margin-top: 4px;
 }
 
-/* View Details Link */
+/* View Details */
 .view-details-link {
 	display: flex;
 	align-items: center;
-	gap: 8px;
-	font-size: 14px;
+	justify-content: center;
+	gap: 6px;
+	font-size: 12px;
 	font-weight: 700;
 	color: var(--link-color);
 	transition: all 0.3s ease;
-	flex-shrink: 0;
+	padding: 8px;
+	background: rgba(20, 184, 166, 0.08);
+	border-radius: 8px;
 }
 
 .view-details-link svg {
-	font-size: 12px;
+	font-size: 10px;
 	transition: transform 0.3s ease;
 }
 
 .sell-product:hover .view-details-link {
+	background: rgba(20, 184, 166, 0.15);
 	color: var(--primary-color);
 }
 
 .sell-product:hover .view-details-link svg {
-	transform: translateX(5px);
+	transform: translateX(4px);
 }
 
 /* ============================================
    RESPONSIVE
    ============================================ */
 
-@media (max-width: 768px) {
-	.sell-product-image-container {
-		height: 200px;
-	}
-	
+@media (max-width: 1400px) {
 	.sell-product-title {
-		font-size: 16px;
-		min-height: 44px;
+		font-size: 13px;
+		min-height: 38px;
 	}
 	
 	.sell-product-description {
-		font-size: 13px;
+		font-size: 11px;
 	}
 	
 	.price-current {
-		font-size: 18px;
-	}
-	
-	.featured-badge-top,
-	.discount-badge-top {
-		padding: 6px 12px;
-		font-size: 11px;
+		font-size: 16px;
 	}
 }
 
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
 	.sell-product-content {
-		padding: 20px;
+		padding: 12px;
+	}
+}
+
+@media (max-width: 768px) {
+	.sell-product-title {
+		font-size: 14px;
+		min-height: 42px;
 	}
 	
-	.sell-product-image-container {
-		height: 180px;
+	.sell-product-description {
+		font-size: 12px;
+	}
+}
+
+@media (max-width: 600px) {
+	.sell-product-content {
+		padding: 16px;
 	}
 	
-	.sell-product-footer {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 12px;
-	}
-	
-	.view-details-link {
-		width: 100%;
-		justify-content: space-between;
-	}
-	
-	.featured-badge-top,
-	.discount-badge-top,
-	.product-category-badge,
-	.sold-count-badge {
-		padding: 5px 10px;
-		font-size: 10px;
+	.sell-product-title {
+		font-size: 15px;
 	}
 }

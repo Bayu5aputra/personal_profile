@@ -5,13 +5,41 @@
 .sell-products-section {
 	width: 100%;
 	margin-top: 50px;
+	margin-bottom: 40px;
+}
+
+/* Header Container */
+.sell-products-header {
+	margin-bottom: 30px;
 }
 
 .sell-products-title {
-	margin-bottom: 30px;
-	font-size: 28px;
+	margin-bottom: 16px;
+	font-size: 32px;
 	font-weight: 700;
 	color: var(--primary-color);
+	line-height: 1.2;
+}
+
+.sell-products-description {
+	font-size: 16px;
+	line-height: 1.8;
+	color: var(--secondary-color);
+	max-width: 900px;
+	margin: 0;
+}
+
+.sell-products-divider {
+	height: 3px;
+	background: linear-gradient(
+		to right,
+		var(--link-color) 0%,
+		var(--link-color) 60px,
+		var(--quaternary-color) 60px,
+		var(--quaternary-color) 100%
+	);
+	margin-top: 20px;
+	border-radius: 2px;
 }
 
 /* ===================================
@@ -25,7 +53,7 @@
 	align-items: center;
 	min-height: 300px;
 	padding: 60px 20px;
-	gap: 20px;
+	gap: 16px;
 }
 
 .sell-products-loading svg {
@@ -33,9 +61,10 @@
 }
 
 .sell-products-loading p {
-	font-size: 16px;
+	font-size: 15px;
 	color: var(--secondary-color);
 	margin: 0;
+	font-weight: 500;
 }
 
 /* ===================================
@@ -49,7 +78,7 @@
 	align-items: center;
 	min-height: 300px;
 	padding: 60px 20px;
-	gap: 20px;
+	gap: 16px;
 	text-align: center;
 }
 
@@ -58,7 +87,7 @@
 }
 
 .sell-products-error p {
-	font-size: 16px;
+	font-size: 15px;
 	color: var(--secondary-color);
 	max-width: 500px;
 	line-height: 1.6;
@@ -69,21 +98,21 @@
 	display: inline-flex;
 	align-items: center;
 	gap: 10px;
-	padding: 12px 24px;
+	padding: 10px 24px;
 	background: linear-gradient(135deg, var(--link-color), #667eea);
 	color: white;
 	border: none;
-	border-radius: 8px;
-	font-size: 15px;
-	font-weight: 600;
+	border-radius: 10px;
+	font-size: 14px;
+	font-weight: 700;
 	cursor: pointer;
 	transition: all 0.3s ease;
-	margin-top: 10px;
+	margin-top: 12px;
 }
 
 .retry-button:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+	box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
 }
 
 .retry-button:active {
@@ -91,7 +120,7 @@
 }
 
 /* ===================================
-   EMPTY STATE (FRIENDLY VERSION)
+   EMPTY STATE
    =================================== */
 
 .sell-products-empty {
@@ -99,108 +128,119 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	min-height: 350px;
-	padding: 80px 20px;
-	gap: 15px;
+	min-height: 250px;
+	padding: 50px 20px;
 	text-align: center;
-	background: linear-gradient(
-		135deg,
-		rgba(102, 126, 234, 0.03),
-		rgba(118, 75, 162, 0.03)
-	);
+	background: rgba(240, 240, 240, 0.3);
 	border-radius: 16px;
-	border: 2px dashed rgba(102, 126, 234, 0.2);
+	border: 2px dashed #d0d0d0;
+	margin-top: 24px;
 }
 
 .sell-products-empty .empty-icon {
-	margin-bottom: 10px;
+	margin-bottom: 16px;
 }
 
 .sell-products-empty .empty-icon svg {
-	color: var(--link-color);
-	opacity: 0.6;
-}
-
-.sell-products-empty h3 {
-	font-size: 24px;
-	font-weight: 700;
-	color: var(--primary-color);
-	margin: 10px 0 5px 0;
+	color: var(--tertiary-color);
+	opacity: 0.5;
 }
 
 .sell-products-empty p {
-	font-size: 16px;
-	color: var(--secondary-color);
-	max-width: 450px;
-	line-height: 1.6;
-	margin: 0 0 20px 0;
-}
-
-.retry-button-secondary {
-	display: inline-flex;
-	align-items: center;
-	gap: 10px;
-	padding: 10px 20px;
-	background: transparent;
-	color: var(--link-color);
-	border: 2px solid var(--link-color);
-	border-radius: 8px;
-	font-size: 14px;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 0.3s ease;
-}
-
-.retry-button-secondary:hover {
-	background: var(--link-color);
-	color: white;
-	transform: translateY(-2px);
-	box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-.retry-button-secondary:active {
-	transform: translateY(0);
+	font-size: 15px;
+	color: var(--tertiary-color);
+	margin: 0;
+	font-weight: 500;
+	font-style: italic;
 }
 
 /* ===================================
-   PRODUCTS CONTAINER - Grid Layout Konsisten
+   PRODUCTS GRID - 5 COLUMNS COMPACT
    =================================== */
 
 .sell-products-container {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 25px;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 20px;
 	width: 100%;
-	margin-top: 30px;
-}
-
-.sell-products-container > * {
-	flex-basis: calc(33.333% - 17px);
-	max-width: calc(33.333% - 17px);
+	margin-top: 24px;
 }
 
 /* ===================================
-   RESPONSIVE
+   RESPONSIVE BREAKPOINTS
    =================================== */
 
-@media (max-width: 1024px) {
-	.sell-products-container > * {
-		flex-basis: calc(50% - 13px);
-		max-width: calc(50% - 13px);
+/* Large Desktop - 4 columns */
+@media (max-width: 1400px) {
+	.sell-products-container {
+		grid-template-columns: repeat(4, 1fr);
+		gap: 18px;
+	}
+	
+	.sell-products-title {
+		font-size: 30px;
+	}
+	
+	.sell-products-description {
+		font-size: 15px;
 	}
 }
 
+/* Desktop/Tablet - 3 columns */
+@media (max-width: 1100px) {
+	.sell-products-container {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 18px;
+	}
+	
+	.sell-products-title {
+		font-size: 28px;
+	}
+}
+
+/* Tablet - 2 columns */
 @media (max-width: 768px) {
+	.sell-products-container {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 16px;
+	}
+	
+	.sell-products-title {
+		font-size: 26px;
+	}
+	
+	.sell-products-description {
+		font-size: 14px;
+		line-height: 1.7;
+	}
+	
+	.sell-products-empty {
+		min-height: 200px;
+		padding: 40px 20px;
+	}
+}
+
+/* Mobile - 1 column */
+@media (max-width: 500px) {
+	.sell-products-container {
+		grid-template-columns: 1fr;
+		gap: 16px;
+	}
+	
 	.sell-products-title {
 		font-size: 24px;
 	}
-
-	.sell-products-container {
-		gap: 20px;
+	
+	.sell-products-description {
+		font-size: 14px;
 	}
-
-	.sell-products-container > * {
-		flex-basis: 100%;
-		max-width: 100%;
+	
+	.sell-products-empty {
+		min-height: 180px;
+		padding: 35px 20px;
+	}
+	
+	.sell-products-empty p {
+		font-size: 14px;
 	}
 }
