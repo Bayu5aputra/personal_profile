@@ -145,23 +145,38 @@ const ContentManagement = () => {
 										Content Management System
 									</h1>
 									<p className="cms-subtitle">
-										Manage all your portfolio content in one place
+										Manage all your portfolio content in one
+										place
 									</p>
 								</div>
 
 								<div className="cms-header-right">
 									{user && (
 										<div className="user-info">
-											{user.photo && (
+											{user.photo ? (
 												<img
 													src={user.photo}
-													alt={user.name}
+													alt={user.name || "User"}
 													className="user-photo"
+													onError={(e) => {
+														e.target.style.display =
+															"none";
+													}}
 												/>
+											) : (
+												<div className="user-photo user-photo-fallback">
+													{user.name
+														? user.name
+																.charAt(0)
+																.toUpperCase()
+														: user.email
+																.charAt(0)
+																.toUpperCase()}
+												</div>
 											)}
 											<div className="user-details">
 												<div className="user-name">
-													{user.name}
+													{user.name || "User"}
 												</div>
 												<div className="user-email">
 													{user.email}
@@ -252,7 +267,9 @@ const ContentManagement = () => {
 									<div className="dashboard-stats-grid">
 										<div className="dashboard-stat-card stat-products">
 											<div className="stat-icon">
-												<FontAwesomeIcon icon={faBoxes} />
+												<FontAwesomeIcon
+													icon={faBoxes}
+												/>
 											</div>
 											<div className="stat-info">
 												<div className="stat-value">
@@ -282,7 +299,9 @@ const ContentManagement = () => {
 
 										<div className="dashboard-stat-card stat-articles">
 											<div className="stat-icon">
-												<FontAwesomeIcon icon={faNewspaper} />
+												<FontAwesomeIcon
+													icon={faNewspaper}
+												/>
 											</div>
 											<div className="stat-info">
 												<div className="stat-value">
@@ -296,7 +315,9 @@ const ContentManagement = () => {
 
 										<div className="dashboard-stat-card stat-reviews">
 											<div className="stat-icon">
-												<FontAwesomeIcon icon={faChartBar} />
+												<FontAwesomeIcon
+													icon={faChartBar}
+												/>
 											</div>
 											<div className="stat-info">
 												<div className="stat-value">
@@ -324,7 +345,9 @@ const ContentManagement = () => {
 
 										<div className="dashboard-stat-card stat-users">
 											<div className="stat-icon">
-												<FontAwesomeIcon icon={faUsers} />
+												<FontAwesomeIcon
+													icon={faUsers}
+												/>
 											</div>
 											<div className="stat-info">
 												<div className="stat-value">
@@ -353,8 +376,8 @@ const ContentManagement = () => {
 								<div className="cms-section">
 									<h2>Review Keys Management</h2>
 									<p>
-										This redirects to /keydata page for managing review
-										keys
+										This redirects to /keydata page for
+										managing review keys
 									</p>
 									<button
 										className="redirect-button"

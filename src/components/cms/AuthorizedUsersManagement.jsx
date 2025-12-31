@@ -24,8 +24,7 @@ const AuthorizedUsersManagement = () => {
 	const [showForm, setShowForm] = useState(false);
 	const [formData, setFormData] = useState({
 		email: "",
-		name: "",
-		role: "admin",
+		name: ""
 	});
 
 	useEffect(() => {
@@ -60,8 +59,7 @@ const AuthorizedUsersManagement = () => {
 		}
 
 		const userData = {
-			name: formData.name,
-			role: formData.role,
+			name: formData.name
 		};
 
 		const result = await addAuthorizedUser(formData.email, userData);
@@ -96,8 +94,7 @@ const AuthorizedUsersManagement = () => {
 	const resetForm = () => {
 		setFormData({
 			email: "",
-			name: "",
-			role: "admin",
+			name: ""
 		});
 		setShowForm(false);
 	};
@@ -189,23 +186,6 @@ const AuthorizedUsersManagement = () => {
 							/>
 						</div>
 
-						<div className="form-group">
-							<label>Role *</label>
-							<select
-								name="role"
-								value={formData.role}
-								onChange={handleInputChange}
-								required
-							>
-								<option value="admin">Admin</option>
-								<option value="editor">Editor</option>
-								<option value="viewer">Viewer</option>
-							</select>
-							<small>
-								<strong>Admin:</strong> Full access | <strong>Editor:</strong> Can edit content | <strong>Viewer:</strong> Read-only
-							</small>
-						</div>
-
 						<div className="form-actions">
 							<button
 								type="submit"
@@ -248,7 +228,6 @@ const AuthorizedUsersManagement = () => {
 							<thead>
 								<tr>
 									<th>User</th>
-									<th>Role</th>
 									<th>Added On</th>
 									<th>Actions</th>
 								</tr>
@@ -271,11 +250,6 @@ const AuthorizedUsersManagement = () => {
 													</div>
 												</div>
 											</div>
-										</td>
-										<td>
-											<span className={`role-badge role-${user.role}`}>
-												{user.role || "admin"}
-											</span>
 										</td>
 										<td>
 											<div className="date-cell">

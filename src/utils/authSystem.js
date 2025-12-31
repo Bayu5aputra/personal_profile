@@ -4,16 +4,27 @@ import {
   signOut as firebaseSignOut,
   onAuthStateChanged 
 } from 'firebase/auth';
+import { db } from './firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
-// Allowed emails untuk akses Key Data Management
-const ALLOWED_EMAILS = [
-  'bayusaputra.005.003@gmail.com',
-  // Tambahkan email lain di sini jika diperlukan
-];
-
-// Check if email is allowed
-export const isEmailAllowed = (email) => {
-  return ALLOWED_EMAILS.includes(email.toLowerCase());
+// Check if user is authorized in Firebase
+export const isUserAuthorized = async (email) => {
+  try {
+    const userRef = doc(db, 'authorized_users', email.toLowerCase());
+    const userDoc = await getDoc(userRef);
+    
+    if (userDoc.exists()) {
+      return {
+        authorized: true,
+        name: userDoc.data().name || ''
+      };
+    }
+    
+    return { authorized: false };
+  } catch (error) {
+    console.error("Check authorization failed:", error.message);
+    return { authorized: false };
+  }
 };
 
 // Sign in with Google
@@ -22,7 +33,10 @@ export const signInWithGoogle = async () => {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
     
-    if (!isEmailAllowed(user.email)) {
+    // Check if user is authorized in Firebase
+    const authCheck = await isUserAuthorized(user.email);
+    
+    if (!authCheck.authorized) {
       await firebaseSignOut(auth);
       return {
         success: false,
@@ -60,16 +74,22 @@ export const signOut = async () => {
 
 // Listen to auth state changes
 export const onAuthChange = (callback) => {
-  return onAuthStateChanged(auth, (user) => {
-    if (user && isEmailAllowed(user.email)) {
-      callback({
-        authenticated: true,
-        user: {
-          email: user.email,
-          name: user.displayName,
-          photo: user.photoURL
-        }
-      });
+  return onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const authCheck = await isUserAuthorized(user.email);
+      
+      if (authCheck.authorized) {
+        callback({
+          authenticated: true,
+          user: {
+            email: user.email,
+            name: user.displayName,
+            photo: user.photoURL
+          }
+        });
+      } else {
+        callback({ authenticated: false, user: null });
+      }
     } else {
       callback({ authenticated: false, user: null });
     }
@@ -77,17 +97,23 @@ export const onAuthChange = (callback) => {
 };
 
 // Get current user
-export const getCurrentUser = () => {
+export const getCurrentUser = async () => {
   const user = auth.currentUser;
-  if (user && isEmailAllowed(user.email)) {
-    return {
-      authenticated: true,
-      user: {
-        email: user.email,
-        name: user.displayName,
-        photo: user.photoURL
-      }
-    };
+  
+  if (user) {
+    const authCheck = await isUserAuthorized(user.email);
+    
+    if (authCheck.authorized) {
+      return {
+        authenticated: true,
+        user: {
+          email: user.email,
+          name: user.displayName,
+          photo: user.photoURL
+        }
+      };
+    }
   }
+  
   return { authenticated: false, user: null };
 };

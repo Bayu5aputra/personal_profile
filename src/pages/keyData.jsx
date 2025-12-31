@@ -53,16 +53,19 @@ const KeyData = () => {
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		// Check authentication status
-		const currentUser = getCurrentUser();
-		if (currentUser.authenticated) {
-			setAuthenticated(true);
-			setUser(currentUser.user);
-			loadKeys();
-		}
+		const checkAuth = async () => {
+			const currentUser = await getCurrentUser();
+			if (currentUser.authenticated) {
+				setAuthenticated(true);
+				setUser(currentUser.user);
+				loadKeys();
+			}
+			setIsLoading(false);
+		};
+		
+		checkAuth();
 
-		// Listen to auth changes
-		const unsubscribe = onAuthChange((authState) => {
+		const unsubscribe = onAuthChange(async (authState) => {
 			setAuthenticated(authState.authenticated);
 			setUser(authState.user);
 			if (authState.authenticated) {
@@ -101,7 +104,6 @@ const KeyData = () => {
 	const handleGenerateKeys = async () => {
 		const count = parseInt(generateCount) || 10;
 
-		// Show loading state
 		setDeleteMessage({
 			type: "info",
 			text: `Generating ${count} keys...`,
@@ -286,16 +288,23 @@ const KeyData = () => {
 								<div className="keydata-header-right">
 									{user && (
 										<div className="user-info">
-											{user.photo && (
+											{user.photo ? (
 												<img
 													src={user.photo}
-													alt={user.name}
+													alt={user.name || 'User'}
 													className="user-photo"
+													onError={(e) => {
+														e.target.style.display = 'none';
+													}}
 												/>
+											) : (
+												<div className="user-photo user-photo-fallback">
+													{user.name ? user.name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
+												</div>
 											)}
 											<div className="user-details">
 												<div className="user-name">
-													{user.name}
+													{user.name || 'User'}
 												</div>
 												<div className="user-email">
 													{user.email}

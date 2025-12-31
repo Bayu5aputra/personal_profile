@@ -330,33 +330,6 @@
 	font-size: 11px;
 }
 
-/* Role Badge */
-.role-badge {
-	display: inline-flex;
-	align-items: center;
-	padding: 6px 14px;
-	border-radius: 20px;
-	font-size: 12px;
-	font-weight: 700;
-	text-transform: uppercase;
-	letter-spacing: 0.5px;
-}
-
-.role-admin {
-	background: rgba(244, 67, 54, 0.1);
-	color: #f44336;
-}
-
-.role-editor {
-	background: rgba(255, 152, 0, 0.1);
-	color: #ff9800;
-}
-
-.role-viewer {
-	background: rgba(33, 150, 243, 0.1);
-	color: #2196f3;
-}
-
 /* Date Cell */
 .date-cell {
 	display: flex;
