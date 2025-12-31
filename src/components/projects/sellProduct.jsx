@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +10,16 @@ const SellProduct = (props) => {
 	const navigate = useNavigate();
 	const { id, image, title, description, price, originalPrice, category, featured } = props;
 	
-	const { average: avgRating, count: reviewCount } = calculateAverageRating(id);
+	const [ratingData, setRatingData] = useState({ average: 0, count: 0 });
+	
+	useEffect(() => {
+		const loadRating = async () => {
+			const rating = await calculateAverageRating(id);
+			setRatingData(rating);
+		};
+		loadRating();
+	}, [id]);
+	
 	const displayImage = image && image !== '/no_image.png' ? image : '/no_image.png';
 	
 	const discountPercentage = originalPrice && originalPrice > price 
@@ -23,6 +32,23 @@ const SellProduct = (props) => {
 
 	const handleClick = () => {
 		navigate(`/product/${id}`);
+	};
+
+	const renderStars = () => {
+		const stars = [];
+		const roundedRating = Math.round(ratingData.average);
+		
+		for (let i = 1; i <= 5; i++) {
+			stars.push(
+				<FontAwesomeIcon
+					key={i}
+					icon={faStar}
+					className={i <= roundedRating ? "star-filled" : "star-empty"}
+				/>
+			);
+		}
+		
+		return stars;
 	};
 
 	return (
@@ -55,27 +81,22 @@ const SellProduct = (props) => {
 				<div className="product-category-badge">
 					{category}
 				</div>
-				
-				{reviewCount > 0 && (
-					<div className="sold-count-badge">
-						🔥 {reviewCount} sold
-					</div>
-				)}
 			</div>
 
 			<div className="sell-product-content">
-				{avgRating > 0 && (
-					<div className="product-rating-inline">
-						{[...Array(5)].map((_, i) => (
-							<FontAwesomeIcon
-								key={i}
-								icon={faStar}
-								className={i < Math.round(avgRating) ? "star-filled" : "star-empty"}
-							/>
-						))}
-						<span className="rating-count">({avgRating.toFixed(1)})</span>
+				<div className="product-rating-inline">
+					<div className="product-rating-stars">
+						{renderStars()}
 					</div>
-				)}
+					<span className="rating-count">
+						({ratingData.average.toFixed(1)})
+					</span>
+					{ratingData.count > 0 && (
+						<span className="sold-count-inline">
+							{ratingData.count} sold
+						</span>
+					)}
+				</div>
 
 				<h3 className="sell-product-title">{title}</h3>
 				
@@ -84,18 +105,20 @@ const SellProduct = (props) => {
 				<div className="sell-product-footer">
 					<div className="product-price-section">
 						{originalPrice && originalPrice > price && (
-							<>
+							<div className="price-row">
 								<span className="price-original">
 									Rp {originalPrice.toLocaleString('id-ID')}
 								</span>
-								<div className="save-amount">
+								<span className="save-amount">
 									Save Rp {saveAmount.toLocaleString('id-ID')}
-								</div>
-							</>
+								</span>
+							</div>
 						)}
-						<span className="price-current">
-							Rp {price.toLocaleString('id-ID')}
-						</span>
+						<div className="price-row">
+							<span className="price-current">
+								Rp {price.toLocaleString('id-ID')}
+							</span>
+						</div>
 					</div>
 					
 					<div className="view-details-link">
