@@ -104,21 +104,35 @@ const SellProduct = (props) => {
 
 				<div className="sell-product-footer">
 					<div className="product-price-section">
-						{originalPrice && originalPrice > price && (
-							<div className="price-row">
-								<span className="price-original">
-									Rp {originalPrice.toLocaleString('id-ID')}
-								</span>
-								<span className="save-amount">
-									Save Rp {saveAmount.toLocaleString('id-ID')}
+						{originalPrice && originalPrice > price ? (
+							<div className="prices-container">
+								{/* BARIS PERTAMA: Save dulu, lalu harga lama */}
+								<div className="discount-row">
+									<span className="save-amount">
+										Save Rp {saveAmount.toLocaleString('id-ID')}
+									</span>
+									<span className="price-original">
+										Rp {originalPrice.toLocaleString('id-ID')}
+									</span>
+								</div>
+								
+								{/* BARIS KEDUA: Harga sekarang */}
+								<div className="price-row price-current-row">
+									<span className="price-currency">Rp</span>
+									<span className="price-current">
+										{price.toLocaleString('id-ID')}
+									</span>
+								</div>
+							</div>
+						) : (
+							/* Hanya harga normal (tidak ada diskon) */
+							<div className="price-row price-current-row">
+								<span className="price-currency">Rp</span>
+								<span className="price-current">
+									{price.toLocaleString('id-ID')}
 								</span>
 							</div>
 						)}
-						<div className="price-row">
-							<span className="price-current">
-								Rp {price.toLocaleString('id-ID')}
-							</span>
-						</div>
 					</div>
 					
 					<div className="view-details-link">

@@ -38,12 +38,18 @@ const AllSellProducts = () => {
 	if (isLoading) {
 		return (
 			<div className="sell-products-section">
+				{/* UBAH HEADER TEXT DISINI - konsisten dengan Projects */}
 				<div className="sell-products-header">
-					<h2 className="sell-products-title">Products for Sale</h2>
-					<p className="sell-products-description">
-						Explore my curated collection of premium products available for purchase. Each item has been carefully selected to ensure quality and value. Browse through the catalog, read detailed descriptions, check customer reviews, and find the perfect product that meets your needs. If you have any questions or need recommendations, feel free to reach out!
-					</p>
-					<div className="sell-products-divider"></div>
+					<div className="title sell-products-title">
+						Products for Sale
+					</div>
+					<div className="subtitle sell-products-subtitle">
+						Explore my curated collection of premium products available for purchase. 
+						Each item has been carefully selected to ensure quality and value. 
+						Browse through the catalog, read detailed descriptions, check customer reviews, 
+						and find the perfect product that meets your needs. 
+						If you have any questions or need recommendations, feel free to reach out!
+					</div>
 				</div>
 				<div className="sell-products-loading">
 					<FontAwesomeIcon icon={faSpinner} spin size="2x" />
@@ -57,12 +63,18 @@ const AllSellProducts = () => {
 	if (error) {
 		return (
 			<div className="sell-products-section">
+				{/* UBAH HEADER TEXT DISINI - konsisten dengan Projects */}
 				<div className="sell-products-header">
-					<h2 className="sell-products-title">Products for Sale</h2>
-					<p className="sell-products-description">
-						Explore my curated collection of premium products available for purchase. Each item has been carefully selected to ensure quality and value. Browse through the catalog, read detailed descriptions, check customer reviews, and find the perfect product that meets your needs. If you have any questions or need recommendations, feel free to reach out!
-					</p>
-					<div className="sell-products-divider"></div>
+					<div className="title sell-products-title">
+						Products for Sale
+					</div>
+					<div className="subtitle sell-products-subtitle">
+						Explore my curated collection of premium products available for purchase. 
+						Each item has been carefully selected to ensure quality and value. 
+						Browse through the catalog, read detailed descriptions, check customer reviews, 
+						and find the perfect product that meets your needs. 
+						If you have any questions or need recommendations, feel free to reach out!
+					</div>
 				</div>
 				<div className="sell-products-error">
 					<FontAwesomeIcon icon={faExclamationTriangle} size="2x" />
@@ -80,12 +92,18 @@ const AllSellProducts = () => {
 	if (products.length === 0) {
 		return (
 			<div className="sell-products-section">
+				{/* UBAH HEADER TEXT DISINI - konsisten dengan Projects */}
 				<div className="sell-products-header">
-					<h2 className="sell-products-title">Products for Sale</h2>
-					<p className="sell-products-description">
-						Explore my curated collection of premium products available for purchase. Each item has been carefully selected to ensure quality and value. Browse through the catalog, read detailed descriptions, check customer reviews, and find the perfect product that meets your needs. If you have any questions or need recommendations, feel free to reach out!
-					</p>
-					<div className="sell-products-divider"></div>
+					<div className="title sell-products-title">
+						Products for Sale
+					</div>
+					<div className="subtitle sell-products-subtitle">
+						Explore my curated collection of premium products available for purchase. 
+						Each item has been carefully selected to ensure quality and value. 
+						Browse through the catalog, read detailed descriptions, check customer reviews, 
+						and find the perfect product that meets your needs. 
+						If you have any questions or need recommendations, feel free to reach out!
+					</div>
 				</div>
 				<div className="sell-products-empty">
 					<div className="empty-icon">
@@ -100,12 +118,18 @@ const AllSellProducts = () => {
 	// Success state with products
 	return (
 		<div className="sell-products-section">
+			{/* UBAH HEADER TEXT DISINI - konsisten dengan Projects */}
 			<div className="sell-products-header">
-				<h2 className="sell-products-title">Products for Sale</h2>
-				<p className="sell-products-description">
-					Explore my curated collection of premium products available for purchase. Each item has been carefully selected to ensure quality and value. Browse through the catalog, read detailed descriptions, check customer reviews, and find the perfect product that meets your needs. If you have any questions or need recommendations, feel free to reach out!
-				</p>
-				<div className="sell-products-divider"></div>
+				<div className="title sell-products-title">
+					Products for Sale
+				</div>
+				<div className="subtitle sell-products-subtitle">
+					Explore my curated collection of premium products available for purchase. 
+					Each item has been carefully selected to ensure quality and value. 
+					Browse through the catalog, read detailed descriptions, check customer reviews, 
+					and find the perfect product that meets your needs. 
+					If you have any questions or need recommendations, feel free to reach out!
+				</div>
 			</div>
 			<div className="sell-products-container">
 				{products.map((product) => (

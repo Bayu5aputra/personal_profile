@@ -8,12 +8,14 @@
 	margin-bottom: 40px;
 }
 
-/* Header Container */
+/* Header Container - KONSISTEN DENGAN PROJECTS */
 .sell-products-header {
 	margin-bottom: 30px;
 }
 
+/* Menggunakan class .title dari app.css - sama seperti Projects */
 .sell-products-title {
+	width: 70% !important;
 	margin-bottom: 16px;
 	font-size: 32px;
 	font-weight: 700;
@@ -21,7 +23,9 @@
 	line-height: 1.2;
 }
 
-.sell-products-description {
+/* Menggunakan class .subtitle dari app.css - sama seperti Projects */
+.sell-products-subtitle {
+	width: 70% !important;
 	font-size: 16px;
 	line-height: 1.8;
 	color: var(--secondary-color);
@@ -181,7 +185,7 @@
 		font-size: 30px;
 	}
 	
-	.sell-products-description {
+	.sell-products-subtitle {
 		font-size: 15px;
 	}
 }
@@ -207,11 +211,13 @@
 	
 	.sell-products-title {
 		font-size: 26px;
+		width: 100% !important;
 	}
 	
-	.sell-products-description {
+	.sell-products-subtitle {
 		font-size: 14px;
 		line-height: 1.7;
+		width: 100% !important;
 	}
 	
 	.sell-products-empty {
@@ -231,7 +237,7 @@
 		font-size: 24px;
 	}
 	
-	.sell-products-description {
+	.sell-products-subtitle {
 		font-size: 14px;
 	}
 	

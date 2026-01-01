@@ -4,6 +4,7 @@ import NavBar from "../components/common/navBar";
 import Footer from "../components/common/footer";
 import Logo from "../components/common/logo";
 import AllProjects from "../components/projects/allProjects";
+import AllSellProducts from "../components/projects/allSellProducts";
 import INFO from "../data/user";
 import { getAllProjects } from "../utils/contentManagement";
 
@@ -52,7 +53,7 @@ const Projects = () => {
 					</div>
 
 					<div className="projects-container">
-						{/* HEADER SECTION - SEPERTI GAMBAR & KONSISTEN DENGAN ABOUT */}
+						{/* HEADER SECTION */}
 						<div className="projects-header">
 							<div className="title projects-title">
 								Things I've made trying to put my dent in the universe.
@@ -62,6 +63,7 @@ const Projects = () => {
 							</div>
 						</div>
 
+						{/* PROJECTS SECTION */}
 						{isLoading ? (
 							<div className="projects-loading">
 								<p>Loading projects...</p>
@@ -71,6 +73,9 @@ const Projects = () => {
 								<AllProjects projects={projects} />
 							</div>
 						)}
+
+						{/* SELLS PRODUCTS SECTION */}
+						<AllSellProducts />
 					</div>
 
 					<div className="page-footer">

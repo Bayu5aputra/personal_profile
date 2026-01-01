@@ -31,7 +31,7 @@
 .sell-product-image-container {
 	position: relative;
 	width: 100%;
-	padding-top: 100%; /* Square aspect ratio */
+	padding-top: 100%;
 	overflow: hidden;
 	background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
@@ -190,7 +190,7 @@
 }
 
 /* ============================================
-   FOOTER - PRICE INLINE
+   FOOTER - PRICE BARU DENGAN URUTAN YANG BENAR
    ============================================ */
 
 .sell-product-footer {
@@ -203,34 +203,65 @@
 	margin-bottom: 10px;
 }
 
-.price-row {
+/* Container untuk semua harga */
+.prices-container {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+/* BARIS HARGA DISKON - Save dulu, lalu harga lama */
+.discount-row {
 	display: flex;
 	align-items: center;
 	gap: 8px;
+	flex-wrap: wrap;
 	margin-bottom: 4px;
 }
 
-.price-original {
-	font-size: 11px;
-	color: var(--tertiary-color);
-	text-decoration: line-through;
-	font-weight: 500;
-}
-
+/* TEKS "Save Rp" - diletakkan SEBELUM harga coret */
 .save-amount {
 	font-size: 10px;
 	font-weight: 700;
 	color: #4CAF50;
-	background: rgba(76, 175, 80, 0.1);
-	padding: 2px 8px;
-	border-radius: 10px;
+	background: rgba(76, 175, 80, 0.12);
+	padding: 3px 8px;
+	border-radius: 8px;
+	white-space: nowrap;
+	order: 1; /* Urutan pertama */
 }
 
+/* HARGA LAMA DICORET - ukuran kecil */
+.price-original {
+	font-size: 12px;
+	color: #888 !important;
+	text-decoration: line-through;
+	font-weight: 500;
+	order: 2; /* Urutan kedua */
+}
+
+/* BARIS HARGA SEKARANG - Rp dan angka dalam satu baris */
+.price-current-row {
+	display: flex;
+	align-items: baseline;
+	gap: 3px;
+	margin-top: 2px;
+}
+
+/* MATA UANG "Rp" - proporsional dengan angka */
+.price-currency {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--primary-color);
+}
+
+/* ANGKA HARGA SEKARANG - ukuran proporsional */
 .price-current {
-	font-size: 18px;
-	font-weight: 900;
-	color: var(--link-color);
+	font-size: 18px; /* Ukuran normal untuk desktop */
+	font-weight: 700;
+	color: var(--primary-color) !important;
 	line-height: 1;
+	letter-spacing: -0.2px;
 }
 
 /* View Details */
@@ -246,6 +277,7 @@
 	padding: 8px;
 	background: rgba(20, 184, 166, 0.08);
 	border-radius: 8px;
+	margin-top: 8px;
 }
 
 .view-details-link svg {
@@ -263,47 +295,143 @@
 }
 
 /* ============================================
-   RESPONSIVE
+   RESPONSIVE - PROPOSIONAL
    ============================================ */
 
-@media (max-width: 1400px) {
+/* DESKTOP BESAR */
+@media (min-width: 1400px) {
+	.price-current {
+		font-size: 19px !important;
+	}
+	.price-currency {
+		font-size: 14px;
+	}
+	.price-original {
+		font-size: 13px;
+	}
+	.save-amount {
+		font-size: 11px;
+	}
+}
+
+/* DESKTOP NORMAL */
+@media (max-width: 1399px) and (min-width: 1024px) {
+	.price-current {
+		font-size: 18px !important;
+	}
+	.price-currency {
+		font-size: 13px;
+	}
+	.price-original {
+		font-size: 12px;
+	}
+	.save-amount {
+		font-size: 10px;
+	}
+}
+
+/* TABLET LANDSCAPE */
+@media (max-width: 1023px) and (min-width: 768px) {
 	.sell-product-title {
 		font-size: 13px;
 		min-height: 38px;
 	}
-	
 	.sell-product-description {
 		font-size: 11px;
 	}
-	
 	.price-current {
-		font-size: 16px;
+		font-size: 17px !important;
+	}
+	.price-currency {
+		font-size: 12px;
+	}
+	.price-original {
+		font-size: 11px;
+	}
+	.save-amount {
+		font-size: 9px;
+		padding: 2px 7px;
 	}
 }
 
-@media (max-width: 1024px) {
+/* TABLET PORTRAIT */
+@media (max-width: 767px) and (min-width: 600px) {
 	.sell-product-content {
 		padding: 12px;
 	}
+	.price-current {
+		font-size: 16px !important;
+	}
+	.price-currency {
+		font-size: 11px;
+	}
+	.price-original {
+		font-size: 11px;
+	}
+	.save-amount {
+		font-size: 9px;
+		padding: 2px 6px;
+	}
 }
 
-@media (max-width: 768px) {
+/* MOBILE LANDSCAPE */
+@media (max-width: 599px) and (min-width: 480px) {
+	.sell-product-content {
+		padding: 12px;
+	}
 	.sell-product-title {
 		font-size: 14px;
 		min-height: 42px;
 	}
-	
-	.sell-product-description {
-		font-size: 12px;
+	.price-current {
+		font-size: 16px !important;
+	}
+	.price-currency {
+		font-size: 11px;
+	}
+	.price-original {
+		font-size: 11px;
+	}
+	.save-amount {
+		font-size: 9px;
+		padding: 2px 6px;
 	}
 }
 
-@media (max-width: 600px) {
-	.sell-product-content {
-		padding: 16px;
+/* MOBILE PORTRAIT */
+@media (max-width: 479px) and (min-width: 360px) {
+	.price-current {
+		font-size: 15px !important;
 	}
-	
-	.sell-product-title {
-		font-size: 15px;
+	.price-currency {
+		font-size: 10px;
+	}
+	.price-original {
+		font-size: 10px;
+	}
+	.save-amount {
+		font-size: 8px;
+		padding: 2px 5px;
+	}
+	.view-details-link {
+		padding: 6px;
+		font-size: 11px;
+	}
+}
+
+/* MOBILE SANGAT KECIL */
+@media (max-width: 359px) {
+	.price-current {
+		font-size: 14px !important;
+	}
+	.price-currency {
+		font-size: 9px;
+	}
+	.price-original {
+		font-size: 9px;
+	}
+	.save-amount {
+		font-size: 7px;
+		padding: 1px 4px;
 	}
 }
