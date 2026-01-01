@@ -20,7 +20,7 @@ import TechStackCarousel from "../components/homepage/TechStackCarousel";
 
 import INFO from "../data/user";
 import SEO from "../data/seo";
-import { getAllArticles } from "../utils/contentManagement";
+import { getAllArticles, getAllProjects } from "../utils/contentManagement";
 
 import "./styles/homepage.css";
 
@@ -29,10 +29,13 @@ const Homepage = () => {
   const [logoSize, setLogoSize] = useState(80);
   const [oldLogoSize, setOldLogoSize] = useState(80);
   const [latestArticles, setLatestArticles] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [isLoadingProjects, setIsLoadingProjects] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     loadLatestArticles();
+    loadProjects();
   }, []);
 
   const loadLatestArticles = async () => {
@@ -42,6 +45,30 @@ const Homepage = () => {
     } catch (error) {
       console.error("Failed to load articles:", error);
       setLatestArticles([]);
+    }
+  };
+
+  const loadProjects = async () => {
+    setIsLoadingProjects(true);
+    try {
+      const projectsData = await getAllProjects();
+      console.log("📦 Loaded projects:", projectsData);
+      
+      // Transform data untuk AllProjects component
+      const transformedProjects = projectsData.map((project) => ({
+        logo: project.logo || "/default-project-icon.png",
+        title: project.title,
+        description: project.description,
+        linkText: project.linkText || "View Project",
+        link: project.link || `/project/${project.id}`,
+      }));
+      
+      setProjects(transformedProjects);
+    } catch (error) {
+      console.error("Failed to load projects:", error);
+      setProjects([]);
+    } finally {
+      setIsLoadingProjects(false);
     }
   };
 
@@ -173,7 +200,17 @@ const Homepage = () => {
             </div>
 
             <div className="homepage-projects">
-              <AllProjects />
+              {isLoadingProjects ? (
+                <div className="homepage-projects-loading">
+                  <p>Loading projects...</p>
+                </div>
+              ) : projects.length === 0 ? (
+                <div className="homepage-projects-empty">
+                  <p>No projects available yet.</p>
+                </div>
+              ) : (
+                <AllProjects projects={projects} />
+              )}
             </div>
 
             <div className="homepage-after-title">

@@ -3,14 +3,18 @@
 .all-projects-container {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	gap: 25px 30px; /* row-gap: 25px, column-gap: 30px */
+	gap: 24px;
 	width: 100%;
 	padding: 20px 0;
+	align-items: stretch; /* CRITICAL: Ensures all cards stretch equally */
 }
 
 .project-wrapper {
 	display: flex;
-	min-height: 250px;
+	flex-direction: column;
+	width: 100%; /* CRITICAL: Full width of grid cell */
+	height: 100%; /* CRITICAL: Full height to prevent overlap */
+	min-height: 280px; /* CRITICAL: Minimum height */
 }
 
 /* No Projects State */
@@ -30,24 +34,29 @@
 @media (max-width: 1200px) {
 	.all-projects-container {
 		grid-template-columns: repeat(2, 1fr);
-		gap: 30px 25px;
+		gap: 22px;
+	}
+	
+	.project-wrapper {
+		min-height: 260px;
 	}
 }
 
 @media (max-width: 768px) {
 	.all-projects-container {
 		grid-template-columns: 1fr;
-		gap: 25px;
+		gap: 20px;
 	}
 	
 	.project-wrapper {
-		min-height: 220px;
+		min-height: 240px;
 	}
 }
 
 @media (max-width: 480px) {
 	.all-projects-container {
-		gap: 20px;
+		gap: 18px;
+		padding: 15px 0;
 	}
 	
 	.project-wrapper {

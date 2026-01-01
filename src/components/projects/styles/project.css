@@ -3,59 +3,98 @@
 .project-card {
 	display: flex;
 	flex-direction: column;
-	align-items: flex-start;
-	padding: 0;
-	background: transparent;
-	border: none;
-	transition: transform 0.3s ease;
-	height: 100%;
+	height: 100%; /* CRITICAL: Fill parent container */
+	padding: 24px;
+	background: white;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	border-radius: 16px;
+	transition: all 0.3s ease;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+	position: relative; /* CRITICAL: Establishes positioning context */
+	overflow: hidden; /* CRITICAL: Prevents content overflow */
 }
 
 .project-card:hover {
 	transform: translateY(-5px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+	border-color: var(--link-color);
 }
 
-/* Project Icon/Logo - SMALLER */
+/* Project Icon/Logo */
 .project-icon {
-	width: 50px;
-	height: 50px;
-	margin-bottom: 15px;
+	width: 56px;
+	height: 56px;
+	margin-bottom: 16px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	background: #f5f5f5;
-	border-radius: 10px;
-	padding: 10px;
+	border-radius: 12px;
+	padding: 12px;
 	transition: all 0.3s ease;
+	flex-shrink: 0; /* CRITICAL: Prevents shrinking */
 }
 
 .project-icon img {
 	width: 100%;
 	height: 100%;
 	object-fit: contain;
+	transition: transform 0.3s ease;
+}
+
+.project-icon-loading {
+	font-size: 18px;
+	color: var(--tertiary-color);
+	animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.5; }
 }
 
 .project-card:hover .project-icon {
 	background: var(--link-color);
+	transform: scale(1.05);
+}
+
+.project-card:hover .project-icon img {
 	transform: scale(1.1);
 }
 
-/* Project Title - SMALLER */
+/* Project Title */
 .project-title {
 	font-size: 18px;
 	font-weight: 700;
 	color: var(--primary-color);
 	margin-bottom: 12px;
-	line-height: 1.3;
+	line-height: 1.4;
+	transition: color 0.3s ease;
+	min-height: 50px; /* CRITICAL: Consistent title height */
+	display: -webkit-box;
+	-webkit-line-clamp: 2; /* CRITICAL: Max 2 lines */
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-/* Project Description - SMALLER */
+.project-card:hover .project-title {
+	color: var(--link-color);
+}
+
+/* Project Description */
 .project-description {
 	font-size: 14px;
 	line-height: 1.6;
-	color: var(--tertiary-color);
-	margin-bottom: 15px;
-	flex-grow: 1;
+	color: var(--secondary-color);
+	margin-bottom: 16px;
+	flex-grow: 1; /* CRITICAL: Takes available space */
+	display: -webkit-box;
+	-webkit-line-clamp: 3; /* CRITICAL: Max 3 lines */
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-height: 63px; /* CRITICAL: 3 lines height */
 }
 
 /* Project Link */
@@ -68,8 +107,10 @@
 	color: var(--tertiary-color);
 	text-decoration: none;
 	transition: all 0.3s ease;
-	padding: 6px 0;
+	padding: 8px 0;
 	border-bottom: 2px solid transparent;
+	margin-top: auto; /* CRITICAL: Pushes to bottom */
+	align-self: flex-start; /* CRITICAL: Aligns to start */
 }
 
 .project-link svg {
@@ -83,28 +124,272 @@
 }
 
 .project-link:hover svg {
-	transform: translateX(3px);
+	transform: translateX(4px);
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+	.project-card {
+		padding: 22px;
+	}
+
 	.project-icon {
-		width: 45px;
-		height: 45px;
-		margin-bottom: 12px;
+		width: 52px;
+		height: 52px;
 	}
 
 	.project-title {
 		font-size: 17px;
-		margin-bottom: 10px;
+		min-height: 48px;
 	}
 
 	.project-description {
 		font-size: 13px;
-		margin-bottom: 12px;
+		min-height: 60px;
+	}
+}
+
+@media (max-width: 768px) {
+	.project-card {
+		padding: 20px;
+	}
+
+	.project-icon {
+		width: 48px;
+		height: 48px;
+		margin-bottom: 14px;
+	}
+
+	.project-title {
+		font-size: 16px;
+		margin-bottom: 10px;
+		min-height: 44px;
+	}
+
+	.project-description {
+		font-size: 13px;
+		margin-bottom: 14px;
+		min-height: 58px;
 	}
 
 	.project-link {
 		font-size: 12px;
+	}
+}
+
+@media (max-width: 480px) {
+	.project-card {
+		padding: 18px;
+	}
+
+	.project-icon {
+		width: 44px;
+		height: 44px;
+	}
+
+	.project-title {
+		font-size: 15px;
+		min-height: auto; /* Allow natural height on mobile */
+	}
+
+	.project-description {
+		min-height: auto; /* Allow natural height on mobile */
+	}
+}@import "../../../data/styles.css";
+
+/* Base Card Styles */
+.project-card {
+	display: flex;
+	flex-direction: column;
+	padding: 24px;
+	background: white;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	border-radius: 16px;
+	transition: all 0.3s ease;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+	position: relative;
+	overflow: hidden;
+	height: auto; /* FLEKSIBEL: Tidak force height tertentu */
+	min-height: 280px; /* Minimal height untuk konsistensi */
+}
+
+.project-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+	border-color: var(--link-color);
+}
+
+/* Project Icon/Logo */
+.project-icon {
+	width: 56px;
+	height: 56px;
+	margin-bottom: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #f5f5f5;
+	border-radius: 12px;
+	padding: 12px;
+	transition: all 0.3s ease;
+	flex-shrink: 0;
+}
+
+.project-icon img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	transition: transform 0.3s ease;
+}
+
+.project-icon-loading {
+	font-size: 20px;
+	color: var(--tertiary-color);
+}
+
+.project-card:hover .project-icon {
+	background: var(--link-color);
+	transform: scale(1.05);
+}
+
+.project-card:hover .project-icon img {
+	transform: scale(1.1);
+}
+
+/* Project Title */
+.project-title {
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--primary-color);
+	margin-bottom: 12px;
+	line-height: 1.4;
+	transition: color 0.3s ease;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	min-height: 50px;
+}
+
+.project-card:hover .project-title {
+	color: var(--link-color);
+}
+
+/* Project Description */
+.project-description {
+	font-size: 14px;
+	line-height: 1.6;
+	color: var(--secondary-color);
+	margin-bottom: 16px;
+	flex-grow: 1;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* Project Link */
+.project-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--tertiary-color);
+	text-decoration: none;
+	transition: all 0.3s ease;
+	padding: 8px 0;
+	border-bottom: 2px solid transparent;
+	margin-top: auto;
+	align-self: flex-start;
+}
+
+.project-link svg {
+	font-size: 11px;
+	transition: transform 0.3s ease;
+}
+
+.project-link:hover {
+	color: var(--link-color);
+	border-bottom-color: var(--link-color);
+}
+
+.project-link:hover svg {
+	transform: translateX(4px);
+}
+
+/* FIX untuk CMS - Parent container harus memiliki spacing */
+.project-card-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+	gap: 24px;
+	padding: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+	.project-card {
+		padding: 22px;
+		min-height: 260px;
+	}
+
+	.project-icon {
+		width: 52px;
+		height: 52px;
+	}
+
+	.project-title {
+		font-size: 17px;
+		min-height: 48px;
+	}
+}
+
+@media (max-width: 768px) {
+	.project-card {
+		padding: 20px;
+		min-height: 240px;
+	}
+
+	.project-icon {
+		width: 48px;
+		height: 48px;
+		margin-bottom: 14px;
+	}
+
+	.project-title {
+		font-size: 16px;
+		margin-bottom: 10px;
+		min-height: 44px;
+	}
+
+	.project-description {
+		margin-bottom: 14px;
+	}
+
+	.project-link {
+		font-size: 12px;
+	}
+}
+
+@media (max-width: 480px) {
+	.project-card {
+		padding: 18px;
+		min-height: auto; /* Mobile lebih fleksibel */
+	}
+
+	.project-icon {
+		width: 44px;
+		height: 44px;
+	}
+
+	.project-title {
+		font-size: 15px;
+		min-height: auto;
+	}
+
+	.project-card-container {
+		grid-template-columns: 1fr;
+		gap: 16px;
 	}
 }

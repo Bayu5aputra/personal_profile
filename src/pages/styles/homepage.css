@@ -51,11 +51,9 @@
 	width: 100%;
 	height: 100%;
 	border-radius: 10%;
-	background: linear-gradient(
-		135deg,
-		rgba(255, 255, 255, 0.05),
-		rgba(255, 255, 255, 0.02)
-	);
+	background: linear-gradient(135deg,
+			rgba(255, 255, 255, 0.05),
+			rgba(255, 255, 255, 0.02));
 	backdrop-filter: blur(20px);
 	border: 1px solid rgba(255, 255, 255, 0.1);
 	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.05);
@@ -91,8 +89,14 @@
 	color: var(--primary-color);
 }
 
+/* ===================================
+   PERBAIKAN UTAMA: Layout Articles & Works
+   =================================== */
+
 .homepage-after-title {
 	display: flex;
+	gap: 50px; /* TAMBAHKAN: Spacing antara Articles dan Works */
+	margin-top: 50px; /* TAMBAHKAN: Spacing dari konten di atas */
 }
 
 .homepage-projects {
@@ -100,19 +104,39 @@
 	padding-top: 40px;
 }
 
+/* ARTICLES SECTION - Diperbaiki */
 .homepage-articles {
-	flex-basis: 900px;
-	padding-top: 30px;
-	margin-left: -30px;
+	flex: 1; /* Gunakan flex untuk distribusi space */
+	padding: 35px; /* PERBAIKI: Tambah padding dalam */
+	background: rgba(255, 255, 255, 0.7);
+	border-radius: 20px;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+	margin-right: 0; /* HAPUS margin-left negatif */
+	min-width: 0; /* Penting untuk ellipsis */
 }
 
 .homepage-article {
-	padding-bottom: 5px;
+	padding-bottom: 25px; /* TAMBAHKAN: Spacing antar article */
+	margin-bottom: 25px; /* TAMBAHKAN: Spacing antar article */
+	border-bottom: 1px solid rgba(0, 0, 0, 0.06); /* Garis pemisah */
 }
 
+.homepage-article:last-child {
+	border-bottom: none;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+/* WORKS SECTION - Diperbaiki */
 .homepage-works {
-	flex-basis: 600px;
-	padding-top: 30px;
+	flex: 0 0 500px; /* Lebar konsisten untuk works */
+	padding: 35px; /* Sama dengan articles */
+	background: rgba(255, 255, 255, 0.7);
+	border-radius: 20px;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+	margin-left: 0; /* HAPUS margin-right negatif */
 }
 
 /* PERBAIKAN: Tombol View More Articles - Style Lengkap */
@@ -154,12 +178,10 @@
 	left: -100%;
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(
-		90deg,
-		transparent,
-		rgba(255, 255, 255, 0.8),
-		transparent
-	);
+	background: linear-gradient(90deg,
+			transparent,
+			rgba(255, 255, 255, 0.8),
+			transparent);
 	transition: left 0.7s ease;
 	z-index: 1;
 }
@@ -172,11 +194,9 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(
-		135deg,
-		var(--link-color),
-		var(--primary-color)
-	);
+	background: linear-gradient(135deg,
+			var(--link-color),
+			var(--primary-color));
 	opacity: 0;
 	transition: all 0.4s ease;
 	z-index: -1;
@@ -210,6 +230,7 @@
 
 /* Animasi pulse subtle */
 @keyframes subtlePulse {
+
 	0%,
 	100% {
 		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.08),
@@ -269,23 +290,30 @@
 		height: 320px;
 	}
 
+	/* ===================================
+	   PERBAIKAN RESPONSIVE: Articles & Works
+	   =================================== */
 	.homepage-after-title {
 		flex-direction: column;
+		gap: 40px; /* Spacing vertikal saat mobile */
+		margin-top: 40px;
+	}
+
+	.homepage-articles,
+	.homepage-works {
+		flex: none; /* Nonaktifkan flex saat mobile */
+		width: 100%;
+		margin: 0;
+		padding: 30px; /* Sedikit lebih kecil di mobile */
+	}
+
+	.homepage-article {
+		padding-bottom: 20px;
+		margin-bottom: 20px;
 	}
 
 	.homepage-projects {
 		flex-basis: auto;
-	}
-
-	.homepage-articles {
-		flex-basis: auto;
-		margin-left: 0;
-	}
-
-	.homepage-works {
-		flex-basis: auto;
-		margin-left: 0;
-		margin-right: 0;
 	}
 
 	.homepage-view-more-container {
@@ -308,6 +336,17 @@
 	.homepage-view-more-container {
 		margin-top: 30px;
 		padding: 18px 0;
+	}
+
+	/* PERBAIKAN MOBILE: Articles & Works */
+	.homepage-after-title {
+		gap: 30px;
+		margin-top: 30px;
+	}
+
+	.homepage-articles,
+	.homepage-works {
+		padding: 25px;
 	}
 }
 
@@ -344,6 +383,17 @@
 		margin-top: 25px;
 		padding: 15px 0;
 	}
+
+	/* PERBAIKAN MOBILE KECIL: Articles & Works */
+	.homepage-after-title {
+		gap: 25px;
+		margin-top: 25px;
+	}
+
+	.homepage-articles,
+	.homepage-works {
+		padding: 20px;
+	}
 }
 
 /* Pastikan warna text tetap visible */
@@ -370,6 +420,7 @@
 	font-style: italic;
 	margin: 0;
 }
+
 /* ===================================
    ARTICLES EMPTY STATE - Subtle
    =================================== */
@@ -400,6 +451,80 @@
 	}
 
 	.homepage-articles-empty p {
+		font-size: 14px;
+	}
+}
+
+/* Homepage Projects Loading & Empty States */
+.homepage-projects-loading,
+.homepage-projects-empty {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 40px 20px;
+	text-align: center;
+	background: rgba(240, 240, 240, 0.3);
+	border-radius: 16px;
+	border: 2px dashed #e0e0e0;
+	margin-top: 20px;
+}
+
+.homepage-projects-loading p,
+.homepage-projects-empty p {
+	font-size: 15px;
+	color: var(--tertiary-color);
+	font-style: italic;
+	margin: 0;
+	font-weight: 500;
+}
+
+@media (max-width: 768px) {
+
+	.homepage-projects-loading,
+	.homepage-projects-empty {
+		padding: 30px 15px;
+	}
+
+	.homepage-projects-loading p,
+	.homepage-projects-empty p {
+		font-size: 14px;
+	}
+}
+
+/* Homepage Projects Section - CRITICAL FIX */
+.homepage-projects {
+	width: 100%;
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+.homepage-projects .all-projects-container {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 1024px) {
+	.homepage-projects .all-projects-container {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 768px) {
+	.homepage-projects {
+		margin-top: 30px;
+		margin-bottom: 30px;
+	}
+
+	.homepage-projects .all-projects-container {
+		grid-template-columns: 1fr;
+	}
+
+	.homepage-projects-loading,
+	.homepage-projects-empty {
+		padding: 30px 15px;
+	}
+
+	.homepage-projects-loading p,
+	.homepage-projects-empty p {
 		font-size: 14px;
 	}
 }

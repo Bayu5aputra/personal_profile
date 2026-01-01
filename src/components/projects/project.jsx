@@ -10,7 +10,11 @@ const Project = (props) => {
 	return (
 		<div className="project-card">
 			<div className="project-icon">
-				<img src={logo} alt={`${title} logo`} />
+				{logo ? (
+					<img src={logo} alt={`${title} logo`} loading="lazy" />
+				) : (
+					<div className="project-icon-loading">📁</div>
+				)}
 			</div>
 			
 			<div className="project-title">{title}</div>
