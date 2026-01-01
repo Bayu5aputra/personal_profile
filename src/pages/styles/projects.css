@@ -1,5 +1,9 @@
 @import "../../data/styles.css";
 
+/* ============================================
+   LOGO & CONTAINER
+   ============================================ */
+
 .projects-logo-container {
 	display: flex;
 	justify-content: left;
@@ -19,28 +23,31 @@
 .projects-container {
 	padding-top: 90px;
 	padding-bottom: 50px;
-	max-width: 1400px; /* CRITICAL: Max width for better layout */
-	margin: 0 auto; /* CRITICAL: Center container */
+	max-width: 1400px;
+	margin: 0 auto;
 }
+
+/* ============================================
+   HEADER SECTION - KONSISTEN DENGAN ABOUT
+   ============================================ */
 
 .projects-header {
 	margin-bottom: 60px;
 }
 
+/* Menggunakan class .title dari app.css - sama seperti About */
 .projects-title {
-	width: 100% !important;
-	font-size: 42px;
-	font-weight: 700;
-	color: var(--primary-color);
-	margin-bottom: 15px;
+	width: 70% !important;
 }
 
+/* Menggunakan class .subtitle dari app.css - sama seperti About */
 .projects-subtitle {
-	width: 80%;
-	font-size: 16px;
-	line-height: 1.7;
-	color: var(--tertiary-color);
+	width: 70% !important;
 }
+
+/* ============================================
+   CONTENT SECTION
+   ============================================ */
 
 .projects-content {
 	width: 100%;
@@ -58,7 +65,10 @@
 	font-style: italic;
 }
 
-/* Responsive Design */
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
 @media (max-width: 1440px) {
 	.projects-container {
 		max-width: 95%;
@@ -71,18 +81,9 @@
 	.projects-container {
 		padding-top: 80px;
 	}
-
-	.projects-title {
-		font-size: 36px;
-	}
-
-	.projects-subtitle {
-		width: 90%;
-		font-size: 15px;
-	}
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
 	.projects-container {
 		padding-top: 70px;
 		padding-left: 15px;
@@ -93,13 +94,13 @@
 		margin-bottom: 40px;
 	}
 
+	/* Responsive - mengikuti app.css */
 	.projects-title {
-		font-size: 32px;
+		width: 100% !important;
 	}
 
 	.projects-subtitle {
-		width: 100%;
-		font-size: 14px;
+		width: 100% !important;
 	}
 }
 
@@ -110,13 +111,5 @@
 
 	.projects-container {
 		padding-top: 60px;
-	}
-
-	.projects-title {
-		font-size: 28px;
-	}
-
-	.projects-subtitle {
-		font-size: 13px;
 	}
 }

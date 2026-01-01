@@ -39,7 +39,7 @@ const Projects = () => {
 		<React.Fragment>
 			<Helmet>
 				<title>{`Projects | ${INFO.main.title}`}</title>
-				<meta name="description" content={INFO.projects.description} />
+				<meta name="description" content="Explore my portfolio of projects showcasing expertise in IT infrastructure, IoT systems, and full-stack development." />
 			</Helmet>
 
 			<div className="page-content">
@@ -52,12 +52,13 @@ const Projects = () => {
 					</div>
 
 					<div className="projects-container">
+						{/* HEADER SECTION - SEPERTI GAMBAR & KONSISTEN DENGAN ABOUT */}
 						<div className="projects-header">
 							<div className="title projects-title">
-								{INFO.projects.title}
+								Things I've made trying to put my dent in the universe.
 							</div>
 							<div className="subtitle projects-subtitle">
-								{INFO.projects.description}
+								I've worked on a variety of projects over the years and I'm proud of the progress I've made. Many of these projects are open-source and available for others to explore and contribute to. If you're interested in any of the projects I've worked on, please feel free to check out the code and suggest any improvements or enhancements you might have in mind. Collaborating with others is a great way to learn and grow, and I'm always open to new ideas and feedback.
 							</div>
 						</div>
 
