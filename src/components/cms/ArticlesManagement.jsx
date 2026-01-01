@@ -246,12 +246,13 @@ const ArticlesManagement = () => {
 								value={formData.content}
 								onChange={handleInputChange}
 								rows="12"
-								placeholder="Write your article content here... (HTML supported)"
+								placeholder="Write your article content here... (Use Formatting Rules)"
 								required
 							/>
 							<small>
-								You can use HTML tags for formatting (e.g., &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;li&gt;)
+								Formatting rules: <code>#</code> for <strong>Heading 1</strong>, <code>##</code> for <strong>Heading 2</strong>, <code>###</code> for <strong>Heading 3</strong>, <code>*text*</code> for <strong>bold text</strong>, <code>```code```</code> for <strong>code block</strong>.
 							</small>
+
 						</div>
 
 						<div className="form-actions">
