@@ -53,7 +53,7 @@ const Homepage = () => {
     try {
       const projectsData = await getAllProjects();
       console.log("📦 Loaded projects:", projectsData);
-      
+
       // Transform data untuk AllProjects component
       const transformedProjects = projectsData.map((project) => ({
         logo: project.logo || "/default-project-icon.png",
@@ -62,7 +62,7 @@ const Homepage = () => {
         linkText: project.linkText || "View Project",
         link: project.link || `/project/${project.id}`,
       }));
-      
+
       setProjects(transformedProjects);
     } catch (error) {
       console.error("Failed to load projects:", error);
@@ -160,7 +160,7 @@ const Homepage = () => {
                   className="homepage-social-icon"
                 />
               </a>
-              
+
               {INFO.socials.stackoverflow && (
                 <a
                   href={INFO.socials.stackoverflow}
@@ -173,7 +173,7 @@ const Homepage = () => {
                   />
                 </a>
               )}
-              
+
               {INFO.socials.instagram && (
                 <a
                   href={INFO.socials.instagram}
@@ -186,7 +186,7 @@ const Homepage = () => {
                   />
                 </a>
               )}
-              
+
               <a
                 href={`mailto:${INFO.main.email}`}
                 target="_blank"
@@ -230,7 +230,7 @@ const Homepage = () => {
                         />
                       </div>
                     ))}
-                    
+
                     <div className="homepage-view-more-container">
                       <Link to="/articles" className="homepage-view-more-button">
                         View More Articles
@@ -244,9 +244,11 @@ const Homepage = () => {
                 )}
               </div>
 
-              <div className="homepage-works">
+              {/* <div className="homepage-works">
                 <Works />
-              </div>
+              </div> */}
+              <Works />
+
             </div>
 
             <div className="page-footer">

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-// import { Helmet } from "react-helmet";
 import { Helmet } from "react-helmet-async";
 
 import NavBar from "../components/common/navBar";
 import Footer from "../components/common/footer";
 import Logo from "../components/common/logo";
 import Socials from "../components/about/socials";
+import Certifications from "../components/about/Certifications";
 
 import INFO from "../data/user";
 import SEO from "../data/seo";
@@ -70,6 +70,9 @@ const About = () => {
 						<div className="about-socials-mobile">
 							<Socials />
 						</div>
+
+						{/* Certifications Section */}
+						<Certifications />
 					</div>
 					<div className="page-footer">
 						<Footer />
