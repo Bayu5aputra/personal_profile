@@ -1,14 +1,16 @@
 @import "../../../data/styles.css";
 
 /* ============================================
-   CERTIFICATIONS SECTION
+   CERTIFICATIONS SECTION - FIX OVERLAPPING
    ============================================ */
 
 .certifications-section {
 	width: 100%;
-	padding: 60px 20px 80px;
+	padding: 80px 0 100px;
 	position: relative;
-	overflow: visible;
+	overflow: hidden; /* 🔥 FIX 1: Prevent overflow */
+	margin-top: 60px;
+	z-index: 1; /* 🔥 FIX 2: Lower than navbar (999) */
 }
 
 .certifications-section::before {
@@ -24,6 +26,7 @@
 		transparent 50%
 	);
 	pointer-events: none;
+	z-index: 0;
 }
 
 /* ============================================
@@ -32,14 +35,17 @@
 
 .certifications-header {
 	text-align: center;
-	margin-bottom: 50px;
+	margin-bottom: 60px;
+	padding: 0 20px;
+	position: relative;
+	z-index: 2;
 }
 
 .certifications-title {
-	font-size: 32px;
+	font-size: 36px;
 	font-weight: 800;
 	color: var(--primary-color);
-	margin: 0 0 15px 0;
+	margin: 0 0 20px 0;
 	letter-spacing: -0.5px;
 	background: linear-gradient(
 		135deg,
@@ -53,28 +59,31 @@
 }
 
 .certifications-subtitle {
-	font-size: 15px;
+	font-size: 16px;
 	color: var(--secondary-color);
 	max-width: 700px;
 	margin: 0 auto;
-	line-height: 1.7;
+	line-height: 1.8;
 	opacity: 0;
 }
 
 /* ============================================
-   GRID LAYOUT - MASONRY STYLE
+   GRID LAYOUT - FIX SPACING
    ============================================ */
 
 .certifications-grid {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	gap: 30px;
-	max-width: 100%;
-	padding: 0 10px;
+	gap: 35px;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 20px;
+	position: relative;
+	z-index: 2;
 }
 
 /* ============================================
-   CERTIFICATION CARD - LIQUID GLASS EFFECT
+   CERTIFICATION CARD - FIX ANIMATION
    ============================================ */
 
 .certification-card {
@@ -82,11 +91,19 @@
 	position: relative;
 	cursor: pointer;
 	transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	min-height: 320px;
+	display: flex;
+	flex-direction: column;
+	z-index: 3; /* 🔥 FIX 3: Card z-index below navbar */
+	
+	/* 🔥 FIX 4: Prevent animation overflow */
+	will-change: transform;
+	transform: translateZ(0); /* Force GPU acceleration */
 }
 
 .certification-card:hover {
 	transform: translateY(-10px) scale(1.02);
-	z-index: 10;
+	z-index: 4; /* 🔥 Hover state slightly higher but still below navbar */
 }
 
 .cert-card-inner {
@@ -95,12 +112,17 @@
 	backdrop-filter: blur(20px) saturate(150%);
 	-webkit-backdrop-filter: blur(20px) saturate(150%);
 	border-radius: 24px;
-	padding: 30px;
+	padding: 35px;
 	border: 1px solid rgba(255, 255, 255, 0.5);
 	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04),
 		inset 0 1px 0 rgba(255, 255, 255, 0.9);
 	overflow: visible;
 	transition: all 0.4s ease;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
 }
 
 .certification-card:hover .cert-card-inner {
@@ -134,13 +156,13 @@
 }
 
 /* ============================================
-   BADGE WRAPPER - LIQUID EFFECT
+   BADGE WRAPPER
    ============================================ */
 
 .cert-badge-wrapper {
 	position: relative;
-	width: 120px;
-	height: 120px;
+	width: 130px;
+	height: 130px;
 	margin: 0 auto 25px;
 	display: flex;
 	align-items: center;
@@ -184,50 +206,35 @@
 }
 
 /* ============================================
-   BADGE IMAGE - TRANSPARENT BACKGROUND
+   TRANSPARENT LOGO
    ============================================ */
 
 .cert-badge {
-	width: 100px;
-	height: 100px;
+	width: 110px;
+	height: 110px;
 	object-fit: contain;
 	position: relative;
 	z-index: 2;
-	filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.15)) brightness(1.05) contrast(1.1);
-	transition: all 0.3s ease;
 	background: transparent !important;
+	filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.15)) 
+	        brightness(1.05) 
+	        contrast(1.1);
+	transition: all 0.3s ease;
 	mix-blend-mode: normal;
+	border: none;
+	outline: none;
 }
 
-/* Remove white backgrounds from images */
-.cert-badge::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: transparent;
+.cert-badge::before,
+.cert-badge::after {
+	display: none !important;
 }
 
-.cert-badge-fallback {
-	width: 100px;
-	height: 100px;
-	background: linear-gradient(
-		135deg,
-		var(--cert-color),
-		var(--link-color)
-	);
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 14px;
-	font-weight: 700;
-	color: white;
-	text-align: center;
-	padding: 10px;
-	z-index: 2;
+.certification-card:hover .cert-badge {
+	transform: scale(1.1) rotate(5deg);
+	filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.2)) 
+	        brightness(1.1) 
+	        contrast(1.15);
 }
 
 /* ============================================
@@ -238,13 +245,14 @@
 	text-align: center;
 	position: relative;
 	z-index: 2;
+	width: 100%;
 }
 
 .cert-name {
 	font-size: 20px;
 	font-weight: 700;
 	color: var(--primary-color);
-	margin: 0 0 8px 0;
+	margin: 0 0 10px 0;
 	letter-spacing: -0.3px;
 }
 
@@ -260,7 +268,7 @@
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
-	padding: 6px 14px;
+	padding: 8px 16px;
 	background: rgba(20, 184, 166, 0.1);
 	border-radius: 20px;
 	font-size: 12px;
@@ -318,135 +326,111 @@
 }
 
 /* ============================================
-   GLASS MORPHISM ENHANCEMENTS
+   🔥 FIX: FLOATING ANIMATIONS - SUBTLE MOVEMENT
    ============================================ */
 
-.certification-card::before {
-	content: "";
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: linear-gradient(
-		135deg,
-		rgba(255, 255, 255, 0.15) 0%,
-		rgba(255, 255, 255, 0.05) 100%
-	);
-	border-radius: 24px;
-	opacity: 0;
-	transition: opacity 0.4s ease;
-	pointer-events: none;
-	z-index: 1;
-}
-
-.certification-card:hover::before {
-	opacity: 1;
-}
-
-/* ============================================
-   RANDOM FLOATING ANIMATION - PROFESSIONAL
-   ============================================ */
-
+/* Reduce animation intensity to prevent overlap */
 .certification-card:nth-child(1) {
-	animation: float1 7s ease-in-out infinite;
+	animation: float1 8s ease-in-out infinite;
 }
 
 .certification-card:nth-child(2) {
-	animation: float2 8s ease-in-out infinite 0.5s;
+	animation: float2 9s ease-in-out infinite 0.5s;
 }
 
 .certification-card:nth-child(3) {
-	animation: float3 6.5s ease-in-out infinite 1s;
+	animation: float3 7.5s ease-in-out infinite 1s;
 }
 
 .certification-card:nth-child(4) {
-	animation: float4 7.5s ease-in-out infinite 0.3s;
+	animation: float4 8.5s ease-in-out infinite 0.3s;
 }
 
 .certification-card:nth-child(5) {
-	animation: float5 8.5s ease-in-out infinite 0.8s;
+	animation: float5 9.5s ease-in-out infinite 0.8s;
 }
 
 .certification-card:nth-child(6) {
-	animation: float6 7.2s ease-in-out infinite 1.2s;
+	animation: float6 8.2s ease-in-out infinite 1.2s;
 }
 
 .certification-card:nth-child(7) {
-	animation: float7 6.8s ease-in-out infinite 0.6s;
+	animation: float7 7.8s ease-in-out infinite 0.6s;
 }
 
 .certification-card:nth-child(8) {
-	animation: float8 7.8s ease-in-out infinite 1.5s;
+	animation: float8 8.8s ease-in-out infinite 1.5s;
 }
 
 .certification-card:nth-child(9) {
-	animation: float9 8.2s ease-in-out infinite 0.2s;
+	animation: float9 9.2s ease-in-out infinite 0.2s;
 }
 
 .certification-card:nth-child(10) {
-	animation: float10 7.3s ease-in-out infinite 1.1s;
+	animation: float10 8.3s ease-in-out infinite 1.1s;
 }
 
 .certification-card:nth-child(11) {
-	animation: float11 6.9s ease-in-out infinite 0.9s;
+	animation: float11 7.9s ease-in-out infinite 0.9s;
 }
 
+/* 🔥 FIX: Reduced movement range (max 5px instead of 10px) */
 @keyframes float1 {
 	0%, 100% { transform: translateY(0px) rotate(0deg); }
-	50% { transform: translateY(-8px) rotate(0.5deg); }
+	50% { transform: translateY(-5px) rotate(0.3deg); }
 }
 
 @keyframes float2 {
-	0%, 100% { transform: translateY(-3px) rotate(-0.3deg); }
-	50% { transform: translateY(5px) rotate(0.3deg); }
+	0%, 100% { transform: translateY(-2px) rotate(-0.2deg); }
+	50% { transform: translateY(3px) rotate(0.2deg); }
 }
 
 @keyframes float3 {
-	0%, 100% { transform: translateY(2px) rotate(0.2deg); }
-	50% { transform: translateY(-10px) rotate(-0.4deg); }
-}
-
-@keyframes float4 {
-	0%, 100% { transform: translateY(-5px) rotate(-0.2deg); }
-	50% { transform: translateY(7px) rotate(0.5deg); }
-}
-
-@keyframes float5 {
-	0%, 100% { transform: translateY(4px) rotate(0.4deg); }
+	0%, 100% { transform: translateY(1px) rotate(0.1deg); }
 	50% { transform: translateY(-6px) rotate(-0.3deg); }
 }
 
+@keyframes float4 {
+	0%, 100% { transform: translateY(-3px) rotate(-0.1deg); }
+	50% { transform: translateY(4px) rotate(0.3deg); }
+}
+
+@keyframes float5 {
+	0%, 100% { transform: translateY(2px) rotate(0.2deg); }
+	50% { transform: translateY(-4px) rotate(-0.2deg); }
+}
+
 @keyframes float6 {
-	0%, 100% { transform: translateY(-2px) rotate(-0.5deg); }
-	50% { transform: translateY(9px) rotate(0.2deg); }
+	0%, 100% { transform: translateY(-1px) rotate(-0.3deg); }
+	50% { transform: translateY(5px) rotate(0.1deg); }
 }
 
 @keyframes float7 {
-	0%, 100% { transform: translateY(6px) rotate(0.3deg); }
-	50% { transform: translateY(-4px) rotate(-0.5deg); }
+	0%, 100% { transform: translateY(3px) rotate(0.2deg); }
+	50% { transform: translateY(-3px) rotate(-0.3deg); }
 }
 
 @keyframes float8 {
-	0%, 100% { transform: translateY(-4px) rotate(-0.4deg); }
-	50% { transform: translateY(8px) rotate(0.4deg); }
+	0%, 100% { transform: translateY(-2px) rotate(-0.2deg); }
+	50% { transform: translateY(5px) rotate(0.2deg); }
 }
 
 @keyframes float9 {
-	0%, 100% { transform: translateY(3px) rotate(0.5deg); }
-	50% { transform: translateY(-7px) rotate(-0.2deg); }
+	0%, 100% { transform: translateY(2px) rotate(0.3deg); }
+	50% { transform: translateY(-4px) rotate(-0.1deg); }
 }
 
 @keyframes float10 {
-	0%, 100% { transform: translateY(-6px) rotate(-0.3deg); }
-	50% { transform: translateY(5px) rotate(0.5deg); }
+	0%, 100% { transform: translateY(-4px) rotate(-0.2deg); }
+	50% { transform: translateY(3px) rotate(0.3deg); }
 }
 
 @keyframes float11 {
-	0%, 100% { transform: translateY(5px) rotate(0.2deg); }
-	50% { transform: translateY(-9px) rotate(-0.4deg); }
+	0%, 100% { transform: translateY(3px) rotate(0.1deg); }
+	50% { transform: translateY(-5px) rotate(-0.2deg); }
 }
 
+/* 🔥 FIX: Stop animation on hover to prevent jank */
 .certification-card:hover {
 	animation: none !important;
 }
@@ -455,63 +439,101 @@
    RESPONSIVE DESIGN
    ============================================ */
 
+@media (max-width: 1200px) {
+	.certifications-grid {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 30px;
+	}
+	
+	.cert-badge-wrapper {
+		width: 120px;
+		height: 120px;
+	}
+	
+	.cert-badge {
+		width: 100px;
+		height: 100px;
+	}
+}
+
 @media (max-width: 1024px) {
+	.certifications-section {
+		padding: 60px 0 80px;
+	}
+	
+	.certifications-header {
+		margin-bottom: 50px;
+	}
+	
+	.certifications-title {
+		font-size: 32px;
+	}
+	
+	.certifications-subtitle {
+		font-size: 15px;
+	}
+	
 	.certifications-grid {
 		grid-template-columns: repeat(2, 1fr);
 		gap: 25px;
 	}
-
-	.certifications-title {
-		font-size: 28px;
+	
+	.certification-card {
+		min-height: 300px;
 	}
-
-	.certifications-subtitle {
-		font-size: 14px;
+	
+	.cert-card-inner {
+		padding: 30px;
 	}
 }
 
 @media (max-width: 768px) {
 	.certifications-section {
-		padding: 50px 15px 60px;
+		padding: 50px 0 70px;
 	}
-
+	
 	.certifications-header {
 		margin-bottom: 40px;
+		padding: 0 15px;
 	}
-
+	
 	.certifications-title {
-		font-size: 26px;
+		font-size: 28px;
 	}
-
+	
 	.certifications-subtitle {
 		font-size: 14px;
-		padding: 0 10px;
 	}
-
+	
 	.certifications-grid {
 		grid-template-columns: repeat(2, 1fr);
 		gap: 20px;
+		padding: 0 15px;
 	}
-
+	
+	.certification-card {
+		min-height: 280px;
+	}
+	
 	.cert-card-inner {
 		padding: 25px;
 	}
-
+	
 	.cert-badge-wrapper {
 		width: 100px;
 		height: 100px;
+		margin-bottom: 20px;
 	}
-
-	.cert-badge,
-	.cert-badge-fallback {
+	
+	.cert-badge {
 		width: 80px;
 		height: 80px;
 	}
-
+	
 	.cert-name {
 		font-size: 18px;
 	}
-
+	
 	.cert-full-name {
 		font-size: 12px;
 		min-height: 36px;
@@ -520,44 +542,52 @@
 
 @media (max-width: 480px) {
 	.certifications-section {
-		padding: 40px 10px 50px;
+		padding: 40px 0 60px;
 	}
-
+	
 	.certifications-title {
 		font-size: 24px;
 	}
-
+	
 	.certifications-subtitle {
 		font-size: 13px;
 	}
-
+	
 	.certifications-grid {
 		grid-template-columns: 1fr;
 		gap: 20px;
+		padding: 0 10px;
 	}
-
+	
+	.certification-card {
+		min-height: auto;
+	}
+	
 	.cert-card-inner {
-		padding: 20px;
+		padding: 25px 20px;
 	}
-
+	
 	.cert-badge-wrapper {
 		width: 90px;
 		height: 90px;
 	}
-
-	.cert-badge,
-	.cert-badge-fallback {
+	
+	.cert-badge {
 		width: 70px;
 		height: 70px;
-		font-size: 12px;
 	}
-
+	
 	.cert-name {
 		font-size: 17px;
 	}
-
+	
 	.cert-full-name {
 		font-size: 11px;
 		min-height: auto;
+	}
+	
+	.cert-issuer {
+		padding: 6px 14px;
+		font-size: 11px;
 	}
 }
