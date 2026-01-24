@@ -1,0 +1,237 @@
+@import "../../../data/styles.css";
+
+/* ============================================
+   PROFESSIONAL BADGES CONTAINER
+   ============================================ */
+
+.professional-badges-container {
+	margin-top: 40px;
+	padding: 25px;
+	background: rgba(255, 255, 255, 0.6);
+	backdrop-filter: blur(15px);
+	border-radius: 16px;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	max-width: 400px;
+}
+
+/* ============================================
+   BADGES HEADER
+   ============================================ */
+
+.badges-header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 20px;
+	padding-bottom: 15px;
+	border-bottom: 2px solid var(--quaternary-color);
+}
+
+.badges-icon {
+	font-size: 20px;
+	color: var(--link-color);
+}
+
+.badges-title {
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--primary-color);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+/* ============================================
+   BADGE DISPLAY
+   ============================================ */
+
+.badge-display {
+	position: relative;
+	padding: 20px;
+	background: linear-gradient(135deg, 
+		rgba(255, 255, 255, 0.9) 0%, 
+		rgba(240, 240, 240, 0.8) 100%);
+	border-radius: 12px;
+	border: 2px solid rgba(0, 0, 0, 0.05);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	transition: all 0.5s ease;
+	min-height: 120px;
+}
+
+.badge-display::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 3px;
+	background: var(--badge-color);
+	border-radius: 12px 12px 0 0;
+}
+
+/* ============================================
+   BADGE CONTENT
+   ============================================ */
+
+.badge-content {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	animation: fadeInSlide 0.5s ease;
+}
+
+@keyframes fadeInSlide {
+	0% {
+		opacity: 0;
+		transform: translateX(-10px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+/* ============================================
+   BADGE LOGO
+   ============================================ */
+
+.badge-logo-wrapper {
+	width: 60px;
+	height: 60px;
+	border-radius: 10px;
+	background: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	flex-shrink: 0;
+}
+
+.badge-logo {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* ============================================
+   BADGE INFO
+   ============================================ */
+
+.badge-info {
+	flex: 1;
+	min-width: 0;
+}
+
+.badge-name {
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--primary-color);
+	margin-bottom: 5px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.badge-issuer {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--tertiary-color);
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.badge-issuer::before {
+	content: '✓';
+	color: var(--link-color);
+	font-weight: 700;
+}
+
+/* ============================================
+   PROGRESS DOTS
+   ============================================ */
+
+.badge-progress {
+	display: flex;
+	justify-content: center;
+	gap: 6px;
+	margin-top: 15px;
+	padding-top: 15px;
+	border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.progress-dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, 0.2);
+	transition: all 0.3s ease;
+}
+
+.progress-dot.active {
+	width: 20px;
+	border-radius: 3px;
+	background: var(--link-color);
+	box-shadow: 0 0 8px rgba(20, 184, 166, 0.5);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1024px) {
+	.professional-badges-container {
+		max-width: 100%;
+		margin-top: 30px;
+	}
+}
+
+@media (max-width: 768px) {
+	.professional-badges-container {
+		padding: 20px;
+		margin-top: 25px;
+	}
+	
+	.badge-logo-wrapper {
+		width: 50px;
+		height: 50px;
+	}
+	
+	.badge-name {
+		font-size: 15px;
+	}
+	
+	.badge-issuer {
+		font-size: 12px;
+	}
+}
+
+@media (max-width: 480px) {
+	.professional-badges-container {
+		padding: 18px;
+	}
+	
+	.badges-title {
+		font-size: 14px;
+	}
+	
+	.badge-display {
+		padding: 15px;
+		min-height: 100px;
+	}
+	
+	.badge-logo-wrapper {
+		width: 45px;
+		height: 45px;
+	}
+	
+	.badge-name {
+		font-size: 14px;
+	}
+	
+	.badge-issuer {
+		font-size: 11px;
+	}
+}

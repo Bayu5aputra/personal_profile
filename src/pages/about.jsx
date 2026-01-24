@@ -5,7 +5,7 @@ import NavBar from "../components/common/navBar";
 import Footer from "../components/common/footer";
 import Logo from "../components/common/logo";
 import Socials from "../components/about/socials";
-import Certifications from "../components/about/Certifications";
+import ProfessionalBadges from "../components/about/ProfessionalBadges";
 
 import INFO from "../data/user";
 import SEO from "../data/seo";
@@ -49,6 +49,9 @@ const About = () => {
 								<div className="subtitle about-subtitle">
 									{INFO.about.description}
 								</div>
+								
+								{/* Professional Badges - Auto Switching */}
+								<ProfessionalBadges />
 							</div>
 
 							<div className="about-left-side">
@@ -70,9 +73,6 @@ const About = () => {
 						<div className="about-socials-mobile">
 							<Socials />
 						</div>
-
-						{/* Certifications Section */}
-						<Certifications />
 					</div>
 					<div className="page-footer">
 						<Footer />

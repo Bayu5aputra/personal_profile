@@ -4,11 +4,13 @@
 	mix-blend-mode: normal;
 	border-radius: 20px;
 	outline: 2px solid #f4f4f5;
+	overflow: hidden; /* 🔥 FIX: Prevent shadow overflow */
 }
 
 .card-container {
 	padding: 30px;
 	padding-bottom: 5px;
+	overflow: visible; /* 🔥 FIX: Allow shadow to show inside card */
 }
 
 .card-header {
