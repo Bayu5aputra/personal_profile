@@ -199,7 +199,7 @@ const Homepage = () => {
               </a>
             </div>
 
-            <div className="homepage-projects">
+            {/* <div className="homepage-projects">
               {isLoadingProjects ? (
                 <div className="homepage-projects-loading">
                   <p>Loading projects...</p>
@@ -210,6 +210,32 @@ const Homepage = () => {
                 </div>
               ) : (
                 <AllProjects projects={projects} />
+              )}
+            </div> */}
+
+            <div className="homepage-projects">
+              {isLoadingProjects ? (
+                <div className="homepage-projects-loading">
+                  <p>Loading projects...</p>
+                </div>
+              ) : projects.length === 0 ? (
+                <div className="homepage-projects-empty">
+                  <p>No projects available yet.</p>
+                </div>
+              ) : (
+                <>
+                  {/* Homepage Projects - Show only 3 */}
+                  <AllProjects projects={projects.slice(0, 3)} />
+
+                  {/* View More Projects Button */}
+                  {projects.length > 3 && (
+                    <div className="homepage-view-more-container">
+                      <Link to="/projects" className="homepage-view-more-button">
+                        View More Projects
+                      </Link>
+                    </div>
+                  )}
+                </>
               )}
             </div>
 

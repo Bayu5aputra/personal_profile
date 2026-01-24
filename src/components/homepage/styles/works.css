@@ -2,8 +2,8 @@
 
 .works-body {
 	margin-bottom: 10px;
-	overflow: hidden; /* 🔥 FIX: Prevent shadow overflow */
-	padding: 5px; /* 🔥 FIX: Add padding for shadow space */
+	overflow: visible; /* PERBAIKAN: Ubah dari hidden ke visible */
+	padding: 5px 0; /* PERBAIKAN: Hapus horizontal padding */
 }
 
 .work {
@@ -15,7 +15,7 @@
 	cursor: pointer;
 	position: relative;
 	transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-	margin-bottom: 12px; /* 🔥 FIX: Reduced from 15px */
+	margin-bottom: 15px;
 }
 
 .work:last-child {
@@ -29,14 +29,14 @@
 	background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
 	backdrop-filter: blur(10px);
 	border: 1px solid rgba(255, 255, 255, 0.05);
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); /* 🔥 FIX: Reduced initial shadow */
-	position: relative; /* 🔥 FIX: Ensure positioning context */
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+	position: relative;
 }
 
 .work-3d:hover {
-	transform: translateY(-4px); /* 🔥 FIX: Reduced from -6px */
+	transform: translateY(-4px);
 	box-shadow: 
-		0 8px 24px rgba(0, 0, 0, 0.1), /* 🔥 FIX: Reduced shadow spread */
+		0 8px 24px rgba(0, 0, 0, 0.1),
 		0 4px 12px rgba(20, 184, 166, 0.12);
 	background: linear-gradient(135deg, rgba(20, 184, 166, 0.05), rgba(255, 255, 255, 0.03));
 	border-color: rgba(20, 184, 166, 0.3);
@@ -100,16 +100,16 @@
 	max-height: 45px;
 	border-radius: 50%;
 	outline: 3px solid rgba(255, 255, 255, 0.1);
-	box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.12); /* 🔥 FIX: Reduced shadow */
+	box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.12);
 	object-fit: cover;
 	transition: all 0.4s ease;
 	display: block;
 }
 
 .work-3d:hover .work-image {
-	transform: scale(1.06) rotate(2deg); /* 🔥 FIX: Reduced scale and rotation */
+	transform: scale(1.06) rotate(2deg);
 	outline-color: rgba(20, 184, 166, 0.5);
-	box-shadow: 0 4px 12px rgba(20, 184, 166, 0.25); /* 🔥 FIX: Reduced shadow */
+	box-shadow: 0 4px 12px rgba(20, 184, 166, 0.25);
 	outline-width: 3px;
 }
 
@@ -139,9 +139,9 @@
 	flex: 1;
 	min-width: 0;
 	transition: color 0.3s ease;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	overflow: visible; /* PERBAIKAN: Ubah dari hidden */
+	text-overflow: clip; /* PERBAIKAN: Ubah dari ellipsis */
+	white-space: normal; /* PERBAIKAN: Ubah dari nowrap */
 }
 
 .work-3d:hover .work-title {
@@ -164,7 +164,7 @@
 .work-3d:hover .work-duration {
 	background: rgba(20, 184, 166, 0.2);
 	color: var(--link-color);
-	transform: translateX(-2px); /* 🔥 FIX: Reduced from -3px */
+	transform: translateX(-2px);
 }
 
 .work-subtitle {
@@ -173,9 +173,9 @@
 	line-height: 1.4;
 	opacity: 0.85;
 	transition: opacity 0.3s ease;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	overflow: visible; /* PERBAIKAN: Ubah dari hidden */
+	text-overflow: clip; /* PERBAIKAN: Ubah dari ellipsis */
+	white-space: normal; /* PERBAIKAN: Ubah dari nowrap */
 }
 
 .work-3d:hover .work-subtitle {
@@ -213,11 +213,11 @@
 
 @media (max-width: 768px) {
 	.works-body {
-		padding: 3px; /* 🔥 FIX: Reduced padding on mobile */
+		padding: 3px 0;
 	}
 	
 	.work {
-		margin-bottom: 10px; /* 🔥 FIX: Reduced spacing */
+		margin-bottom: 10px;
 	}
 	
 	.work-3d {
@@ -258,12 +258,12 @@
 
 @media (max-width: 480px) {
 	.works-body {
-		padding: 2px;
+		padding: 2px 0;
 	}
 	
 	.work {
 		gap: 12px;
-		margin-bottom: 8px; /* 🔥 FIX: Reduced spacing */
+		margin-bottom: 8px;
 	}
 	
 	.work-3d {
@@ -282,7 +282,6 @@
 	
 	.work-title {
 		font-size: 13px;
-		white-space: normal;
 		line-height: 1.3;
 	}
 	
@@ -293,7 +292,6 @@
 	
 	.work-subtitle {
 		font-size: 11px;
-		white-space: normal;
 	}
 	
 	.work-hover-overlay span {
